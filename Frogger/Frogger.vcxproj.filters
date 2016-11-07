@@ -152,9 +152,6 @@
     <ClInclude Include="CarType.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionEffect.h">
-      <Filter>Header Files\Enums</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionStruct.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>

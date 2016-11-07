@@ -1,7 +1,6 @@
 #ifndef COLLISION_STRUCT
 #define COLLISION_STRUCT
 
-#include "CollisionEffect.h"
 #include <glm/glm.hpp>
 #include "Event.h"
 

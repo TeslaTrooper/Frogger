@@ -161,7 +161,6 @@
   <ItemGroup>
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarType.h" />
-    <ClInclude Include="CollisionEffect.h" />
     <ClInclude Include="CollisionStruct.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controller.h" />
