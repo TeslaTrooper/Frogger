@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\ShaderUtil">
+      <UniqueIdentifier>{298b6f9d-ff04-4594-a75b-bff520f359da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{e3b74c72-a4aa-4872-b6ae-d52f9891e761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Derived">
+      <UniqueIdentifier>{3b6ad542-1405-4729-97fe-36714d6e7350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enums">
+      <UniqueIdentifier>{81edfcd4-d411-4774-8a58-b0bca2e817d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{9a458fa9-acd4-4da7-8f87-8c0ca18ed03c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Derived">
+      <UniqueIdentifier>{43d19e57-335b-4ca1-b7f9-83b154967266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\numbers">
+      <UniqueIdentifier>{acd763c6-f01a-4e9b-97f2-6e6588b15473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Fonts">
+      <UniqueIdentifier>{44040fd6-b7de-4942-8bea-bec5ff390e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Fonts">
+      <UniqueIdentifier>{6e319dd0-e307-4929-9d8e-9a169b50b4ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\letters">
+      <UniqueIdentifier>{cbb74bb3-3d0c-4ea0-ac26-f1ce7ebf3934}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgramCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectImpl.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Frog.cpp">
+      <Filter>Source Files\Objects\Derived</Filter>
+    </ClCompile>
+    <ClCompile Include="Car.cpp">
+      <Filter>Source Files\Objects\Derived</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>Source Files\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>Source Files\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Source Files\Objects\Derived</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrogStateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\ShaderUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgramService.h">
+      <Filter>Header Files\ShaderUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Frog.h">
+      <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Direction.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Car.h">
+      <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>Header Files\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>Header Files\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeType.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CarType.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEffect.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionStruct.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="FrogStateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\textures\wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\textures\bg.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\textures\1.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\2.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\3.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\4.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\5.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\6.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\7.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\8.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\9.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\0.png">
+      <Filter>Resource Files\numbers</Filter>
+    </Image>
+    <Image Include="..\textures\65.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\66.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\67.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\68.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\69.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\70.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\71.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\72.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\73.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\74.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\75.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\76.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\77.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\78.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\79.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\80.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\81.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\82.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\89.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\90.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\83.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\84.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\85.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\86.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\87.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\88.png">
+      <Filter>Resource Files\letters</Filter>
+    </Image>
+    <Image Include="..\textures\stammSmall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\textures\stammLarge.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\textures\stammMedium.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

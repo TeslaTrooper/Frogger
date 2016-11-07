@@ -1,0 +1,15 @@
+#ifndef EVENT
+#define EVENT
+
+enum Event {
+	ARROW_KEYS,
+	TIME_OUT,
+	TARGET_POSITION_REACHED,
+	DIE_SEQUENCE_EXPIRED,
+	COLL_TREE_TURTLE, // CollisionEffect::TRANSPORTING
+	COLL_LETHAL_OBJECTS, // = CollisionEffect::KILL
+	COLL_NONE, //CollisionEffect::NONE_EFFECT
+	NEUTRAL
+};
+
+#endif EVENT
