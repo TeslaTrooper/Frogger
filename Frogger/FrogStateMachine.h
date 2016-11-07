@@ -5,6 +5,10 @@
 #include "Event.h"
 #include <vector>
 
+/*
+	Die Klasse FrogStateMachine hat einen aktuellen Zustand, eine Definition eines Zustandswechels 
+	und eine Menge gültiger Zustände, die dieser Zustandautomat beschreibt.
+*/
 class FrogStateMachine {
 	State currentState;
 
@@ -32,7 +36,20 @@ public:
 	FrogStateMachine();
 	~FrogStateMachine();
 
+	/*
+		Diese Methode führt einen Zustandsübergang mit dem gegebenen Transitionselement durch.
+		@param transitionUnit repräsentiert den Übergang zwischen 2 Zuständen.
+		@return Gibt true zurück, wenn der Automat in einen neuen Zustand gewechselt hat. Wenn
+				kein neuer Zustand eingenommen wurde, also die Kombination aus aktuellem Zustand
+				und Übergangselement nicht in der Zustansmenge enthalten ist, wird false
+				zurückgegeben.
+	*/
 	bool doTransition(Event transitionUnit);
+
+	/*
+		Gibt den aktuellen Zustand, in dem sich der Automat befindet, zurück.
+		@return aktueller Zustand.
+	*/
 	State getState();
 };
 
