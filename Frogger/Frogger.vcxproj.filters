@@ -93,6 +93,9 @@
     <ClCompile Include="FrogStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TurtleChain.cpp">
+      <Filter>Source Files\Objects\Derived</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -159,6 +162,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
+      <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="TurtleChain.h">
+      <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="ChainType.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,9 +14,11 @@ GameLogic::GameLogic() {
 	objectManager->createCars(5, CarType::CAR_WHITE, 3, 200, 75);
 	objectManager->createCars(6, CarType::TRUCK, 2, 300, 280);
 
-	objectManager->createTrees(8, TreeType::SMALL, 3, 200, 100);
+	objectManager->createTrees(9, TreeType::SMALL, 3, 200, 100);
 	objectManager->createTrees(10, TreeType::LARGE, 3, 50, 30);
 	objectManager->createTrees(12, TreeType::MEDIUM, 3, 100, 10);
+
+	objectManager->createTurtles(8, ChainType::THREE_ELEMENT_CHAIN, 5, 40, 0);
 
 	fontManager->createNewLabel("scoreLabel", "SCORE", glm::vec2(10.0f, 545.f), 0.5f);
 	fontManager->createNewLabel("score", std::to_string(score), glm::vec2(100.0f, 545.f), 0.5f);

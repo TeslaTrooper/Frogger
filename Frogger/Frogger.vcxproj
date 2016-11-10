@@ -157,10 +157,12 @@
     <ClCompile Include="ShaderProgramCreator.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="TurtleChain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarType.h" />
+    <ClInclude Include="ChainType.h" />
     <ClInclude Include="CollisionStruct.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controller.h" />
@@ -180,6 +182,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TreeType.h" />
+    <ClInclude Include="TurtleChain.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

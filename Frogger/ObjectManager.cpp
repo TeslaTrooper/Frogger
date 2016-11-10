@@ -65,3 +65,17 @@ void ObjectManager::createCars(int row, CarType carType, int count, int space, i
 
 	(*rowObjMap)[row] = objsInRow;
 }
+
+void ObjectManager::createTurtles(int row, ChainType chainType, int count, int space, int startX) {
+	std::vector<GameObject*>* objsInRow = new std::vector<GameObject*>();
+
+	vec2 pos = alignInRow(row, false);
+	for (int i = 0; i < count; i++) {
+		TurtleChain* chain = new TurtleChain(chainType, vec2(0.0f, pos.y), vec3(1.0f, 1.0f, 1.0f));
+		chain->setPosition(vec2(startX + (i * (chain->getSize().x + space)), pos.y));
+
+		objsInRow->push_back(chain);
+	}
+
+	(*rowObjMap)[row] = objsInRow;
+}

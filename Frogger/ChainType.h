@@ -1,0 +1,9 @@
+#ifndef CHAIN_TYPE
+#define CHAIN_TYPE
+
+enum ChainType {
+	TWO_ELEMENT_CHAIN,
+	THREE_ELEMENT_CHAIN
+};
+
+#endif CHAIN_TYPE

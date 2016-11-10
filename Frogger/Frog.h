@@ -24,7 +24,7 @@ class Frog : public GameObject {
 	bool targetPositionReached(GLfloat dt);
 
 public:
-	Frog(vec2 position, vec3 color) : GameObject(position, vec2(X_TILE_SIZE, Y_TILE_SIZE), color, new Texture("../textures/0.png")) {
+	Frog(vec2 position, vec3 color) : GameObject(position, vec2(X_TILE_SIZE, Y_TILE_SIZE), color, new Texture("../textures/wall.jpg")) {
 		this->homePosition = position;
 		this->setState(State::IDLE);
 		this->setSpeed(180.0f);
@@ -33,6 +33,7 @@ public:
 
 	~Frog();
 
+	/// <summary>hhh</summary>
 	void moveTo(Direction direction);
 	Rectangle getCriticalHitBox();
 	void reset();

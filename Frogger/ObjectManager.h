@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include "Tree.h"
 #include "Car.h"
+#include "TurtleChain.h"
 
 class ObjectManager {
 
@@ -26,6 +27,7 @@ public:
 
 	void createTrees(int row, TreeType treeType, int count, int space, int startX);
 	void createCars(int row, CarType carType, int count, int space, int startX);
+	void createTurtles(int row, ChainType chaintype, int count, int space, int startX);
 
 };
 
