@@ -141,7 +141,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Car.cpp" />
     <ClCompile Include="ControllerImpl.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frog.cpp" />
@@ -156,13 +155,8 @@
     <ClCompile Include="ShaderImpl.cpp" />
     <ClCompile Include="ShaderProgramCreator.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Tree.cpp" />
-    <ClCompile Include="TurtleChain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Car.h" />
-    <ClInclude Include="CarType.h" />
-    <ClInclude Include="ChainType.h" />
     <ClInclude Include="CollisionStruct.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controller.h" />
@@ -175,14 +169,12 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="Objects.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgramService.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="Tree.h" />
-    <ClInclude Include="TreeType.h" />
-    <ClInclude Include="TurtleChain.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

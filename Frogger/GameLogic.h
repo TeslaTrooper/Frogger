@@ -5,7 +5,6 @@
 #include <math.h>
 #include "GameObject.h"
 #include "Frog.h"
-#include "Car.h"
 #include "Texture.h"
 #include "FontManager.h"
 #include "ObjectManager.h"
@@ -20,7 +19,6 @@ class GameLogic {
 	void repeatObjectPosition(GameObject* obj);
 
 	bool checkCollision(GameObject* obj);
-	bool isFrog(GameObject* obj);
 
 	int score;
 

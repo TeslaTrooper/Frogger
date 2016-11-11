@@ -5,42 +5,144 @@
 #include "Direction.h"
 #include "State.h"
 #include "CollisionStruct.h"
+#include "Objects.h"
 
 using namespace glm;
 
+/*
+	Das GameObject repräsentiert ein beliebiges Objekt des Spieles. Es wird 
+	bestimmt durch seine Position, Größe, Texture, den aktuellen Zustand und dem
+	Bewegungsvektor, mit sich das Objekt fortbewegt.
+*/
 class GameObject {
+	
+	// Enthält die aktuelle Position des Objektes
 	vec2 position;
+
+	// Enthält die Größe des Objektes (ist nicht Abhängig von der Texture)
 	vec2 size;
 	vec3 color;
+
+	// Die Textur, die für das Zeichnen des Objektes verwendet wird
 	Texture* texture;
+
+	// Die Geschwindigkeit, mit der sich das Objekt bewegen kann
 	float speed;
+
+	// Der aktuelle Zustand des Objektes
 	State state;
+
+	// Stellt den aktuellen Bewegungsvektor dar
 	vec2 movement;
+
+	// Enthält Informationen darüber, was eine Kollision mit einem anderen Objekt 
+	// für Auswirkungen auf das andere Objekt hat.
 	CollisionStruct collisionStruct;
 
 public:
 
+	// Ist das Rastermaß (Breite), nach dem sich alle Objekte richten
 	static const int X_TILE_SIZE;
+	// Ist das Rastermaß (Höhe), nach dem sich alle Objekte richten
 	static const int Y_TILE_SIZE;
 
+	/*
+		Das Rechteck stellt die Abgrenzung eines jeden Objektes dar.
+	*/
 	struct Rectangle {
 		vec2 position;
 		vec2 size;
 	};
 
-	GameObject(vec2 position, vec2 size, vec3 color, Texture* texture) : position(position), size(size), color(color), texture(texture) {}
-	GameObject(vec2 position, vec2 size, vec3 color) : position(position), size(size), color(color) {}
-	GameObject(vec2 position, vec3 color) : position(position), color(color) {}
+	struct Initializer {
+		vec2 movement;
+		Texture* texture;
+		CollisionStruct collisionStruct;
+	};
+
+	/*
+		Erzeugt ein neues Objekt mit den gegebenen Parametern.
+		@param position gibt die initiale Position des Objektes an.
+		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
+	*/
+	GameObject(vec2 position, vec3 color);
+
+	GameObject(vec3 color, Texture* texture);
+
+	/*
+		Erzeugt ein neues Objekt mit den gegebenen Parametern.
+		@param position gibt die initiale Position des Objektes an.
+		@param size ist die Größe des Objektes.
+		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
+	*/
+	GameObject(vec2 position, vec2 size, vec3 color);
+
+	/*
+		Erzeugt ein neues Objekt mit den gegebenen Parametern.
+		@param position gibt die initiale Position des Objektes an.
+		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
+		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
+	*/
+	GameObject(vec2 position, vec3 color, Texture* texture);
+
+	/*
+		Erzeugt ein neues Objekt mit den gegebenen Parametern.
+		@param position gibt die initiale Position des Objektes an.
+		@param size ist die Größe des Objektes.
+		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
+		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
+	*/
+	GameObject(vec2 position, vec2 size, vec3 color, Texture* texture);
+	
+	
 
 	~GameObject();
 
+	/*
+		@returns Gibt die aktuelle Position als des Objektes zurück.
+	*/
 	vec2 getPosition() { return position; };
+
+	/*
+		@returns Gibt die Größe als des Objektes zurück.
+	*/
 	vec2 getSize() { return size; };
+
+	/*
+		@returns Gibt die Farbe des Objektes zurück.
+	*/
 	vec3 getColor() { return color; };
+
+	/*
+		@returns Gibt die Texture des Objektes zurück.
+	*/
 	Texture* getTexture() { return texture; };
+
+	/*
+		@returns Gibt die Geschwindigkeit zurück, mit der sich das
+				 Objekt fortbewegen kann.
+	*/
 	float getSpeed() { return speed; };
-	virtual State getState() { return state; };
+
+	/*
+		@returns Gibt den aktuellen Zustand, in dem sich das Objekt
+				 befindet, zurück.
+	*/
+	State getState() { return state; };
+
+	/*
+		@returns Gibt den Bewegungsvektor zurück, mit dem sich das
+				 Objekt fortbewegt.
+	*/
 	vec2 getCurrentMovement() { return movement; };
+
+	/*
+		Diese Methode liefert Informationen darüber, welchen
+		Auswirkungen bei einer Kollision das andere Objekt, mit 
+		dem Dieses kollidiert, ausgesetzt ist.
+		@returns Gibt ein struct zurück, welches die entsprechenden
+				 Informationen liefert.
+	*/
 	CollisionStruct getCollisionStruct() { return collisionStruct; };
 
 	void setPosition(vec2 position) { this->position = position; };
@@ -54,8 +156,17 @@ public:
 	void setCollisionStruct(CollisionStruct collisionStruct) { this->collisionStruct = collisionStruct; };
 	void resetMovement() { this->movement = vec2(0.0f, 0.0f); };
 
-	virtual Rectangle getCriticalHitBox() = 0;
-	virtual void doLogic(GLfloat dt) = 0;
+	/*
+		@returns Gibt das Rechteck des Objektes zurück.
+	*/
+	Rectangle getCriticalHitBox();
+
+	/*
+		Über diese Methode werden alle logischen Prozeduren eines
+		Objektes gesteuert.
+		@param dt ist die Zeit, die seit dem letzten game loop vergangen ist.
+	*/
+	void doLogic(GLfloat dt);
 };
 
 #endif GAME_OBJECT

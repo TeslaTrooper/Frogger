@@ -39,42 +39,22 @@ void ObjectManager::increaseSpeedInRow(int row) {
 	}
 }
 
-void ObjectManager::createTrees(int row, TreeType treeType, int count, int space, int startX) {
+void ObjectManager::createObject(int row, Objects objType, int count, int space, int startX) {
 	std::vector<GameObject*>* objsInRow = new std::vector<GameObject*>();
 
 	vec2 pos = alignInRow(row, false);
+	vec3 color = vec3(1.0f, 1.0f, 1.0f);
+	GameObject::Initializer initializer = objDefinitions.at(objType);
+	
+
 	for (int i = 0; i < count; i++) {
-		Tree* tree = new Tree(treeType, vec2(0.0f, pos.y), vec3(1.0f, 1.0f, 1.0f));
-		tree->setPosition(vec2(startX + (i * (tree->getSize().x + space)), pos.y));
+		GameObject* obj = new GameObject(color, initializer.texture);
 
-		objsInRow->push_back(tree);
-	}
+		obj->setMovement(initializer.movement);
+		obj->setCollisionStruct(initializer.collisionStruct);
+		obj->setPosition(vec2(startX + (i * (obj->getSize().x + space)), pos.y));
 
-	(*rowObjMap)[row] = objsInRow;
-}
-
-void ObjectManager::createCars(int row, CarType carType, int count, int space, int startX) {
-	std::vector<GameObject*>* objsInRow = new std::vector<GameObject*>();
-
-	vec2 pos = alignInRow(row, false);
-	for (int i = 0; i < count; i++) {
-		Car* car = new Car(carType, vec2(startX + (i*space), pos.y), vec3(1.0f, 1.0f, 1.0f));
-
-		objsInRow->push_back(car);
-	}
-
-	(*rowObjMap)[row] = objsInRow;
-}
-
-void ObjectManager::createTurtles(int row, ChainType chainType, int count, int space, int startX) {
-	std::vector<GameObject*>* objsInRow = new std::vector<GameObject*>();
-
-	vec2 pos = alignInRow(row, false);
-	for (int i = 0; i < count; i++) {
-		TurtleChain* chain = new TurtleChain(chainType, vec2(0.0f, pos.y), vec3(1.0f, 1.0f, 1.0f));
-		chain->setPosition(vec2(startX + (i * (chain->getSize().x + space)), pos.y));
-
-		objsInRow->push_back(chain);
+		objsInRow->push_back(obj);
 	}
 
 	(*rowObjMap)[row] = objsInRow;

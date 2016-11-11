@@ -8,17 +8,17 @@ GameLogic::GameLogic() {
 
 	this->frog = new Frog(objectManager->alignInRow(1, true), vec3(0.0f, 0.0f, 0.0f));
 
-	objectManager->createCars(2, CarType::CAR_YELLOW, 3, 200, 100);
-	objectManager->createCars(3, CarType::HARVESTER, 3, 150, 50);
-	objectManager->createCars(4, CarType::CAR_PINK, 3, 200, 275);
-	objectManager->createCars(5, CarType::CAR_WHITE, 3, 200, 75);
-	objectManager->createCars(6, CarType::TRUCK, 2, 300, 280);
+	objectManager->createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
+	objectManager->createObject(3, Objects::HARVESTER, 3, 150, 50);
+	objectManager->createObject(4, Objects::CAR_PINK, 3, 200, 275);
+	objectManager->createObject(5, Objects::CAR_WHITE, 3, 200, 75);
+	objectManager->createObject(6, Objects::TRUCK, 3, 300, 280);
 
-	objectManager->createTrees(9, TreeType::SMALL, 3, 200, 100);
-	objectManager->createTrees(10, TreeType::LARGE, 3, 50, 30);
-	objectManager->createTrees(12, TreeType::MEDIUM, 3, 100, 10);
+	objectManager->createObject(9, Objects::SMALL_TREE, 3, 200, 100);
+	objectManager->createObject(10, Objects::LARGE_TREE, 3, 50, 30);
+	objectManager->createObject(12, Objects::MEDIUM_TREE, 3, 100, 10);
 
-	objectManager->createTurtles(8, ChainType::THREE_ELEMENT_CHAIN, 5, 40, 0);
+	objectManager->createObject(8, Objects::TWO_ELEMENT_CHAIN, 2, 300, 0);
 
 	fontManager->createNewLabel("scoreLabel", "SCORE", glm::vec2(10.0f, 545.f), 0.5f);
 	fontManager->createNewLabel("score", std::to_string(score), glm::vec2(100.0f, 545.f), 0.5f);
@@ -40,7 +40,6 @@ void GameLogic::doLogic(GLfloat dt) {
 	std::vector<GameObject*> objs = objectManager->getAll();
 	CollisionStruct collisionStruct = { Event::NEUTRAL, glm::vec2(0.0f, 0.0f) };
 
-	//std::cout << frog->getState() << std::endl;
 
 	for (int i = 0; i < objs.size(); i++) {
 		GameObject* obj = objs.at(i);
@@ -48,12 +47,9 @@ void GameLogic::doLogic(GLfloat dt) {
 		obj->doLogic(dt);
 		repeatObjectPosition(obj);
 
-		//if (frog->getState() != State::DIEING && checkCollision(obj)) {
 		if (checkCollision(obj)) {
 			collisionStruct = obj->getCollisionStruct();
-			//frog->reactOnCollision(obj->getCollisionStruct());
 		}
-		//}
 	}
 
 	frog->doLogic(dt, collisionStruct);
@@ -66,10 +62,6 @@ void GameLogic::moveFrog(Direction direction) {
 }
 
 bool GameLogic::checkCollision(GameObject* obj) {
-	if (isFrog(obj)) {
-		return false;
-	}
-
 	GameObject::Rectangle frogHitbox = this->frog->getCriticalHitBox();
 	GameObject::Rectangle objHitbox = obj->getCriticalHitBox();
 
@@ -91,14 +83,6 @@ void GameLogic::repeatObjectPosition(GameObject* obj) {
 	if (obj->getPosition().x > 700 + obj->getSize().x) {
 		obj->setPosition(vec2(-obj->getSize().x, obj->getPosition().y));
 	}
-}
-
-bool GameLogic::isFrog(GameObject* obj) {
-	if (Frog* f = dynamic_cast<Frog*>(obj)) {
-		return true;
-	}
-
-	return false;
 }
 
 GameLogic::~GameLogic() {

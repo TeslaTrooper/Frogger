@@ -75,26 +75,17 @@
     <ClCompile Include="Frog.cpp">
       <Filter>Source Files\Objects\Derived</Filter>
     </ClCompile>
-    <ClCompile Include="Car.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
-    </ClCompile>
     <ClCompile Include="FontManager.cpp">
       <Filter>Source Files\Fonts</Filter>
     </ClCompile>
     <ClCompile Include="Label.cpp">
       <Filter>Source Files\Fonts</Filter>
     </ClCompile>
-    <ClCompile Include="Tree.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FrogStateMachine.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TurtleChain.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,29 +122,17 @@
     <ClInclude Include="State.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
-    <ClInclude Include="Car.h">
-      <Filter>Header Files\Objects\Derived</Filter>
-    </ClInclude>
     <ClInclude Include="Label.h">
       <Filter>Header Files\Fonts</Filter>
     </ClInclude>
     <ClInclude Include="FontManager.h">
       <Filter>Header Files\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="Tree.h">
-      <Filter>Header Files\Objects\Derived</Filter>
-    </ClInclude>
-    <ClInclude Include="TreeType.h">
-      <Filter>Header Files\Enums</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CarType.h">
-      <Filter>Header Files\Enums</Filter>
     </ClInclude>
     <ClInclude Include="CollisionStruct.h">
       <Filter>Header Files\Enums</Filter>
@@ -164,10 +143,7 @@
     <ClInclude Include="Event.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
-    <ClInclude Include="TurtleChain.h">
-      <Filter>Header Files\Objects\Derived</Filter>
-    </ClInclude>
-    <ClInclude Include="ChainType.h">
+    <ClInclude Include="Objects.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
   </ItemGroup>
