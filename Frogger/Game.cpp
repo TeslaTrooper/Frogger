@@ -18,7 +18,9 @@ GameLogic::GameLogic() {
 	objectManager->createObject(10, Objects::LARGE_TREE, 3, 50, 30);
 	objectManager->createObject(12, Objects::MEDIUM_TREE, 3, 100, 10);
 
-	objectManager->createObject(8, Objects::TWO_ELEMENT_CHAIN, 2, 300, 0);
+	objectManager->createObject(8, Objects::THREE_ELEMENT_CHAIN, 5, 40, 0);
+	objectManager->createObject(11, Objects::TWO_ELEMENT_CHAIN, 4, 80, 0);
+
 
 	fontManager->createNewLabel("scoreLabel", "SCORE", glm::vec2(10.0f, 545.f), 0.5f);
 	fontManager->createNewLabel("score", std::to_string(score), glm::vec2(100.0f, 545.f), 0.5f);
@@ -38,7 +40,7 @@ void GameLogic::drawLabels(Renderer* renderer) {
 
 void GameLogic::doLogic(GLfloat dt) {
 	std::vector<GameObject*> objs = objectManager->getAll();
-	CollisionStruct collisionStruct = { Event::NEUTRAL, glm::vec2(0.0f, 0.0f) };
+	CollisionStruct collisionStruct = { Event::COLL_NONE, glm::vec2(0.0f, 0.0f) };
 
 
 	for (int i = 0; i < objs.size(); i++) {
@@ -52,7 +54,7 @@ void GameLogic::doLogic(GLfloat dt) {
 		}
 	}
 
-	frog->doLogic(dt, collisionStruct);
+	frog->doLogic(dt, &collisionStruct);
 }
 
 void GameLogic::moveFrog(Direction direction) {
