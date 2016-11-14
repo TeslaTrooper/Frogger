@@ -16,9 +16,18 @@ class GameLogic {
 	ObjectManager* objectManager;
 	FontManager* fontManager;
 
+	const Rectangle riverHitBox = { vec2(0.0f, OFFSET_Y), vec2(TILES_X * X_TILE_SIZE, 5 * Y_TILE_SIZE) };
+	Rectangle poolHitBoxes[POOLS_COUNT];
+
+	void initPoolHitBoxes();
+
+	bool intersects(Rectangle rect1, Rectangle rect2);
+
 	void repeatObjectPosition(GameObject* obj);
 
 	bool checkCollision(GameObject* obj);
+	bool checkRiverCollision();
+	int checkPoolCollision();
 
 	int score;
 

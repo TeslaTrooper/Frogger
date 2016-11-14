@@ -43,6 +43,9 @@
     <Filter Include="Resource Files\letters">
       <UniqueIdentifier>{cbb74bb3-3d0c-4ea0-ac26-f1ce7ebf3934}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Util">
+      <UniqueIdentifier>{d8889a93-b569-4dab-bd09-db3957f27d20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="Objects.h">
       <Filter>Header Files\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Header Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

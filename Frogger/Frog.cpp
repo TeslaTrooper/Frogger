@@ -21,7 +21,10 @@ void Frog::moveTo(Direction direction) {
 }
 
 void Frog::move(GLfloat dt) {
-	targetPositionReached(dt);
+	if (targetPositionReached(dt)) {
+		return;
+	}
+
 	setPosition(this->getPosition() + (this->getResultingVector() * dt));
 }
 
@@ -49,10 +52,19 @@ void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
 			vectors[1] = collisionStruct->movement;
 			move(dt);
 		}; break;
+		case State::NAVIGATING: {
+			float length = sqrt(pow(getResultingVector().x, 2) + pow(getResultingVector().y, 2));
+			vec2 r = collisionStruct->movement - this->getPosition();
+			r *= 1.0f / (sqrt(pow(r.x, 2) + pow(r.y, 2)));
+			r *= length;
+			this->resetMovement();
+			vectors[0] = r;
+			targetPosition = collisionStruct->movement;
+		}; break;
 	}
 }
 
-GameObject::Rectangle Frog::getCriticalHitBox() {
+Rectangle Frog::getCriticalHitBox() {
 	return { this->getPosition(), this->getSize() };
 }
 
@@ -100,7 +112,7 @@ bool Frog::validMovement(vec2 movement) {
 	float dY = movement.y * (this->getSize().y / getSpeed());
 
 
-	if (this->getPosition().x + this->getSize().x + dX > 560) {
+	if (this->getPosition().x + this->getSize().x + dX > X_TILE_SIZE * TILES_X) {
 		return false;
 	}
 	if (this->getPosition().x + dX < 0) {
@@ -109,7 +121,7 @@ bool Frog::validMovement(vec2 movement) {
 	if (this->getPosition().y + this->getSize().y + dY > 14 * Y_TILE_SIZE) {
 		return false;
 	}
-	if (this->getPosition().y + dY < 20) {
+	if (this->getPosition().y + dY < OFFSET_Y) {
 		return false;
 	}
 

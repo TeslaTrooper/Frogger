@@ -6,7 +6,9 @@ GameLogic::GameLogic() {
 	this->objectManager = new ObjectManager();
 	fontManager = new FontManager();
 
-	this->frog = new Frog(objectManager->alignInRow(1, true), vec3(0.0f, 0.0f, 0.0f));
+	initPoolHitBoxes();
+
+	this->frog = new Frog(objectManager->alignInRow(7, true), vec3(0.0f, 0.0f, 0.0f));
 
 	objectManager->createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
 	objectManager->createObject(3, Objects::HARVESTER, 3, 150, 50);
@@ -54,6 +56,19 @@ void GameLogic::doLogic(GLfloat dt) {
 		}
 	}
 
+	int poolIndex = checkPoolCollision();
+	if (poolIndex > -1) {
+		collisionStruct = { Event::COLL_POOL, poolHitBoxes[poolIndex].position };
+	} else if (poolIndex < 0 && frog->getPosition().y < OFFSET_Y + Y_TILE_SIZE) {
+		collisionStruct.effect = Event::COLL_LETHAL_OBJECTS;
+	}
+
+	if (collisionStruct.effect == Event::COLL_NONE) {
+		if (checkRiverCollision()) {
+			collisionStruct.effect = Event::COLL_LETHAL_OBJECTS;
+		}
+	}
+
 	frog->doLogic(dt, &collisionStruct);
 }
 
@@ -64,14 +79,41 @@ void GameLogic::moveFrog(Direction direction) {
 }
 
 bool GameLogic::checkCollision(GameObject* obj) {
-	GameObject::Rectangle frogHitbox = this->frog->getCriticalHitBox();
-	GameObject::Rectangle objHitbox = obj->getCriticalHitBox();
+	Rectangle frogHitbox = this->frog->getCriticalHitBox();
+	Rectangle objHitbox = obj->getCriticalHitBox();
 
-	if ((int) frogHitbox.position.x >= (int) (objHitbox.position.x + objHitbox.size.x) || (int) objHitbox.position.x >= (int) (frogHitbox.position.x + frogHitbox.size.x)) {
+	return intersects(frogHitbox, objHitbox);
+}
+
+bool GameLogic::checkRiverCollision() {
+	Rectangle frogHitbox = this->frog->getCriticalHitBox();
+
+	return intersects(frogHitbox, riverHitBox);
+}
+
+int GameLogic::checkPoolCollision() {
+	for (int i = 0; i < sizeof(poolHitBoxes) / sizeof(Rectangle); i++) {
+		if(intersects(frog->getCriticalHitBox(), poolHitBoxes[i])) {
+			float frogMiddle = frog->getPosition().x + frog->getSize().x / 2;
+			float poolMiddle = poolHitBoxes[i].position.x + poolHitBoxes[i].size.x / 2;
+
+			if (abs(frogMiddle - poolMiddle) <= X_TILE_SIZE * 0.75) {
+				return i;
+			}
+
+			break;
+		}
+	}
+
+	return -1;
+}
+
+bool GameLogic::intersects(Rectangle rect1, Rectangle rect2) {
+	if ((int)rect1.position.x >= (int)(rect2.position.x + rect2.size.x) || (int)rect2.position.x >= (int)(rect1.position.x + rect1.size.x)) {
 		return false;
 	}
 
-	if ((int) frogHitbox.position.y >= (int) (objHitbox.position.y + objHitbox.size.y) || (int) objHitbox.position.y >= (int) (frogHitbox.position.y + frogHitbox.size.y)) {
+	if ((int)rect1.position.y >= (int)(rect2.position.y + rect2.size.y) || (int)rect2.position.y >= (int)(rect1.position.y + rect1.size.y)) {
 		return false;
 	}
 
@@ -84,6 +126,15 @@ void GameLogic::repeatObjectPosition(GameObject* obj) {
 	}
 	if (obj->getPosition().x > 700 + obj->getSize().x) {
 		obj->setPosition(vec2(-obj->getSize().x, obj->getPosition().y));
+	}
+}
+
+void GameLogic::initPoolHitBoxes() {
+	for (int i = 0; i < POOLS_COUNT; i++) {
+		vec2 position = vec2(i * POOL_SPACE + OFFSET_X + i * X_TILE_SIZE, OFFSET_Y);
+		vec2 size = vec2(X_TILE_SIZE, Y_TILE_SIZE);
+
+		poolHitBoxes[i] = { position, size };
 	}
 }
 

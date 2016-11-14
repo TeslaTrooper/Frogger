@@ -1,8 +1,5 @@
 #include "GameObject.h"
 
-const int GameObject::X_TILE_SIZE = 40;
-const int GameObject::Y_TILE_SIZE = 40;
-
 GameObject::GameObject(vec2 position, vec3 color) : position(position), color(color) {
 	this->setState(State::MOVING);
 }
@@ -39,7 +36,7 @@ void GameObject::draw(Renderer* renderer) {
 	renderer->draw(this->getTexture(), this->getPosition(), this->getSize(), this->getColor());
 }
 
-GameObject::Rectangle GameObject::getCriticalHitBox() {
+Rectangle GameObject::getCriticalHitBox() {
 	return { this->getPosition(), this->getSize() };
 }
 void GameObject::doLogic(GLfloat dt) {

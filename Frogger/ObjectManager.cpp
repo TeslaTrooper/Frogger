@@ -8,10 +8,10 @@ ObjectManager::~ObjectManager() {}
 
 vec2 ObjectManager::alignInRow(int row, bool centered) {
 	if (!centered) {
-		return vec2(0.0f, OFFSET_Y + (TILES_Y - row) * GameObject::Y_TILE_SIZE);
+		return vec2(0.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
 	}
 
-	return vec2(320.0f, OFFSET_Y + (TILES_Y - row) * GameObject::Y_TILE_SIZE);
+	return vec2(320.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
 }
 
 std::vector<GameObject*> ObjectManager::getAll() {

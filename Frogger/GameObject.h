@@ -6,6 +6,8 @@
 #include "State.h"
 #include "CollisionStruct.h"
 #include "Objects.h"
+#include "Structs.h"
+#include "Constants.h"
 
 using namespace glm;
 
@@ -40,19 +42,6 @@ class GameObject {
 	CollisionStruct collisionStruct;
 
 public:
-
-	// Ist das Rastermaß (Breite), nach dem sich alle Objekte richten
-	static const int X_TILE_SIZE;
-	// Ist das Rastermaß (Höhe), nach dem sich alle Objekte richten
-	static const int Y_TILE_SIZE;
-
-	/*
-		Das Rechteck stellt die Abgrenzung eines jeden Objektes dar.
-	*/
-	struct Rectangle {
-		vec2 position;
-		vec2 size;
-	};
 
 	struct Initializer {
 		vec2 movement;

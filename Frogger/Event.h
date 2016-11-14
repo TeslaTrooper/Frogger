@@ -9,7 +9,8 @@ enum Event {
 	COLL_TREE_TURTLE, // CollisionEffect::TRANSPORTING
 	COLL_LETHAL_OBJECTS, // = CollisionEffect::KILL
 	COLL_NONE, //CollisionEffect::NONE_EFFECT
-	NEUTRAL
+	NEUTRAL,
+	COLL_POOL
 };
 
 #endif EVENT
