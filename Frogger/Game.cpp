@@ -8,7 +8,7 @@ GameLogic::GameLogic() {
 
 	initPoolHitBoxes();
 
-	this->frog = new Frog(objectManager->alignInRow(7, true), vec3(0.0f, 0.0f, 0.0f));
+	this->frog = new Frog(objectManager->alignInRow(1, true), vec3(0.0f, 0.0f, 0.0f));
 
 	objectManager->createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
 	objectManager->createObject(3, Objects::HARVESTER, 3, 150, 50);
@@ -24,9 +24,9 @@ GameLogic::GameLogic() {
 	objectManager->createObject(11, Objects::TWO_ELEMENT_CHAIN, 4, 80, 0);
 
 
-	fontManager->createNewLabel("scoreLabel", "SCORE", glm::vec2(10.0f, 545.f), 0.5f);
-	fontManager->createNewLabel("score", std::to_string(score), glm::vec2(100.0f, 545.f), 0.5f);
-	fontManager->createNewLabel("timeLabel", "TIME", glm::vec2(490.0f, 565.f), 0.5f);
+	fontManager->createNewLabel("scoreLabel", "SCORE", Vec2(10.0f, 545.f), 0.5f);
+	fontManager->createNewLabel("score", std::to_string(score), Vec2(100.0f, 545.f), 0.5f);
+	fontManager->createNewLabel("timeLabel", "TIME", Vec2(490.0f, 565.f), 0.5f);
 }
 
 std::vector<GameObject*> GameLogic::getObjects() {
@@ -42,7 +42,7 @@ void GameLogic::drawLabels(Renderer* renderer) {
 
 void GameLogic::doLogic(GLfloat dt) {
 	std::vector<GameObject*> objs = objectManager->getAll();
-	CollisionStruct collisionStruct = { Event::COLL_NONE, glm::vec2(0.0f, 0.0f) };
+	CollisionStruct collisionStruct = { Event::COLL_NONE, Vec2(0.0f, 0.0f) };
 
 
 	for (int i = 0; i < objs.size(); i++) {
@@ -122,17 +122,17 @@ bool GameLogic::intersects(Rectangle rect1, Rectangle rect2) {
 
 void GameLogic::repeatObjectPosition(GameObject* obj) {
 	if (obj->getPosition().x < -obj->getSize().x) {
-		obj->setPosition(vec2(700 + obj->getSize().x, obj->getPosition().y));
+		obj->setPosition(Vec2(700 + obj->getSize().x, obj->getPosition().y));
 	}
 	if (obj->getPosition().x > 700 + obj->getSize().x) {
-		obj->setPosition(vec2(-obj->getSize().x, obj->getPosition().y));
+		obj->setPosition(Vec2(-obj->getSize().x, obj->getPosition().y));
 	}
 }
 
 void GameLogic::initPoolHitBoxes() {
 	for (int i = 0; i < POOLS_COUNT; i++) {
-		vec2 position = vec2(i * POOL_SPACE + OFFSET_X + i * X_TILE_SIZE, OFFSET_Y);
-		vec2 size = vec2(X_TILE_SIZE, Y_TILE_SIZE);
+		Vec2 position = Vec2(i * POOL_SPACE + OFFSET_X + i * X_TILE_SIZE, OFFSET_Y);
+		Vec2 size = Vec2(X_TILE_SIZE, Y_TILE_SIZE);
 
 		poolHitBoxes[i] = { position, size };
 	}

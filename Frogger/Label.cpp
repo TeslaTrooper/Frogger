@@ -24,7 +24,7 @@ Label::Label(std::string text) {
 	}
 
 	chars = new std::vector<Texture*>();
-	charPositions = new std::vector<glm::vec2>();
+	charPositions = new std::vector<Vec2>();
 
 	setScale(1.0f);
 
@@ -39,16 +39,16 @@ Label::~Label() {
 	delete charPositions;
 }
 
-void Label::setPosition(glm::vec2 position) {
+void Label::setPosition(Vec2 position) {
 	this->position = position;
 	alignPosition();
 }
 
-glm::vec2 Label::getSize(int index) {
-	return glm::vec2(chars->at(index)->getWidth() * scale, chars->at(index)->getHeight() * scale);
+Vec2 Label::getSize(int index) {
+	return Vec2(chars->at(index)->getWidth() * scale, chars->at(index)->getHeight() * scale);
 }
 
-glm::vec2 Label::getPosition() {
+Vec2 Label::getPosition() {
 	return position;
 }
 
@@ -81,7 +81,7 @@ void Label::alignPosition() {
 
 	int offset = 0;
 	for (int i = 0; i < chars->size(); i++) {
-		charPositions->push_back(glm::vec2(position.x + offset, position.y));
+		charPositions->push_back(Vec2(position.x + offset, position.y));
 		offset += (int) getSize(i).x;
 	}
 }

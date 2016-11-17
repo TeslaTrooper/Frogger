@@ -1,14 +1,14 @@
 #include "Frog.h"
 
 void Frog::moveTo(Direction direction) {
-	vec2 movement;
+	Vec2 movement;
 
 	switch (direction) {
-		case LEFT: movement = vec2(-getSpeed(), 0.0f); break;
-		case UP: movement = vec2(0.0f, -getSpeed()); break;
-		case RIGHT: movement = vec2(getSpeed(), 0.0f); break;
-		case DOWN: movement = vec2(0.0f, getSpeed()); break;
-		default: movement = vec2(0.0f, 0.0f);
+		case LEFT: movement = Vec2(-getSpeed(), 0.0f); break;
+		case UP: movement = Vec2(0.0f, -getSpeed()); break;
+		case RIGHT: movement = Vec2(getSpeed(), 0.0f); break;
+		case DOWN: movement = Vec2(0.0f, getSpeed()); break;
+		default: movement = Vec2(0.0f, 0.0f);
 	}
 
 	if (!validMovement(movement) || !stateMachine->doTransition(Event::ARROW_KEYS)) {
@@ -17,7 +17,7 @@ void Frog::moveTo(Direction direction) {
 
 	this->vectors[0] = movement;
 
-	this->targetPosition = getPosition() + (getResultingVector() * this->getSize().x / getSpeed());
+	this->targetPosition = getPosition().add((getResultingVector().mul(this->getSize().x / getSpeed())));
 }
 
 void Frog::move(GLfloat dt) {
@@ -25,7 +25,7 @@ void Frog::move(GLfloat dt) {
 		return;
 	}
 
-	setPosition(this->getPosition() + (this->getResultingVector() * dt));
+	setPosition(this->getPosition().add((this->getResultingVector().mul(dt))));
 }
 
 void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
@@ -53,12 +53,9 @@ void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
 			move(dt);
 		}; break;
 		case State::NAVIGATING: {
-			float length = sqrt(pow(getResultingVector().x, 2) + pow(getResultingVector().y, 2));
-			vec2 r = collisionStruct->movement - this->getPosition();
-			r *= 1.0f / (sqrt(pow(r.x, 2) + pow(r.y, 2)));
-			r *= length;
+			float length = getResultingVector().length();
 			this->resetMovement();
-			vectors[0] = r;
+			vectors[0] = this->getPosition().rotateTo(collisionStruct->movement, length);
 			targetPosition = collisionStruct->movement;
 		}; break;
 	}
@@ -69,8 +66,8 @@ Rectangle Frog::getCriticalHitBox() {
 }
 
 void Frog::resetMovement() {
-	vectors[0] = vec2(0.0f, 0.0f);
-	vectors[1] = vec2(0.0f, 0.0f);
+	vectors[0].clear();
+	vectors[1].clear();
 }
 
 void Frog::reset() {
@@ -107,7 +104,7 @@ bool Frog::targetPositionReached(GLfloat dt) {
 	return false;
 }
 
-bool Frog::validMovement(vec2 movement) {
+bool Frog::validMovement(Vec2 movement) {
 	float dX = movement.x * (this->getSize().x / getSpeed());
 	float dY = movement.y * (this->getSize().y / getSpeed());
 

@@ -19,10 +19,10 @@ using namespace glm;
 class GameObject {
 	
 	// Enthält die aktuelle Position des Objektes
-	vec2 position;
+	Vec2 position;
 
 	// Enthält die Größe des Objektes (ist nicht Abhängig von der Texture)
-	vec2 size;
+	Vec2 size;
 	vec3 color;
 
 	// Die Textur, die für das Zeichnen des Objektes verwendet wird
@@ -35,7 +35,7 @@ class GameObject {
 	State state;
 
 	// Stellt den aktuellen Bewegungsvektor dar
-	vec2 movement;
+	Vec2 movement;
 
 	// Enthält Informationen darüber, was eine Kollision mit einem anderen Objekt 
 	// für Auswirkungen auf das andere Objekt hat.
@@ -44,7 +44,7 @@ class GameObject {
 public:
 
 	struct Initializer {
-		vec2 movement;
+		Vec2 movement;
 		Texture* texture;
 		CollisionStruct collisionStruct;
 	};
@@ -54,7 +54,7 @@ public:
 		@param position gibt die initiale Position des Objektes an.
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 	*/
-	GameObject(vec2 position, vec3 color);
+	GameObject(Vec2 position, vec3 color);
 
 	GameObject(vec3 color, Texture* texture);
 
@@ -64,7 +64,7 @@ public:
 		@param size ist die Größe des Objektes.
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 	*/
-	GameObject(vec2 position, vec2 size, vec3 color);
+	GameObject(Vec2 position, Vec2 size, vec3 color);
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
@@ -72,7 +72,7 @@ public:
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
 	*/
-	GameObject(vec2 position, vec3 color, Texture* texture);
+	GameObject(Vec2 position, vec3 color, Texture* texture);
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
@@ -81,7 +81,7 @@ public:
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
 	*/
-	GameObject(vec2 position, vec2 size, vec3 color, Texture* texture);
+	GameObject(Vec2 position, Vec2 size, vec3 color, Texture* texture);
 	
 	
 
@@ -90,12 +90,12 @@ public:
 	/*
 		@returns Gibt die aktuelle Position als des Objektes zurück.
 	*/
-	vec2 getPosition() { return position; };
+	Vec2 getPosition() { return position; };
 
 	/*
 		@returns Gibt die Größe als des Objektes zurück.
 	*/
-	vec2 getSize() { return size; };
+	Vec2 getSize() { return size; };
 
 	/*
 		@returns Gibt die Farbe des Objektes zurück.
@@ -123,7 +123,7 @@ public:
 		@returns Gibt den Bewegungsvektor zurück, mit dem sich das
 				 Objekt fortbewegt.
 	*/
-	vec2 getCurrentMovement() { return movement; };
+	Vec2 getCurrentMovement() { return movement; };
 
 	/*
 		Diese Methode liefert Informationen darüber, welchen
@@ -134,16 +134,16 @@ public:
 	*/
 	CollisionStruct getCollisionStruct() { return collisionStruct; };
 
-	void setPosition(vec2 position) { this->position = position; };
+	void setPosition(Vec2 position) { this->position = position; };
 	void setSpeed(float speed) { this->speed = speed; };
 	void setState(State state) { this->state = state; };
-	void setMovement(vec2 movement) { this->movement = movement; };
+	void setMovement(Vec2 movement) { this->movement = movement; };
 	void move(GLfloat dt);
 	void draw(Renderer* renderer);
 	void setTexture(Texture* texture) { this->texture = texture; };
-	void setSize(vec2 size) { this->size = size; };
+	void setSize(Vec2 size) { this->size = size; };
 	void setCollisionStruct(CollisionStruct collisionStruct) { this->collisionStruct = collisionStruct; };
-	void resetMovement() { this->movement = vec2(0.0f, 0.0f); };
+	void resetMovement() { this->movement = Vec2(0.0f, 0.0f); };
 
 	/*
 		@returns Gibt das Rechteck des Objektes zurück.

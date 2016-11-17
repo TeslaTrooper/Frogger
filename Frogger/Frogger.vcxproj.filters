@@ -46,6 +46,12 @@
     <Filter Include="Header Files\Util">
       <UniqueIdentifier>{d8889a93-b569-4dab-bd09-db3957f27d20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Geometry">
+      <UniqueIdentifier>{38370d5d-3a73-436d-8535-36dba10e19ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Geometry">
+      <UniqueIdentifier>{574a885c-1bb3-40dc-b117-fe52b1d920d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -89,6 +95,12 @@
     </ClCompile>
     <ClCompile Include="FrogStateMachine.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Mat4.cpp">
+      <Filter>Source Files\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,8 +161,14 @@
     <ClInclude Include="Objects.h">
       <Filter>Header Files\Enums</Filter>
     </ClInclude>
+    <ClInclude Include="Vec2.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Mat4.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
     <ClInclude Include="Structs.h">
-      <Filter>Header Files\Util</Filter>
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

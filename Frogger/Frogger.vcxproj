@@ -150,11 +150,13 @@
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="Mat4.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ObjectRenderer.cpp" />
     <ClCompile Include="ShaderImpl.cpp" />
     <ClCompile Include="ShaderProgramCreator.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionStruct.h" />
@@ -168,6 +170,7 @@
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Label.h" />
+    <ClInclude Include="Mat4.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="Renderer.h" />
@@ -176,6 +179,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Vec2.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

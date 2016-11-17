@@ -1,13 +1,11 @@
 #ifndef STRUCTS
 #define STRUCTS
 
-#include <glm/glm.hpp>
-
-using namespace glm;
+#include "Vec2.h"
 
 struct Rectangle {
-	vec2 position;
-	vec2 size;
+	Vec2 position;
+	Vec2 size;
 };
 
 #endif STRUCTS

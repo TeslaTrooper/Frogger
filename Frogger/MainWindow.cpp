@@ -37,7 +37,7 @@ void Window::render() {
 
 		vec3 color = vec3(0.0f, 0.0f, 0.0f);
 
-		renderer->draw(background, vec2(0.0f, 0.0f), vec2(560.0f, 540.0f), color);
+		renderer->draw(background, Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f), color);
 
 		for (int i = 0; i < logic->getObjects().size(); i++) {
 			logic->getObjects().at(i)->draw(renderer);
@@ -66,7 +66,8 @@ void Window::initViewport() {
 }
 
 void Window::initProjectionMatrix() {
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width), static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
+	Mat4 projection = Mat4::ortho(0.0f, static_cast<GLfloat>(this->width), static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
+
 	renderer->getShader()->use();
 	renderer->getShader()->setUniformMatrix4("projection", projection);
 }

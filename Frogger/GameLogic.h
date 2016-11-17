@@ -16,7 +16,7 @@ class GameLogic {
 	ObjectManager* objectManager;
 	FontManager* fontManager;
 
-	const Rectangle riverHitBox = { vec2(0.0f, OFFSET_Y), vec2(TILES_X * X_TILE_SIZE, 5 * Y_TILE_SIZE) };
+	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE) };
 	Rectangle poolHitBoxes[POOLS_COUNT];
 
 	void initPoolHitBoxes();

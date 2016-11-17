@@ -6,12 +6,12 @@ ObjectManager::ObjectManager() {
 
 ObjectManager::~ObjectManager() {}
 
-vec2 ObjectManager::alignInRow(int row, bool centered) {
+Vec2 ObjectManager::alignInRow(int row, bool centered) {
 	if (!centered) {
-		return vec2(0.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
+		return Vec2(0.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
 	}
 
-	return vec2(320.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
+	return Vec2(320.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
 }
 
 std::vector<GameObject*> ObjectManager::getAll() {
@@ -33,7 +33,7 @@ void ObjectManager::increaseSpeedInRow(int row) {
 
 	for (int i = 0; i < objsInRow->size(); i++) {
 		GameObject* obj = objsInRow->at(i);
-		obj->setMovement(vec2(obj->getCurrentMovement().x * 1.1, 0.0f));
+		obj->setMovement(Vec2(obj->getCurrentMovement().x * 1.1, 0.0f));
 
 		std::cout << obj->getCurrentMovement().x;
 	}
@@ -42,7 +42,7 @@ void ObjectManager::increaseSpeedInRow(int row) {
 void ObjectManager::createObject(int row, Objects objType, int count, int space, int startX) {
 	std::vector<GameObject*>* objsInRow = new std::vector<GameObject*>();
 
-	vec2 pos = alignInRow(row, false);
+	Vec2 pos = alignInRow(row, false);
 	vec3 color = vec3(1.0f, 1.0f, 1.0f);
 	GameObject::Initializer initializer = objDefinitions.at(objType);
 	
@@ -52,7 +52,7 @@ void ObjectManager::createObject(int row, Objects objType, int count, int space,
 
 		obj->setMovement(initializer.movement);
 		obj->setCollisionStruct(initializer.collisionStruct);
-		obj->setPosition(vec2(startX + (i * (obj->getSize().x + space)), pos.y));
+		obj->setPosition(Vec2(startX + (i * (obj->getSize().x + space)), pos.y));
 
 		objsInRow->push_back(obj);
 	}

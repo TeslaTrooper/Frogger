@@ -18,24 +18,23 @@ Shader* Renderer::getShader() {
 	return this->shader;
 }
 
-void Renderer::draw(Texture* texture, glm::vec2 position, glm::vec2 size, glm::vec3 color) {
-	glm::mat4 transform;
-	transform = glm::translate(transform, glm::vec3(position, 0.0f));
-
-	transform = glm::translate(transform, glm::vec3(0.5f*size.x, 0.5f*size.y, 0.0f));
-	//transform = glm::rotate(transform, (GLfloat)glfwGetTime() * glm::radians(10.0f), glm::vec3(0.0, 0.0, 1.0));
-	transform = glm::translate(transform, glm::vec3(-0.5f*size.x, -0.5f*size.y, 0.0f));
-
-	transform = glm::scale(transform, glm::vec3(size, 1.0f));
+void Renderer::draw(Texture* texture, Vec2 position, Vec2 size, glm::vec3 color) {
+	Mat4 transform;
+	
+	transform.translate(position);
+	transform.scale(size);
 
 	this->shader->setVector3("myColor", color);
 	this->shader->setUniformMatrix4("transform", transform);
-	//this->shader->setVector2("texCoords", glm::vec2(1.0f, 1.0f));
 
 	texture->bind();
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+}
+
+void Renderer::draw(Vec2 position, Vec2 size) {
+	
 }
 
 void Renderer::init(GLuint* shaderProgram) {

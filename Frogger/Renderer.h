@@ -10,6 +10,7 @@
 #include "Shader.h"
 #include "ShaderProgramService.h"
 #include "Texture.h"
+#include "Vec2.h"
 
 class Renderer {
 	Shader* shader;
@@ -23,7 +24,9 @@ public:
 	~Renderer();
 	
 	Shader* getShader();
-	void draw(Texture* texture, glm::vec2 position, glm::vec2 size, glm::vec3 color);
+	void draw(Texture* texture, Vec2 position, Vec2 size, glm::vec3 color);
+
+	void draw(Vec2 position, Vec2 size);
 };
 
 #endif RENDERER

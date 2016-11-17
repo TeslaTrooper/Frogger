@@ -9,7 +9,7 @@ FontManager::~FontManager() {
 	delete labels;
 }
 
-void FontManager::createNewLabel(string identifer, string text, glm::vec2 position, float scale) {
+void FontManager::createNewLabel(string identifer, string text, Vec2 position, float scale) {
 	(*labels)[identifer] = new Label(text);
 
 	setPosition(identifer, position);
@@ -22,7 +22,7 @@ void FontManager::drawLabels(Renderer* renderer) {
 	}
 }
 
-void FontManager::setPosition(string identifier, glm::vec2 position) {
+void FontManager::setPosition(string identifier, Vec2 position) {
 	labels->at(identifier)->setPosition(position);
 }
 
