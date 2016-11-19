@@ -4,6 +4,10 @@
 #include <GL/glew.h>
 #include <iostream>
 
+/*
+	Diese Klasse stellt zwei Shader bereit und erlaubt es, aus diesen Shadern
+	ein fertiges Shader Program zu erzeugen.
+*/
 class ShaderProgramService {
 	const GLchar* vertexShaderSource = "#version 330 core\n"
 		"layout (location = 0) in vec2 position;\n"
@@ -18,7 +22,6 @@ class ShaderProgramService {
 	const GLchar* fragmentShaderSource = "#version 330 core\n"
 		"in vec2 textureCoords;\n"
 		"out vec4 color;\n"
-		"uniform vec3 myColor;\n"
 		"uniform sampler2D tex;\n"
 		"void main() {\n"
 			"color = texture(tex, textureCoords);\n"
@@ -32,6 +35,10 @@ public:
 	ShaderProgramService();
 	~ShaderProgramService();
 
+	/*
+		Erzeugt aus den zwei Shadern ein fertiges Shader Program.
+		@return Gibt die von OpenGL erzeugte ID zu diesem Program zurück.
+	*/
 	GLuint createShaderProgram();
 
 };
