@@ -3,9 +3,10 @@
 
 #include <vector>
 #include <string>
-#include "Texture.h"
 #include <map>
 #include <string>
+
+#include "Texture.h"
 #include "Renderer.h"
 #include "Vec2.h"
 

@@ -35,9 +35,7 @@ void Window::render() {
 
 		logic->doLogic(dt);
 
-		vec3 color = vec3(0.0f, 0.0f, 0.0f);
-
-		renderer->draw(background, Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f), color);
+		renderer->draw(background, Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f));
 
 		for (int i = 0; i < logic->getObjects().size(); i++) {
 			logic->getObjects().at(i)->draw(renderer);

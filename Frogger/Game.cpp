@@ -8,7 +8,7 @@ GameLogic::GameLogic() {
 
 	initPoolHitBoxes();
 
-	this->frog = new Frog(objectManager->alignInRow(1, true), vec3(0.0f, 0.0f, 0.0f));
+	this->frog = new Frog(objectManager->alignInRow(1, true));
 
 	objectManager->createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
 	objectManager->createObject(3, Objects::HARVESTER, 3, 150, 50);

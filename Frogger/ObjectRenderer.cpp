@@ -18,13 +18,12 @@ Shader* Renderer::getShader() {
 	return this->shader;
 }
 
-void Renderer::draw(Texture* texture, Vec2 position, Vec2 size, glm::vec3 color) {
+void Renderer::draw(Texture* texture, Vec2 position, Vec2 size) {
 	Mat4 transform;
 	
 	transform.translate(position);
 	transform.scale(size);
 
-	this->shader->setVector3("myColor", color);
 	this->shader->setUniformMatrix4("transform", transform);
 
 	texture->bind();

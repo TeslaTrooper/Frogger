@@ -43,12 +43,11 @@ void ObjectManager::createObject(int row, Objects objType, int count, int space,
 	std::vector<GameObject*>* objsInRow = new std::vector<GameObject*>();
 
 	Vec2 pos = alignInRow(row, false);
-	vec3 color = vec3(1.0f, 1.0f, 1.0f);
 	GameObject::Initializer initializer = objDefinitions.at(objType);
 	
 
 	for (int i = 0; i < count; i++) {
-		GameObject* obj = new GameObject(color, initializer.texture);
+		GameObject* obj = new GameObject(initializer.texture);
 
 		obj->setMovement(initializer.movement);
 		obj->setCollisionStruct(initializer.collisionStruct);

@@ -5,6 +5,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include "Controller.h"
 #include "Vec2.h"
 #include "Mat4.h"

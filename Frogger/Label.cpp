@@ -72,7 +72,7 @@ void Label::setText(std::string text) {
 
 void Label::draw(Renderer* renderer) {
 	for (int i = 0; i < this->chars->size(); i++) {
-		renderer->draw(chars->at(i), charPositions->at(i), getSize(i), glm::vec3(0.0f, 0.0f, 0.0f));
+		renderer->draw(chars->at(i), charPositions->at(i), getSize(i));
 	}
 }
 

@@ -9,8 +9,6 @@
 #include "Structs.h"
 #include "Constants.h"
 
-using namespace glm;
-
 /*
 	Das GameObject repräsentiert ein beliebiges Objekt des Spieles. Es wird 
 	bestimmt durch seine Position, Größe, Texture, den aktuellen Zustand und dem
@@ -23,7 +21,6 @@ class GameObject {
 
 	// Enthält die Größe des Objektes (ist nicht Abhängig von der Texture)
 	Vec2 size;
-	vec3 color;
 
 	// Die Textur, die für das Zeichnen des Objektes verwendet wird
 	Texture* texture;
@@ -54,17 +51,9 @@ public:
 		@param position gibt die initiale Position des Objektes an.
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 	*/
-	GameObject(Vec2 position, vec3 color);
+	GameObject(Vec2 position);
 
-	GameObject(vec3 color, Texture* texture);
-
-	/*
-		Erzeugt ein neues Objekt mit den gegebenen Parametern.
-		@param position gibt die initiale Position des Objektes an.
-		@param size ist die Größe des Objektes.
-		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
-	*/
-	GameObject(Vec2 position, Vec2 size, vec3 color);
+	GameObject(Texture* texture);
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
@@ -72,7 +61,7 @@ public:
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
 	*/
-	GameObject(Vec2 position, vec3 color, Texture* texture);
+	GameObject(Vec2 position, Texture* texture);
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
@@ -81,7 +70,7 @@ public:
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
 	*/
-	GameObject(Vec2 position, Vec2 size, vec3 color, Texture* texture);
+	GameObject(Vec2 position, Vec2 size, Texture* texture);
 	
 	
 
@@ -96,11 +85,6 @@ public:
 		@returns Gibt die Größe als des Objektes zurück.
 	*/
 	Vec2 getSize() { return size; };
-
-	/*
-		@returns Gibt die Farbe des Objektes zurück.
-	*/
-	vec3 getColor() { return color; };
 
 	/*
 		@returns Gibt die Texture des Objektes zurück.

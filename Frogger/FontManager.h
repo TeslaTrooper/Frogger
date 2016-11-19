@@ -4,9 +4,9 @@
 #include <map>
 #include <vector>
 #include <string>
+
 #include "Texture.h"
 #include "Label.h"
-#include <glm\glm.hpp>
 
 using namespace std;
 

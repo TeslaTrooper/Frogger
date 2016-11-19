@@ -10,10 +10,6 @@ void Shader::setUniformMatrix4(const GLchar* uniform, Mat4 value) {
 	glUniformMatrix4fv(glGetUniformLocation(this->shaderProgram, uniform), 1, GL_FALSE, Mat4::ptr(value));
 }
 
-void Shader::setVector3(const GLchar* uniform, glm::vec3 value) {
-	glUniform3f(glGetUniformLocation(this->shaderProgram, uniform), value.x, value.y, value.z);
-}
-
 void Shader::setInteger(const GLchar* uniform, GLint value) {
 	glUniform1i(glGetUniformLocation(this->shaderProgram, uniform), value);
 }

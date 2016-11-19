@@ -1,24 +1,20 @@
 #include "GameObject.h"
 
-GameObject::GameObject(Vec2 position, vec3 color) : position(position), color(color) {
+GameObject::GameObject(Vec2 position) : position(position) {
 	this->setState(State::MOVING);
 }
 
-GameObject::GameObject(vec3 color, Texture* texture) : GameObject(Vec2(0.0f, 0.0f), color) {
+GameObject::GameObject(Texture* texture) : GameObject(Vec2(0.0f, 0.0f)) {
 	this->texture = texture;
 	this->setSize(Vec2(getTexture()->getWidth(), Y_TILE_SIZE));
 }
 
-GameObject::GameObject(Vec2 position, Vec2 size, vec3 color) : GameObject(position, color) {
-	this->color = color;
-}
-
-GameObject::GameObject(Vec2 position, vec3 color, Texture* texture) : GameObject(position, color) {
+GameObject::GameObject(Vec2 position, Texture* texture) : GameObject(position) {
 	this->texture = texture;
 	this->setSize(Vec2(getTexture()->getWidth(), Y_TILE_SIZE));
 }
 
-GameObject::GameObject(Vec2 position, Vec2 size, vec3 color, Texture* texture) : GameObject(position, color, texture) {
+GameObject::GameObject(Vec2 position, Vec2 size, Texture* texture) : GameObject(position, texture) {
 	this->setSize(size);
 }
 
@@ -33,7 +29,7 @@ void GameObject::move(GLfloat dt) {
 }
 
 void GameObject::draw(Renderer* renderer) {
-	renderer->draw(this->getTexture(), this->getPosition(), this->getSize(), this->getColor());
+	renderer->draw(this->getTexture(), this->getPosition(), this->getSize());
 }
 
 Rectangle GameObject::getCriticalHitBox() {
