@@ -39,18 +39,22 @@ void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
 			reset();
 		}; break;
 		case State::MOVING: {
-			//if (!targetPositionReached(dt)) {
-				move(dt);
-			//}
+			move(dt);
 		}; break;
 		case State::MOVE_TRANSPORT: {
-			//if (!targetPositionReached(dt)) {
-				move(dt);
-			//}
+			move(dt);
+
+			if (isOutsideOfBorders()) {
+				die(dt);
+			}
 		}; break;
 		case State::TRANSPORT: {
 			vectors[1] = collisionStruct->movement;
 			move(dt);
+
+			if (isOutsideOfBorders()) {
+				die(dt);
+			}
 		}; break;
 		case State::NAVIGATING: {
 			float length = getResultingVector().length();
@@ -123,6 +127,18 @@ bool Frog::validMovement(Vec2 movement) {
 	}
 
 	return true;
+}
+
+bool Frog::isOutsideOfBorders() {
+	if (this->getPosition().x + this->getSize().x > X_TILE_SIZE * TILES_X) {
+		return true;
+	}
+
+	if (this->getPosition().x < 0) {
+		return true;
+	}
+
+	return false;
 }
 
 Frog::~Frog() {}

@@ -9,8 +9,6 @@ class Frog : public GameObject {
 	GLfloat movingDuration;
 	GLfloat decaeseTimer;
 
-	bool validMovement(Vec2 movement);
-
 	Vec2 targetPosition;
 
 	Vec2 homePosition;
@@ -22,6 +20,10 @@ class Frog : public GameObject {
 	virtual void move(GLfloat dt);
 
 	bool targetPositionReached(GLfloat dt);
+
+	bool validMovement(Vec2 movement);
+
+	bool isOutsideOfBorders();
 
 	Vec2 vectors[2];
 
