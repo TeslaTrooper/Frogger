@@ -19,8 +19,6 @@ class Label {
 	float scale = 1.0f;
 	Vec2 position;
 
-	int length;
-
 	void alignPosition();
 	Vec2 getSize(int index);
 
