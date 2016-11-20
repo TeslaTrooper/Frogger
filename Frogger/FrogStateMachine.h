@@ -19,7 +19,7 @@ class FrogStateMachine {
 		State newState;
 	};
 
-	std::vector<TransitionElement> transitions = {
+	const std::vector<TransitionElement> transitions = {
 		{State::IDLE, Event::ARROW_KEYS, State::MOVING},
 		{State::MOVING, Event::TARGET_POSITION_REACHED, State::IDLE},
 		{State::IDLE, Event::COLL_TREE_TURTLE, State::TRANSPORT},
@@ -31,8 +31,9 @@ class FrogStateMachine {
 		{State::MOVE_TRANSPORT, Event::COLL_LETHAL_OBJECTS, State::DIEING},
 		{State::IDLE, Event::COLL_LETHAL_OBJECTS, State::DIEING},
 		{State::DIEING, Event::DIE_SEQUENCE_EXPIRED, State::IDLE},
-		{State::MOVE_TRANSPORT, Event::COLL_POOL, State::NAVIGATING},
-		{State::NAVIGATING, Event::COLL_POOL, State::MOVING}
+		{State::MOVE_TRANSPORT, Event::COLL_POOL, State::ALIGNING},
+		{State::ALIGNING, Event::COLL_POOL, State::NAVIGATING},
+		{State::NAVIGATING, Event::TARGET_POSITION_REACHED, State::INACTIVE}
 	};
 
 public:

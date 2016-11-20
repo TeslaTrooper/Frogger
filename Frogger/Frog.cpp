@@ -48,11 +48,14 @@ void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
 				die(dt);
 			}
 		}; break;
-		case State::NAVIGATING: {
+		case State::ALIGNING: {
 			float length = getResultingVector().length();
 			this->resetMovement();
 			vectors[0] = this->getPosition().rotateTo(collisionStruct->movement, length);
 			targetPosition = collisionStruct->movement;
+		}; break;
+		case State::NAVIGATING: {
+			move(dt);
 		}; break;
 	}
 }

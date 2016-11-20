@@ -11,7 +11,8 @@
 #include "ObjectManager.h"
 
 class GameLogic {
-	Frog* frog;
+	int runningFrogs = 1;
+	Frog* frog[5];
 	std::vector<Texture>* textures;
 	GLfloat dt;
 	ObjectManager* objectManager;
@@ -29,6 +30,7 @@ class GameLogic {
 	bool checkCollision(GameObject* obj);
 	bool checkRiverCollision();
 	int checkPoolCollision();
+	Frog* getActiveFrog();
 
 	int score;
 
