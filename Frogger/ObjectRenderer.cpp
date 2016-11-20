@@ -32,8 +32,8 @@ void Renderer::draw(Texture* texture, Vec2 position, Vec2 size) {
 	glBindVertexArray(0);
 }
 
-void Renderer::draw(Vec2 position, Vec2 size) {
-	
+void Renderer::draw(Drawable drawable) {
+	draw(drawable.texture, drawable.position, drawable.size);
 }
 
 void Renderer::init(GLuint* shaderProgram) {

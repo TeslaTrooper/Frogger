@@ -7,13 +7,15 @@
 #include "Constants.h"
 #include "GameObject.h"
 
+using namespace std;
+
 class ObjectManager {
 
 protected:
-	typedef std::map<int, std::vector<GameObject*>*>::iterator it_type;
-	std::map<int, std::vector<GameObject*>*>* rowObjMap;
+	typedef map<int, vector<GameObject*>*>::iterator it_type;
+	map<int, vector<GameObject*>*>* rowObjMap;
 
-	const std::map<Objects, GameObject::Initializer> objDefinitions = {
+	const map<Objects, GameObject::Initializer> objDefinitions = {
 		{ Objects::CAR_YELLOW,
 			{ Vec2(-30.0f, 0.0f), new Texture("../textures/carRed.jpg"), { Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) } }
 		},
@@ -52,9 +54,10 @@ public:
 
 	Vec2 alignInRow(int row, bool centered);
 	int getRowCount() { return rowObjMap->size(); };
-	std::vector<GameObject*> getAll();
+	vector<GameObject*> getAll();
 	void increaseSpeedInRow(int row);
-	std::vector<GameObject*>* getObjects(int row) { return rowObjMap->at(row); };
+	vector<GameObject*>* getObjects(int row) { return rowObjMap->at(row); };
+	vector<Drawable> getDrawables();
 
 	void createObject(int row, Objects objType, int count, int space, int startX);
 

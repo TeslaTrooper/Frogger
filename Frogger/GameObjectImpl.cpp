@@ -28,8 +28,8 @@ void GameObject::move(GLfloat dt) {
 	setPosition(newPos);
 }
 
-void GameObject::draw(Renderer* renderer) {
-	renderer->draw(this->getTexture(), this->getPosition(), this->getSize());
+Drawable GameObject::getDrawable() {
+	return { getPosition(), getSize(), getTexture() };
 }
 
 Rectangle GameObject::getCriticalHitBox() {

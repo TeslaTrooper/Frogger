@@ -10,6 +10,8 @@
 #include "FontManager.h"
 #include "ObjectManager.h"
 
+using namespace std;
+
 class GameLogic {
 	int runningFrogs = 1;
 	Frog* frog[5];
@@ -32,16 +34,37 @@ class GameLogic {
 	int checkPoolCollision();
 	Frog* getActiveFrog();
 
+	void setupObjects();
+	void setupLabels();
+
 	int score;
 
 public:
 	GameLogic();
 	~GameLogic();
 
-	std::vector<GameObject*> getObjects();
-	void doLogic(GLfloat dt);
+	/*
+		Über diese Methode können alle Informationen zum Anzeigen
+		der Objekte geholt werden.
+		@return Gibt ein Drawable zurück, das alle nötige Informationen
+				zum Anzeigen der Objekte enthält.
+	*/
+	map<DrawableType, vector<Drawable>> getDrawables();
+
+	/*
+		Beim Aufruf dieser Methode werden alle Objekte für den nächsten
+		Schritt berechnet. Dies ist die zentrale Stelle, an der alle
+		Berechnungen im Model stattfinden.
+		@param dt ist die Zeit, die seit dem letzten Aufruf vergangen ist.
+	*/
+	void gameLoop(GLfloat dt);
+
+	/*
+		Über diese Methode kann der Frosch des Spielers gesteuert werden.
+		@param direction gibt die Richtung an, in die sich der Frosch
+			   Bewegen soll.
+	*/
 	void moveFrog(Direction direction);
-	void drawLabels(Renderer* renderer);
 };
 
 #endif GAME_LOGIC

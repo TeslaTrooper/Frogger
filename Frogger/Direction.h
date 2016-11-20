@@ -2,7 +2,9 @@
 #define DIRECTION
 
 #include <map>
+
 #include "Constants.h"
+#include "Vec2.h"
 
 enum Direction {
 	LEFT,

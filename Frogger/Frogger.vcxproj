@@ -163,6 +163,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Direction.h" />
+    <ClInclude Include="Drawable.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frog.h" />

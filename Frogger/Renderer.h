@@ -9,6 +9,7 @@
 #include "ShaderProgramService.h"
 #include "Texture.h"
 #include "Vec2.h"
+#include "Drawable.h"
 
 class Renderer {
 	Shader* shader;
@@ -24,7 +25,7 @@ public:
 	Shader* getShader();
 	void draw(Texture* texture, Vec2 position, Vec2 size);
 
-	void draw(Vec2 position, Vec2 size);
+	void draw(Drawable drawable);
 };
 
 #endif RENDERER

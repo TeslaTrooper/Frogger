@@ -33,15 +33,17 @@ void Window::render() {
 
 		GameLogic* logic = controller->getLogic();
 
-		logic->doLogic(dt);
+		logic->gameLoop(dt);
 
 		renderer->draw(background, Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f));
 
-		for (int i = 0; i < logic->getObjects().size(); i++) {
-			logic->getObjects().at(i)->draw(renderer);
+		map<DrawableType, std::vector<Drawable>> drawables = logic->getDrawables();
+		for (int i = 0; i < drawables.at(DrawableType::OBJECT).size(); i++) {
+			renderer->draw(drawables.at(DrawableType::OBJECT).at(i));
 		}
-
-		logic->drawLabels(renderer);
+		for (int i = 0; i < drawables.at(DrawableType::FONT).size(); i++) {
+			renderer->draw(drawables.at(DrawableType::FONT).at(i));
+		}
 
 		glfwSwapBuffers(window);
 

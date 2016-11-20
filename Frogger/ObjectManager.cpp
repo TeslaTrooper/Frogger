@@ -1,7 +1,7 @@
 #include "ObjectManager.h"
 
 ObjectManager::ObjectManager() {
-	this->rowObjMap = new std::map<int, std::vector<GameObject*>*>();
+	this->rowObjMap = new map<int, vector<GameObject*>*>();
 }
 
 ObjectManager::~ObjectManager() {}
@@ -14,11 +14,11 @@ Vec2 ObjectManager::alignInRow(int row, bool centered) {
 	return Vec2(320.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
 }
 
-std::vector<GameObject*> ObjectManager::getAll() {
-	std::vector<GameObject*> objs = std::vector<GameObject*>();
+vector<GameObject*> ObjectManager::getAll() {
+	vector<GameObject*> objs = vector<GameObject*>();
 
 	for (it_type iterator = rowObjMap->begin(); iterator != rowObjMap->end(); iterator++) {
-		std::vector<GameObject*>* objsInRow = iterator->second;
+		vector<GameObject*>* objsInRow = iterator->second;
 
 		for (int i = 0; i < objsInRow->size(); i++) {
 			objs.push_back(objsInRow->at(i));
@@ -29,18 +29,28 @@ std::vector<GameObject*> ObjectManager::getAll() {
 }
 
 void ObjectManager::increaseSpeedInRow(int row) {
-	std::vector<GameObject*>* objsInRow = this->rowObjMap->at(row);
+	vector<GameObject*>* objsInRow = this->rowObjMap->at(row);
 
 	for (int i = 0; i < objsInRow->size(); i++) {
 		GameObject* obj = objsInRow->at(i);
 		obj->setMovement(Vec2(obj->getCurrentMovement().x * 1.1, 0.0f));
-
-		std::cout << obj->getCurrentMovement().x;
 	}
 }
 
+vector<Drawable> ObjectManager::getDrawables() {
+	vector<Drawable> drawables = vector<Drawable>();
+
+	for (it_type iterator = rowObjMap->begin(); iterator != rowObjMap->end(); iterator++) {
+		for (int i = 0; i < iterator->second->size(); i++) {
+			drawables.push_back(iterator->second->at(i)->getDrawable());
+		}
+	}
+
+	return drawables;
+}
+
 void ObjectManager::createObject(int row, Objects objType, int count, int space, int startX) {
-	std::vector<GameObject*>* objsInRow = new std::vector<GameObject*>();
+	vector<GameObject*>* objsInRow = new vector<GameObject*>();
 
 	Vec2 pos = alignInRow(row, false);
 	GameObject::Initializer initializer = objDefinitions.at(objType);

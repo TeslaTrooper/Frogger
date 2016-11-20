@@ -1,13 +1,13 @@
 #ifndef GAME_OBJECT
 #define GAME_OBJECT
 
-#include "Renderer.h"
 #include "Direction.h"
 #include "State.h"
 #include "CollisionStruct.h"
 #include "Objects.h"
 #include "Structs.h"
 #include "Constants.h"
+#include "Drawable.h"
 
 /*
 	Das GameObject repräsentiert ein beliebiges Objekt des Spieles. Es wird 
@@ -118,12 +118,13 @@ public:
 	*/
 	CollisionStruct getCollisionStruct() { return collisionStruct; };
 
+	Drawable getDrawable();
+
 	void setPosition(Vec2 position) { this->position = position; };
 	void setSpeed(float speed) { this->speed = speed; };
 	void setState(State state) { this->state = state; };
 	void setMovement(Vec2 movement) { this->movement = movement; };
 	void move(GLfloat dt);
-	void draw(Renderer* renderer);
 	void setTexture(Texture* texture) { this->texture = texture; };
 	void setSize(Vec2 size) { this->size = size; };
 	void setCollisionStruct(CollisionStruct collisionStruct) { this->collisionStruct = collisionStruct; };

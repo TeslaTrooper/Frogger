@@ -29,6 +29,8 @@ Label::Label(std::string text) {
 	setScale(1.0f);
 
 	setText(text);
+
+	length = text.length();
 }
 
 Label::~Label() {
@@ -70,10 +72,14 @@ void Label::setText(std::string text) {
 	alignPosition();
 }
 
-void Label::draw(Renderer* renderer) {
-	for (int i = 0; i < this->chars->size(); i++) {
-		renderer->draw(chars->at(i), charPositions->at(i), getSize(i));
+std::vector<Drawable> Label::getDrawables() {
+	std::vector<Drawable> drawables = std::vector<Drawable>();
+
+	for (int i = 0; i < length; i++) {
+		drawables.push_back({ charPositions->at(i), getSize(i), chars->at(i) });
 	}
+
+	return drawables;
 }
 
 void Label::alignPosition() {
@@ -84,4 +90,8 @@ void Label::alignPosition() {
 		charPositions->push_back(Vec2(position.x + offset, position.y));
 		offset += (int) getSize(i).x;
 	}
+}
+
+int Label::getLength() {
+	return length;
 }

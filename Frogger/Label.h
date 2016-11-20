@@ -7,8 +7,8 @@
 #include <string>
 
 #include "Texture.h"
-#include "Renderer.h"
 #include "Vec2.h"
+#include "Drawable.h"
 
 class Label {
 	static std::map<char, Texture*>* charCollection;
@@ -19,6 +19,8 @@ class Label {
 	float scale = 1.0f;
 	Vec2 position;
 
+	int length;
+
 	void alignPosition();
 	Vec2 getSize(int index);
 
@@ -28,9 +30,10 @@ public:
 
 	void setPosition(Vec2 position);
 	Vec2 getPosition();
+	std::vector<Drawable> getDrawables();
+	int getLength();
 	
 	void setScale(float scale);
-	void draw(Renderer* renderer);
 	void setText(std::string text);
 
 	static std::map<char, Texture*>* initTextures();

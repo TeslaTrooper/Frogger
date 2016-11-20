@@ -2,48 +2,33 @@
 
 
 GameLogic::GameLogic() {
-	this->textures = new std::vector<Texture>();
+	this->textures = new vector<Texture>();
 	this->objectManager = new ObjectManager();
-	fontManager = new FontManager();
+	this->fontManager = new FontManager();
 
+	setupObjects();
+	setupLabels();
 	initPoolHitBoxes();
-
-	this->frog[0] = new Frog(objectManager->alignInRow(1, true));
-
-	objectManager->createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
-	objectManager->createObject(3, Objects::HARVESTER, 3, 150, 50);
-	objectManager->createObject(4, Objects::CAR_PINK, 3, 200, 275);
-	objectManager->createObject(5, Objects::CAR_WHITE, 3, 200, 75);
-	objectManager->createObject(6, Objects::TRUCK, 3, 300, 280);
-
-	objectManager->createObject(9, Objects::SMALL_TREE, 3, 200, 100);
-	objectManager->createObject(10, Objects::LARGE_TREE, 3, 50, 30);
-	objectManager->createObject(12, Objects::MEDIUM_TREE, 3, 100, 10);
-
-	objectManager->createObject(8, Objects::THREE_ELEMENT_CHAIN, 5, 40, 0);
-	objectManager->createObject(11, Objects::TWO_ELEMENT_CHAIN, 4, 80, 0);
-
-
-	fontManager->createNewLabel("scoreLabel", "SCORE", Vec2(10.0f, 545.f), 0.5f);
-	fontManager->createNewLabel("score", std::to_string(score), Vec2(100.0f, 545.f), 0.5f);
-	fontManager->createNewLabel("timeLabel", "TIME", Vec2(490.0f, 565.f), 0.5f);
 }
 
-std::vector<GameObject*> GameLogic::getObjects() {
-	std::vector<GameObject*> objs = this->objectManager->getAll();
+map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
+	map<DrawableType, vector<Drawable>> drawables = map<DrawableType, vector<Drawable>>();
 
+	vector<Drawable> objDrawables = this->objectManager->getDrawables();
 	for (int i = 0; i < runningFrogs; i++) {
-		objs.push_back(frog[i]);
+		objDrawables.push_back(frog[i]->getDrawable());
 	}
 	
-	return objs;
+
+	vector<Drawable> fontDrawables = this->fontManager->getDrawables();
+
+	drawables[DrawableType::OBJECT] = objDrawables;
+	drawables[DrawableType::FONT] = fontDrawables;
+
+	return drawables;
 }
 
-void GameLogic::drawLabels(Renderer* renderer) { 
-	fontManager->drawLabels(renderer);
-}
-
-void GameLogic::doLogic(GLfloat dt) {
+void GameLogic::gameLoop(GLfloat dt) {
 	std::vector<GameObject*> objs = objectManager->getAll();
 	CollisionStruct collisionStruct = { Event::COLL_NONE, Vec2(0.0f, 0.0f) };
 
@@ -90,6 +75,29 @@ void GameLogic::moveFrog(Direction direction) {
 	getActiveFrog()->moveTo(direction);
 	score+=1000;
 	fontManager->setText("score", std::to_string(score));
+}
+
+void GameLogic::setupObjects() {
+	this->frog[0] = new Frog(objectManager->alignInRow(1, true));
+
+	objectManager->createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
+	objectManager->createObject(3, Objects::HARVESTER, 3, 150, 50);
+	objectManager->createObject(4, Objects::CAR_PINK, 3, 200, 275);
+	objectManager->createObject(5, Objects::CAR_WHITE, 3, 200, 75);
+	objectManager->createObject(6, Objects::TRUCK, 3, 300, 280);
+
+	objectManager->createObject(9, Objects::SMALL_TREE, 3, 200, 100);
+	objectManager->createObject(10, Objects::LARGE_TREE, 3, 50, 30);
+	objectManager->createObject(12, Objects::MEDIUM_TREE, 3, 100, 10);
+
+	objectManager->createObject(8, Objects::THREE_ELEMENT_CHAIN, 5, 40, 0);
+	objectManager->createObject(11, Objects::TWO_ELEMENT_CHAIN, 4, 80, 0);
+}
+
+void GameLogic::setupLabels() {
+	fontManager->createNewLabel("scoreLabel", "SCORE", Vec2(10.0f, 545.f), 0.5f);
+	fontManager->createNewLabel("score", std::to_string(score), Vec2(100.0f, 545.f), 0.5f);
+	fontManager->createNewLabel("timeLabel", "TIME", Vec2(490.0f, 565.f), 0.5f);
 }
 
 bool GameLogic::checkCollision(GameObject* obj) {
