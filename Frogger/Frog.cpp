@@ -1,15 +1,7 @@
 #include "Frog.h"
 
 void Frog::moveTo(Direction direction) {
-	Vec2 movement;
-
-	switch (direction) {
-		case LEFT: movement = Vec2(-getSpeed(), 0.0f); break;
-		case UP: movement = Vec2(0.0f, -getSpeed()); break;
-		case RIGHT: movement = Vec2(getSpeed(), 0.0f); break;
-		case DOWN: movement = Vec2(0.0f, getSpeed()); break;
-		default: movement = Vec2(0.0f, 0.0f);
-	}
+	Vec2 movement = directions.at(direction);
 
 	if (!validMovement(movement) || !stateMachine->doTransition(Event::ARROW_KEYS)) {
 		return;

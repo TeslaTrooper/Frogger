@@ -1,6 +1,8 @@
 #ifndef FROG
 #define FROG
 
+#include <map>
+
 #include "GameObject.h"
 #include "FrogStateMachine.h"
 
@@ -31,7 +33,7 @@ public:
 	Frog(Vec2 position) : GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), new Texture("../textures/frog.png")) {
 		this->homePosition = position;
 		this->setState(State::IDLE);
-		this->setSpeed(180.0f);
+		this->setSpeed(FROG_SPEED);
 		this->stateMachine = new FrogStateMachine();
 		vectors[0] = Vec2(0.0f, 0.0f);
 		vectors[1] = Vec2(0.0f, 0.0f);
