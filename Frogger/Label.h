@@ -6,9 +6,8 @@
 #include <map>
 #include <string>
 
-#include "Texture.h"
 #include "Vec2.h"
-#include "Drawable.h"
+#include "Util.h"
 
 class Label {
 	static std::map<char, Texture*>* charCollection;

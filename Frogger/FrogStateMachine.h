@@ -2,9 +2,7 @@
 #define FROG_STATE_MACHINE
 
 #include <vector>
-
-#include "State.h"
-#include "Event.h"
+#include "Util.h"
 
 /*
 	Die Klasse FrogStateMachine hat einen aktuellen Zustand, eine Definition eines Zustandswechels 

@@ -13,31 +13,39 @@
 using namespace std;
 
 class GameLogic {
-	int runningFrogs = 1;
-	Frog* frog[5];
-	std::vector<Texture>* textures;
-	GLfloat dt;
-	ObjectManager* objectManager;
-	FontManager* fontManager;
+	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
+	const vector<Rectangle> poolHitBoxes = getPoolHitBoxes();
+	const map<int, CollisionStruct> poolCollisionStructMap = {
+		{0, { Event::COLL_POOL, poolHitBoxes[0].position } },
+		{1, { Event::COLL_POOL, poolHitBoxes[1].position } },
+		{2, { Event::COLL_POOL, poolHitBoxes[2].position } },
+		{3, { Event::COLL_POOL, poolHitBoxes[3].position } },
+		{4, { Event::COLL_POOL, poolHitBoxes[4].position } },
+	};
 
-	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE) };
-	Rectangle poolHitBoxes[POOLS_COUNT];
+	int score;
 
-	void initPoolHitBoxes();
+	ObjectManager objectManager;
+	FontManager fontManager;
 
-	bool intersects(Rectangle rect1, Rectangle rect2);
+	vector<Frog*> frogs;
 
-	void repeatObjectPosition(GameObject* obj);
 
-	bool checkCollision(GameObject* obj);
-	bool checkRiverCollision();
-	int checkPoolCollision();
+
+	vector<Rectangle> getPoolHitBoxes();
+
+	CollisionStruct getExistingCollisionStruct(Frog* frog, GameObject* obj);
+	CollisionStruct checkRiverCollision();
+	CollisionStruct checkPoolCollision();
+	CollisionStruct evaluateCollisions(vector<GameObject*> objs, Frog* frog);
+
 	Frog* getActiveFrog();
 
 	void setupObjects();
 	void setupLabels();
+	void repeatObjectPosition(GameObject* obj);
 
-	int score;
+	
 
 public:
 	GameLogic();
@@ -57,14 +65,14 @@ public:
 		Berechnungen im Model stattfinden.
 		@param dt ist die Zeit, die seit dem letzten Aufruf vergangen ist.
 	*/
-	void gameLoop(GLfloat dt);
+	void gameLoop(const GLfloat dt);
 
 	/*
 		Über diese Methode kann der Frosch des Spielers gesteuert werden.
 		@param direction gibt die Richtung an, in die sich der Frosch
 			   Bewegen soll.
 	*/
-	void moveFrog(Direction direction);
+	void moveFrog(const Direction direction);
 };
 
 #endif GAME_LOGIC

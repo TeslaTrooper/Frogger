@@ -1,13 +1,7 @@
 #ifndef GAME_OBJECT
 #define GAME_OBJECT
 
-#include "Direction.h"
-#include "State.h"
-#include "CollisionStruct.h"
-#include "Objects.h"
-#include "Structs.h"
-#include "Constants.h"
-#include "Drawable.h"
+#include "Util.h"
 
 /*
 	Das GameObject repräsentiert ein beliebiges Objekt des Spieles. Es wird 

@@ -7,9 +7,7 @@
 
 #include "Shader.h"
 #include "ShaderProgramService.h"
-#include "Texture.h"
-#include "Vec2.h"
-#include "Drawable.h"
+#include "Util.h"
 
 class Renderer {
 	Shader* shader;

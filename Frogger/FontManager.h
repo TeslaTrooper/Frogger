@@ -5,13 +5,13 @@
 #include <vector>
 #include <string>
 
-#include "Texture.h"
 #include "Label.h"
+#include "Util.h"
 
 using namespace std;
 
 class FontManager {
-	map<string, Label*>* labels;
+	map<string, Label*> labels;
 
 	typedef map<string, Label*>::iterator it_type;
 

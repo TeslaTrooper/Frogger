@@ -12,12 +12,11 @@ class Frog : public GameObject {
 	GLfloat decaeseTimer;
 
 	Vec2 targetPosition;
-
 	Vec2 homePosition;
 
-	void die(GLfloat dt);
+	FrogStateMachine stateMachine;
 
-	FrogStateMachine* stateMachine;
+	void die(GLfloat dt);
 
 	virtual void move(GLfloat dt);
 
@@ -31,12 +30,9 @@ class Frog : public GameObject {
 
 public:
 	Frog(Vec2 position) : GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), new Texture("../textures/frog.png")) {
-		this->homePosition = position;
 		this->setState(State::IDLE);
 		this->setSpeed(FROG_SPEED);
-		this->stateMachine = new FrogStateMachine();
-		vectors[0] = Vec2(0.0f, 0.0f);
-		vectors[1] = Vec2(0.0f, 0.0f);
+		this->homePosition = position;
 	};
 
 	~Frog();
@@ -44,7 +40,7 @@ public:
 	void moveTo(Direction direction);
 	Rectangle getCriticalHitBox();
 	void reset();
-	State getState() { return this->stateMachine->getState(); };
+	State getState() { return this->stateMachine.getState(); };
 	Vec2 getResultingVector() { return vectors[0].add(vectors[1]); };
 	void resetMovement();
 

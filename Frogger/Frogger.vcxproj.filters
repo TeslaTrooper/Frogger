@@ -22,9 +22,6 @@
     <Filter Include="Header Files\Objects\Derived">
       <UniqueIdentifier>{3b6ad542-1405-4729-97fe-36714d6e7350}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Enums">
-      <UniqueIdentifier>{81edfcd4-d411-4774-8a58-b0bca2e817d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{9a458fa9-acd4-4da7-8f87-8c0ca18ed03c}</UniqueIdentifier>
     </Filter>
@@ -42,9 +39,6 @@
     </Filter>
     <Filter Include="Resource Files\letters">
       <UniqueIdentifier>{cbb74bb3-3d0c-4ea0-ac26-f1ce7ebf3934}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Util">
-      <UniqueIdentifier>{d8889a93-b569-4dab-bd09-db3957f27d20}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{38370d5d-3a73-436d-8535-36dba10e19ba}</UniqueIdentifier>
@@ -102,6 +96,9 @@
     <ClCompile Include="Mat4.cpp">
       <Filter>Source Files\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -131,35 +128,17 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Direction.h">
-      <Filter>Header Files\Enums</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Header Files\Enums</Filter>
-    </ClInclude>
     <ClInclude Include="Label.h">
       <Filter>Header Files\Fonts</Filter>
     </ClInclude>
     <ClInclude Include="FontManager.h">
       <Filter>Header Files\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files\Enums</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionStruct.h">
-      <Filter>Header Files\Enums</Filter>
-    </ClInclude>
     <ClInclude Include="FrogStateMachine.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Header Files\Enums</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects.h">
-      <Filter>Header Files\Enums</Filter>
     </ClInclude>
     <ClInclude Include="Vec2.h">
       <Filter>Header Files\Geometry</Filter>
@@ -167,10 +146,10 @@
     <ClInclude Include="Mat4.h">
       <Filter>Header Files\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Structs.h">
-      <Filter>Header Files\Geometry</Filter>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Drawable.h">
+    <ClInclude Include="Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

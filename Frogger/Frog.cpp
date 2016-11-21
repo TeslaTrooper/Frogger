@@ -3,7 +3,7 @@
 void Frog::moveTo(Direction direction) {
 	Vec2 movement = directions.at(direction);
 
-	if (!validMovement(movement) || !stateMachine->doTransition(Event::ARROW_KEYS)) {
+	if (!validMovement(movement) || !stateMachine.doTransition(Event::ARROW_KEYS)) {
 		return;
 	}
 
@@ -21,9 +21,9 @@ void Frog::move(GLfloat dt) {
 }
 
 void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
-	this->stateMachine->doTransition(collisionStruct->effect);
+	this->stateMachine.doTransition(collisionStruct->effect);
 	
-	switch (this->stateMachine->getState()) {
+	switch (this->stateMachine.getState()) {
 		case State::DIEING: {
 			die(dt);
 		}; break;
@@ -71,7 +71,7 @@ void Frog::resetMovement() {
 
 void Frog::reset() {
 	this->setPosition(homePosition);
-	this->stateMachine->doTransition(Event::DIE_SEQUENCE_EXPIRED);
+	this->stateMachine.doTransition(Event::DIE_SEQUENCE_EXPIRED);
 	this->resetMovement();
 	this->decaeseTimer = 0;
 	this->movingDuration = 0;
@@ -85,7 +85,7 @@ void Frog::die(GLfloat dt) {
 }
 
 bool Frog::targetPositionReached(GLfloat dt) {
-	if (stateMachine->getState() == State::TRANSPORT) {
+	if (stateMachine.getState() == State::TRANSPORT) {
 		return false;
 	}
 
@@ -95,7 +95,7 @@ bool Frog::targetPositionReached(GLfloat dt) {
 		this->movingDuration = 0.0f;
 		this->setPosition(targetPosition);
 		this->resetMovement();
-		this->stateMachine->doTransition(Event::TARGET_POSITION_REACHED);
+		this->stateMachine.doTransition(Event::TARGET_POSITION_REACHED);
 
 		return true;
 	}

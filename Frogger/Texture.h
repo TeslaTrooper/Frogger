@@ -17,6 +17,7 @@ class Texture {
 	void configure();
 
 public:
+	Texture() {};
 	Texture(std::string file) : file(file), imageType(SOIL_LOAD_RGBA) {
 		this->load();
 	};

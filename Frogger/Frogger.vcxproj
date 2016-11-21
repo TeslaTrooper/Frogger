@@ -156,15 +156,12 @@
     <ClCompile Include="ShaderImpl.cpp" />
     <ClCompile Include="ShaderProgramCreator.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CollisionStruct.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controller.h" />
-    <ClInclude Include="Direction.h" />
-    <ClInclude Include="Drawable.h" />
-    <ClInclude Include="Event.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frog.h" />
     <ClInclude Include="FrogStateMachine.h" />
@@ -173,12 +170,10 @@
     <ClInclude Include="Label.h" />
     <ClInclude Include="Mat4.h" />
     <ClInclude Include="ObjectManager.h" />
-    <ClInclude Include="Objects.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgramService.h" />
-    <ClInclude Include="State.h" />
-    <ClInclude Include="Structs.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Window.h" />

@@ -1,37 +1,36 @@
 #include "FontManager.h"
 
 FontManager::FontManager() {
-	labels = new map<string, Label*>();
+	labels = map<string, Label*>();
 }
 
 FontManager::~FontManager() {
-	labels->clear();
-	delete labels;
+	labels.clear();
 }
 
 void FontManager::createNewLabel(string identifer, string text, Vec2 position, float scale) {
-	(*labels)[identifer] = new Label(text);
+	labels[identifer] = new Label(text);
 
 	setPosition(identifer, position);
 	setScale(identifer, scale);
 }
 
 void FontManager::setPosition(string identifier, Vec2 position) {
-	labels->at(identifier)->setPosition(position);
+	labels.at(identifier)->setPosition(position);
 }
 
 void FontManager::setScale(string identifier, float scale) {
-	labels->at(identifier)->setScale(scale);
+	labels.at(identifier)->setScale(scale);
 }
 
 void FontManager::setText(string indentifier, string text) {
-	labels->at(indentifier)->setText(text);
+	labels.at(indentifier)->setText(text);
 }
 
 vector<Drawable> FontManager::getDrawables() {
 	vector<Drawable> drawables = vector<Drawable>();
 
-	for (it_type iterator = labels->begin(); iterator != labels->end(); iterator++) {
+	for (it_type iterator = labels.begin(); iterator != labels.end(); iterator++) {
 		vector<Drawable> tmpDrawables = iterator->second->getDrawables();
 
 		for (int i = 0; i < iterator->second->getLength(); i++) {
