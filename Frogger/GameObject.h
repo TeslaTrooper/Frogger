@@ -17,7 +17,9 @@ class GameObject {
 	Vec2 size;
 
 	// Die Textur, die für das Zeichnen des Objektes verwendet wird
-	Texture* texture;
+	//Texture* texture;
+
+	Rectangle textureRegion;
 
 	// Die Geschwindigkeit, mit der sich das Objekt bewegen kann
 	float speed;
@@ -34,12 +36,6 @@ class GameObject {
 
 public:
 
-	struct Initializer {
-		Vec2 movement;
-		Texture* texture;
-		CollisionStruct collisionStruct;
-	};
-
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
 		@param position gibt die initiale Position des Objektes an.
@@ -47,7 +43,7 @@ public:
 	*/
 	GameObject(Vec2 position);
 
-	GameObject(Texture* texture);
+	GameObject(Rectangle textureRegion);
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
@@ -55,7 +51,7 @@ public:
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
 	*/
-	GameObject(Vec2 position, Texture* texture);
+	GameObject(Vec2 position, Rectangle textureRegion);
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
@@ -64,7 +60,7 @@ public:
 		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
 		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
 	*/
-	GameObject(Vec2 position, Vec2 size, Texture* texture);
+	GameObject(Vec2 position, Vec2 size, Rectangle textureRegion);
 	
 	
 
@@ -83,7 +79,7 @@ public:
 	/*
 		@returns Gibt die Texture des Objektes zurück.
 	*/
-	Texture* getTexture() { return texture; };
+	//Texture* getTexture() { return texture; };
 
 	/*
 		@returns Gibt die Geschwindigkeit zurück, mit der sich das
@@ -119,10 +115,11 @@ public:
 	void setState(State state) { this->state = state; };
 	void setMovement(Vec2 movement) { this->movement = movement; };
 	void move(GLfloat dt);
-	void setTexture(Texture* texture) { this->texture = texture; };
+	//void setTexture(Texture* texture) { this->texture = texture; };
 	void setSize(Vec2 size) { this->size = size; };
 	void setCollisionStruct(CollisionStruct collisionStruct) { this->collisionStruct = collisionStruct; };
 	void resetMovement() { this->movement = Vec2(0.0f, 0.0f); };
+	Rectangle getTextureRegion() { return this->textureRegion; };
 
 	/*
 		@returns Gibt das Rechteck des Objektes zurück.

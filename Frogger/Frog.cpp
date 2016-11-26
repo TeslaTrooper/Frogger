@@ -1,5 +1,13 @@
 #include "Frog.h"
 
+Frog::Frog(Vec2 position) : GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objetcs.at(Objects::PLAYER)) {
+	this->setState(State::IDLE);
+	this->setSpeed(FROG_SPEED);
+	this->homePosition = position;
+	this->movingDuration = 0.0f;
+	this->decaeseTimer = 0;
+};
+
 void Frog::moveTo(Direction direction) {
 	Vec2 movement = directions.at(direction);
 

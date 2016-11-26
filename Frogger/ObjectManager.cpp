@@ -53,11 +53,10 @@ void ObjectManager::createObject(int row, Objects objType, int count, int space,
 	vector<GameObject*>* objsInRow = new vector<GameObject*>();
 
 	Vec2 pos = alignInRow(row, false);
-	GameObject::Initializer initializer = objDefinitions.at(objType);
-	
+	Initializer initializer = objDefinitions.at(objType);
 
 	for (int i = 0; i < count; i++) {
-		GameObject* obj = new GameObject(initializer.texture);
+		GameObject* obj = new GameObject(initializer.textureRegion);
 
 		obj->setMovement(initializer.movement);
 		obj->setCollisionStruct(initializer.collisionStruct);

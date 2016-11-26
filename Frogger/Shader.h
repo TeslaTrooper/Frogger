@@ -6,6 +6,7 @@
 
 #include "Vec2.h"
 #include "Mat4.h"
+#include "Mat3.h"
 
 /*
 	Die Klasse kapselt das Shader Programm und erlaubt es, uniforms der Shader, 
@@ -43,6 +44,8 @@ public:
 		@param value ist der Vektor, der diesem uniform zugeordnet werden soll.
 	*/
 	void setVector2(const GLchar* uniform, Vec2 value);
+
+	void setUniformMatrix3(const GLchar* uniform, Mat3 value);
 
 	void use();
 };

@@ -1,7 +1,10 @@
 #include "GameLogic.h"
 
 
-GameLogic::GameLogic() {
+GameLogic::GameLogic() {}
+
+void GameLogic::create() {
+	score = 0;
 	setupObjects();
 	setupLabels();
 	getPoolHitBoxes();
@@ -33,14 +36,22 @@ void GameLogic::gameLoop(const GLfloat dt) {
 		repeatObjectPosition(objs.at(i));
 	}
 
-	activeFrog->doLogic(dt, &evaluateCollisions(objs, activeFrog));
+	CollisionStruct collisionStruct = evaluateCollisions(objs, activeFrog);
+
+	activeFrog->doLogic(dt, &collisionStruct);
 
 	if (activeFrog->getState() == State::INACTIVE) {
+		pools.at(currentPoolIndex).ocupied = true;
+
 		if (frogs.size() > 4) {
 			frogs.clear();
+
+			for (int i = 0; i < pools.size(); i++) {
+				pools.at(i).ocupied = false;
+			}
 		}
 
-		frogs.push_back(new Frog(objectManager.alignInRow(1, true)));
+		frogs.push_back(new Frog(objectManager.alignInRow(FROG_START_ROW, true)));
 	}
 }
 
@@ -54,11 +65,11 @@ void GameLogic::moveFrog(const Direction direction) {
 // ------ private methods ------------
 
 void GameLogic::setupObjects() {
-	this->frogs.push_back(new Frog(objectManager.alignInRow(1, true)));
+	this->frogs.push_back(new Frog(objectManager.alignInRow(FROG_START_ROW, true)));
 
 	objectManager.createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
-	objectManager.createObject(3, Objects::HARVESTER, 3, 150, 50);
-	objectManager.createObject(4, Objects::CAR_PINK, 3, 200, 275);
+	objectManager.createObject(3, Objects::CAR_ORANGE, 3, 150, 50);
+	objectManager.createObject(4, Objects::CAR_RED, 3, 200, 275);
 	objectManager.createObject(5, Objects::CAR_WHITE, 3, 200, 75);
 	objectManager.createObject(6, Objects::TRUCK, 3, 300, 280);
 
@@ -72,8 +83,8 @@ void GameLogic::setupObjects() {
 
 void GameLogic::setupLabels() {
 	fontManager.createNewLabel("scoreLabel", "SCORE", Vec2(10.0f, 545.f), 0.5f);
-	fontManager.createNewLabel("score", std::to_string(score), Vec2(100.0f, 545.f), 0.5f);
-	fontManager.createNewLabel("timeLabel", "TIME", Vec2(490.0f, 565.f), 0.5f);
+	fontManager.createNewLabel("score", std::to_string(score), Vec2(120.0f, 545.f), 0.5f);
+	fontManager.createNewLabel("timeLabel", "TIME", Vec2(480.0f, 565.f), 0.5f);
 }
 
 CollisionStruct GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
@@ -129,12 +140,18 @@ CollisionStruct GameLogic::checkPoolCollision() {
 	Frog* activeFrog = getActiveFrog();
 
 
-	for (int i = 0; i < poolHitBoxes.size(); i++) {
-		if (intersects(activeFrog->getCriticalHitBox(), poolHitBoxes.at(i))) {
+	for (int i = 0; i < pools.size(); i++) {
+		if (intersects(activeFrog->getCriticalHitBox(), pools.at(i).hitBox)) {
+			if (pools.at(i).ocupied) {
+				return { Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) };
+			}
+
 			float frogMiddle = activeFrog->getPosition().x + activeFrog->getSize().x / 2;
-			float poolMiddle = poolHitBoxes.at(i).position.x + poolHitBoxes.at(i).size.x / 2;
+			float poolMiddle = pools.at(i).hitBox.position.x + pools.at(i).hitBox.size.x / 2;
 
 			if (abs(frogMiddle - poolMiddle) <= X_TILE_SIZE * POOL_VALID_INTERSECTION) {
+				currentPoolIndex = i;
+
 				return poolCollisionStructMap.at(i);
 			}
 

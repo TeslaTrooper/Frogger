@@ -12,19 +12,20 @@ class ShaderProgramService {
 	const GLchar* vertexShaderSource = "#version 330 core\n"
 		"layout (location = 0) in vec2 position;\n"
 		"layout (location = 1) in vec2 texture;\n"
-		"out vec2 textureCoords;\n"
+		"out vec3 textureCoords;\n"
 		"uniform mat4 transform;\n"
 		"uniform mat4 projection;\n"
+		"uniform mat3 textureTranslation;\n"
 		"void main() {\n"
 			"gl_Position = projection * transform * vec4(position, 0.0f, 1.0f);\n"
-			"textureCoords = texture;\n"
+			"textureCoords = textureTranslation * vec3(texture, 1.0f);\n"
 		"}\0";
 	const GLchar* fragmentShaderSource = "#version 330 core\n"
-		"in vec2 textureCoords;\n"
+		"in vec3 textureCoords;\n"
 		"out vec4 color;\n"
 		"uniform sampler2D tex;\n"
 		"void main() {\n"
-			"color = texture(tex, textureCoords);\n"
+			"color = texture(tex, textureCoords.xy);\n"
 		"}\n\0";
 
 	void compileShader(GLuint shader, const GLchar* shaderSource);

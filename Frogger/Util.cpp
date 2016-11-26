@@ -11,3 +11,10 @@ bool intersects(Rectangle rect1, Rectangle rect2) {
 
 	return true;
 }
+
+void test() {
+	int a = 0;
+	for (int i = 0; i < 10; i++) {
+		a += i;
+	}
+}

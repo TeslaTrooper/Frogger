@@ -1,16 +1,18 @@
 #include "Label.h"
 
-std::map<char, Texture*>* Label::charCollection;
+std::map<char, Rectangle>* Label::charCollection;
 
-std::map<char, Texture*>* Label::initTextures() {
-	std::map<char, Texture*>* nums = new std::map<char, Texture*>();
+std::map<char, Rectangle>* Label::initTextures() {
+	std::map<char, Rectangle>* nums = new std::map<char, Rectangle>();
 
 	for (int i = 0; i < 10; i++) {
-		(*nums)[*std::to_string(i).c_str()] = new Texture("../textures/" + std::to_string(i) + ".png");
+		char current = *std::to_string(i).c_str();
+
+		(*nums)[current] = numbers.at(current);
 	}
 
 	for (int i = 65; i < 91; i++) {
-		(*nums)[i] = new Texture("../textures/" + std::to_string(i) + ".png");
+		(*nums)[i] = characters.at(i);
 	}
 
 	return nums;
@@ -23,7 +25,7 @@ Label::Label(std::string text) {
 		charCollection = initTextures();
 	}
 
-	chars = new std::vector<Texture*>();
+	chars = new std::vector<Rectangle>();
 	charPositions = new std::vector<Vec2>();
 
 	setScale(1.0f);
@@ -45,7 +47,7 @@ void Label::setPosition(Vec2 position) {
 }
 
 Vec2 Label::getSize(int index) {
-	return Vec2(chars->at(index)->getWidth() * scale, chars->at(index)->getHeight() * scale);
+	return Vec2(chars->at(index).size.x * X_TILE_SIZE * scale, chars->at(index).size.y * X_TILE_SIZE * scale);
 }
 
 Vec2 Label::getPosition() {
@@ -61,8 +63,11 @@ void Label::setText(std::string text) {
 	chars->clear();
 
 	for (int i = 0; i < text.length(); i++) {
+		if (text.length() > 6) {
+			int a = 05;
+		}
 		char c = text.at(i);
-		Texture* t = charCollection->at(c);
+		Rectangle t = charCollection->at(c);
 
 		chars->push_back(charCollection->at(c));
 	}

@@ -29,11 +29,7 @@ class Frog : public GameObject {
 	Vec2 vectors[2];
 
 public:
-	Frog(Vec2 position) : GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), new Texture("../textures/frog.png")) {
-		this->setState(State::IDLE);
-		this->setSpeed(FROG_SPEED);
-		this->homePosition = position;
-	};
+	Frog(Vec2 position);
 
 	~Frog();
 

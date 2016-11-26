@@ -46,6 +46,9 @@
     <Filter Include="Source Files\Geometry">
       <UniqueIdentifier>{574a885c-1bb3-40dc-b117-fe52b1d920d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ImageRawData">
+      <UniqueIdentifier>{61f665c4-e984-44cc-ac54-c93ded9c3d55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -99,6 +102,9 @@
     <ClCompile Include="Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mat3.cpp">
+      <Filter>Source Files\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -151,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="Constants.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mat3.h">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

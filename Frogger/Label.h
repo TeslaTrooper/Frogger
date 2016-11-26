@@ -10,9 +10,9 @@
 #include "Util.h"
 
 class Label {
-	static std::map<char, Texture*>* charCollection;
+	static std::map<char, Rectangle>* charCollection;
 
-	std::vector<Texture*>* chars;
+	std::vector<Rectangle>* chars;
 	std::vector<Vec2>* charPositions;
 
 	float scale = 1.0f;
@@ -33,7 +33,7 @@ public:
 	void setScale(float scale);
 	void setText(std::string text);
 
-	static std::map<char, Texture*>* initTextures();
+	static std::map<char, Rectangle>* initTextures();
 };
 
 #endif LABEL

@@ -13,7 +13,10 @@
 using namespace std;
 
 class GameLogic {
+	bool ready = false;
+
 	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
+
 	const vector<Rectangle> poolHitBoxes = getPoolHitBoxes();
 	const map<int, CollisionStruct> poolCollisionStructMap = {
 		{0, { Event::COLL_POOL, poolHitBoxes[0].position } },
@@ -23,7 +26,16 @@ class GameLogic {
 		{4, { Event::COLL_POOL, poolHitBoxes[4].position } },
 	};
 
+	vector<Pool> pools = {
+		{ poolCollisionStructMap.at(0), poolHitBoxes.at(0), false},
+		{ poolCollisionStructMap.at(1), poolHitBoxes.at(1), false },
+		{ poolCollisionStructMap.at(2), poolHitBoxes.at(2), false },
+		{ poolCollisionStructMap.at(3), poolHitBoxes.at(3), false },
+		{ poolCollisionStructMap.at(4), poolHitBoxes.at(4), false },
+	};
+
 	int score;
+	int currentPoolIndex;
 
 	ObjectManager objectManager;
 	FontManager fontManager;
@@ -50,6 +62,8 @@ class GameLogic {
 public:
 	GameLogic();
 	~GameLogic();
+
+	void create();
 
 	/*
 		Über diese Methode können alle Informationen zum Anzeigen

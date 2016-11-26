@@ -5,31 +5,27 @@
 #include <GL/glew.h>
 #include <string>
 
+#include "Util.h"
+
+using namespace std;
+
 class Texture {
-	unsigned char* binaryData;
+	unsigned char* data;
+
 	int width, height;
-	int imageType;
-	std::string file;
 	GLuint textureId;
 	bool configured = false;
 
-	void load();
+	void load(char* rawData);
 	void configure();
 
 public:
-	Texture() {};
-	Texture(std::string file) : file(file), imageType(SOIL_LOAD_RGBA) {
-		this->load();
-	};
+	Texture(char* file, Vec2 dimension);
 
 	~Texture();
 
-	unsigned char* getBinaryData();
-	int getImageType() { return this->imageType; };
-	void setImageType(int type) { this->imageType = imageType; };
 	int getWidth() { return this->width; };
 	int getHeight() { return this->height; };
-	GLuint getTextureId() { return this->textureId; };
 	void bind();
 };
 

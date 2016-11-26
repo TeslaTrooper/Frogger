@@ -1,5 +1,6 @@
-#include "Window.h"
 #include <iostream>
+
+#include "Window.h"
 
 Window::Window() {
 	this->window = glfwCreateWindow(560, 590, "Frogger", nullptr, nullptr);
@@ -10,13 +11,20 @@ Window::Window() {
 
 	initViewport();
 
-	this->background = new Texture("../textures/bg.jpg");
+	this->background = new Texture("../textures/bg.raw", Vec2(560, 540));
 
 	this->renderer = new Renderer();
 
+	Texture* tileset = new Texture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
+	renderer->setTileset(tileset);
+
 	initProjectionMatrix();
 
+	test();
+
 	this->controller = new Controller();
+	controller->getLogic()->create();
+
 	glfwSetKeyCallback(window, Controller::key_callback);
 }
 

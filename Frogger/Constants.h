@@ -1,6 +1,10 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
+#include <map>
+
+using namespace std;
+
 const int TILES_X = 14;
 const int TILES_Y = 13;
 const int OFFSET_X = 20;
@@ -14,6 +18,6 @@ const int POOL_SPACE = (1.0f/(POOLS_COUNT - 1))*(((TILES_X * X_TILE_SIZE) - (2 *
 
 
 const float FROG_SPEED = 180.0f;
-
+const int FROG_START_ROW = 1;
 
 #endif CONSTANTS 

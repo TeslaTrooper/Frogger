@@ -10,6 +10,7 @@
 #include "Vec2.h"
 #include "Mat4.h"
 #include "Renderer.h"
+#include "Util.h"
 
 class Window {
 	int width, height;

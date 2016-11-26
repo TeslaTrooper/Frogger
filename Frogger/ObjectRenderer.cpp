@@ -3,7 +3,6 @@
 Renderer::Renderer() {
 	GLuint shaderProgram;
 
-	this->textures = new std::vector<Texture>();
 	this->init(&shaderProgram);
 	this->shader = new Shader(shaderProgram);
 }
@@ -20,11 +19,13 @@ Shader* Renderer::getShader() {
 
 void Renderer::draw(Texture* texture, Vec2 position, Vec2 size) {
 	Mat4 transform;
+	Mat3 textureTransform;
 	
 	transform.translate(position);
 	transform.scale(size);
 
 	this->shader->setUniformMatrix4("transform", transform);
+	this->shader->setUniformMatrix3("textureTranslation", textureTransform);
 
 	texture->bind();
 	glBindVertexArray(vao);
@@ -33,7 +34,30 @@ void Renderer::draw(Texture* texture, Vec2 position, Vec2 size) {
 }
 
 void Renderer::draw(Drawable drawable) {
-	draw(drawable.texture, drawable.position, drawable.size);
+	draw(tileset, drawable);
+}
+
+void Renderer::draw(Texture* texture, Drawable drawable) {
+	Mat4 transform;
+	Mat3 textureTransform;
+
+	transform.translate(drawable.position);
+	transform.scale(drawable.size);
+
+	this->shader->setUniformMatrix4("transform", transform);
+
+	Vec2 textureTranslator = Vec2(drawable.textureRegion.position.x * X_TILE_SIZE / tileset->getWidth(), drawable.textureRegion.position.y * Y_TILE_SIZE / tileset->getHeight());
+	textureTransform.translate(textureTranslator);
+
+	Vec2 textureScaler = Vec2(drawable.textureRegion.size.x * X_TILE_SIZE / tileset->getWidth(), drawable.textureRegion.size.y * Y_TILE_SIZE / tileset->getHeight());
+	textureTransform.scale(textureScaler);
+
+	this->shader->setUniformMatrix3("textureTranslation", textureTransform);
+
+	texture->bind();
+	glBindVertexArray(vao);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }
 
 void Renderer::init(GLuint* shaderProgram) {
