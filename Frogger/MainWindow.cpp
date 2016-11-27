@@ -43,7 +43,8 @@ void Window::render() {
 
 		logic->gameLoop(dt);
 
-		renderer->draw(background, Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f));
+		Rectangle r = { Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f) };
+		renderer->draw(background, r);
 
 		map<DrawableType, std::vector<Drawable>> drawables = logic->getDrawables();
 		for (int i = 0; i < drawables.at(DrawableType::OBJECT).size(); i++) {

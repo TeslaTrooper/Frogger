@@ -17,43 +17,56 @@ Shader* Renderer::getShader() {
 	return this->shader;
 }
 
-void Renderer::draw(Texture* texture, Vec2 position, Vec2 size) {
-	Mat4 transform;
-	Mat3 textureTransform;
-	
-	transform.translate(position);
-	transform.scale(size);
+void Renderer::draw(Texture* texture, const Rectangle rectangle) {
+	Mat4 transform = getTransformation(rectangle);
+	Mat3 textureTransform = getTextureRegion(nullptr);
 
-	this->shader->setUniformMatrix4("transform", transform);
 	this->shader->setUniformMatrix3("textureTranslation", textureTransform);
-
-	texture->bind();
-	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-}
-
-void Renderer::draw(Drawable drawable) {
-	draw(tileset, drawable);
-}
-
-void Renderer::draw(Texture* texture, Drawable drawable) {
-	Mat4 transform;
-	Mat3 textureTransform;
-
-	transform.translate(drawable.position);
-	transform.scale(drawable.size);
-
 	this->shader->setUniformMatrix4("transform", transform);
 
-	Vec2 textureTranslator = Vec2(drawable.textureRegion.position.x * X_TILE_SIZE / tileset->getWidth(), drawable.textureRegion.position.y * Y_TILE_SIZE / tileset->getHeight());
+	glDraw(texture);
+}
+
+void Renderer::draw(const Drawable drawable) {
+	draw(tileset, drawable);
+} 
+
+void Renderer::draw(Texture* texture, const Drawable drawable) {
+	Mat4 transform = getTransformation({ drawable.position, drawable.size });
+	Mat3 textureTransform = getTextureRegion(&drawable.textureRegion);
+
+	this->shader->setUniformMatrix3("textureTranslation", textureTransform);
+	this->shader->setUniformMatrix4("transform", transform);
+
+	glDraw(texture);
+}
+
+Mat4 Renderer::getTransformation(const Rectangle transformation) {
+	Mat4 transform;
+
+	transform.translate(transformation.position);
+	transform.scale(transformation.size);
+
+	return transform;
+}
+
+Mat3 Renderer::getTextureRegion(const Rectangle* region) {
+	Mat3 textureTransform;
+
+	if (region == nullptr) {
+		return textureTransform;
+	}
+
+	Vec2 textureTranslator = Vec2(region->position.x * X_TILE_SIZE / tileset->getWidth(), region->position.y * Y_TILE_SIZE / tileset->getHeight());
 	textureTransform.translate(textureTranslator);
 
-	Vec2 textureScaler = Vec2(drawable.textureRegion.size.x * X_TILE_SIZE / tileset->getWidth(), drawable.textureRegion.size.y * Y_TILE_SIZE / tileset->getHeight());
+	Vec2 textureScaler = Vec2(region->size.x * X_TILE_SIZE / tileset->getWidth(), region->size.y * Y_TILE_SIZE / tileset->getHeight());
 	textureTransform.scale(textureScaler);
 
-	this->shader->setUniformMatrix3("textureTranslation", textureTransform);
+	return textureTransform;
+}
 
+void Renderer::glDraw(Texture* texture) {
 	texture->bind();
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

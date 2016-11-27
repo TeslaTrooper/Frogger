@@ -13,7 +13,6 @@ class ObjectManager {
 protected:
 	typedef map<int, vector<GameObject*>*>::iterator it_type;
 	map<int, vector<GameObject*>*>* rowObjMap;
-	
 
 public:
 	ObjectManager();

@@ -175,8 +175,8 @@ vector<Rectangle> GameLogic::getPoolHitBoxes() {
 	vector<Rectangle> hitBoxes = vector<Rectangle>(POOLS_COUNT);
 
 	for (int i = 0; i < POOLS_COUNT; i++) {
-		Vec2 position = Vec2(i * POOL_SPACE + OFFSET_X + i * X_TILE_SIZE, OFFSET_Y);
-		Vec2 size = Vec2(X_TILE_SIZE, Y_TILE_SIZE);
+		Vec2 position(i * POOL_SPACE + OFFSET_X + i * X_TILE_SIZE, OFFSET_Y);
+		Vec2 size(X_TILE_SIZE, Y_TILE_SIZE);
 
 		hitBoxes[i] = { position, size };
 	}

@@ -24,8 +24,8 @@ public:
 
 	~Texture();
 
-	int getWidth() { return this->width; };
-	int getHeight() { return this->height; };
+	int getWidth() const { return this->width; };
+	int getHeight() const { return this->height; };
 	void bind();
 };
 

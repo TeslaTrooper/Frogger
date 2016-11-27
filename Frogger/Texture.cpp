@@ -31,17 +31,17 @@ void Texture::load(char* rawData) {
 		char* pixelData = new char[4];
 		int validCharsCount = 0;
 
-		if (*rawData == '\n' || *rawData == '\r' || *rawData == '\n' || *rawData == '\t') { // Kontrollzeichen überspringen
+		if (*rawData == '\n' || *rawData == '\r' || *rawData == '\n' || *rawData == '\t') {
 			rawData++;
 			continue;
 		}
 
-		if (*rawData == '\"' && *(rawData + 1) == '\r') { // " zeichen am Ende einer Zeile erkennen
+		if (*rawData == '\"' && *(rawData + 1) == '\r') {
 			rawData += 2;
 			continue;
 		}
 
-		if (*rawData == '\"' && *(rawData - 1) == '\t') { // " zeichen am Anfang einer Zeile erkennen
+		if (*rawData == '\"' && *(rawData - 1) == '\t') {
 			rawData++;
 			continue;
 		}
@@ -71,55 +71,22 @@ void Texture::load(char* rawData) {
 			break;
 		}
 
-		HEADER_PIXEL(pixelData, data);
+		CALC_PIXEL_RGB(pixelData, data);
 		data += bands;
 		ctr += bands;
 	}
 
 	data -= pixelCount * bands;
-
-
-
-
-
-	//const char* f = this->file.c_str();
-
-	//char a = '0';
-
-	/*if (this->file == "../textures/carOrange.jpg") {
-		useSOIL = false;
-		this->width = imgWidth;
-		this->height = imgHeight;
-
-		data = new unsigned char[imgWidth*imgHeight*3];
-		for (int i = 0; i < imgWidth*imgHeight; i++) {
-			if (*header_data == '`') {
-				int a = 5;
-			}
-			
-			data+=3;
-		}
-
-		data -= imgWidth * imgHeight * 3;
-	} else {*/
-		//useSOIL = true;
-		//this->binaryData = SOIL_load_image(f, &this->width, &this->height, 0, this->imageType);
-	//}
-
-	//const char* res = SOIL_last_result();
 }
 
 void Texture::configure() {
 	glGenTextures(1, &textureId);
 	glBindTexture(GL_TEXTURE_2D, textureId);
-	//if(!useSOIL)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	//else
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, getWidth(), getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, getBinaryData());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, getWidth(), getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
-	//delete[] data;
-	//SOIL_free_image_data(getBinaryData());
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	delete[] data;
 
 	configured = true;
 }

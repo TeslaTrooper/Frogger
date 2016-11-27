@@ -10,16 +10,20 @@
 #include "Util.h"
 #include "Texture.h"
 
+using namespace std;
+
 class Renderer {
 	Shader* shader;
 	GLuint vbo, vao, ebo;
-	std::vector<Texture>* textures;
 
 	Texture* tileset;
 
 	void init(GLuint* shaderProgram);
+	void draw(Texture* texture, const Drawable drawable);
+	void glDraw(Texture* texture);
 
-	void draw(Texture* texture, Drawable drawable);
+	Mat4 getTransformation(const Rectangle transformation);
+	Mat3 getTextureRegion(const Rectangle* region);
 
 public:
 	Renderer();
@@ -29,9 +33,9 @@ public:
 
 	void setTileset(Texture* tileset) { this->tileset = tileset; };
 
-	void draw(Texture* texture, Vec2 position, Vec2 size);
+	void draw(Texture* texture, const Rectangle rectangle);
 
-	void draw(Drawable drawable);
+	void draw(const Drawable drawable);
 };
 
 #endif RENDERER
