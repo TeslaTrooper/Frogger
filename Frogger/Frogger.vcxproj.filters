@@ -46,9 +46,6 @@
     <Filter Include="Source Files\Geometry">
       <UniqueIdentifier>{574a885c-1bb3-40dc-b117-fe52b1d920d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ImageRawData">
-      <UniqueIdentifier>{61f665c4-e984-44cc-ac54-c93ded9c3d55}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

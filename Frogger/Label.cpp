@@ -63,9 +63,6 @@ void Label::setText(std::string text) {
 	chars->clear();
 
 	for (int i = 0; i < text.length(); i++) {
-		if (text.length() > 6) {
-			int a = 05;
-		}
 		char c = text.at(i);
 		Rectangle t = charCollection->at(c);
 

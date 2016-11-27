@@ -4,7 +4,21 @@ ObjectManager::ObjectManager() {
 	this->rowObjMap = new map<int, vector<GameObject*>*>();
 }
 
-ObjectManager::~ObjectManager() {}
+ObjectManager::~ObjectManager() {
+	frogs.clear();
+
+	for (it_type iterator = rowObjMap->begin(); iterator != rowObjMap->end(); iterator++) {
+		vector<GameObject*>* objsInRow = iterator->second;
+
+		for (int i = 0; i < objsInRow->size(); i++) {
+			delete objsInRow->at(i);
+		}
+
+		delete objsInRow;
+	}
+
+	delete rowObjMap;
+}
 
 Vec2 ObjectManager::alignInRow(int row, bool centered) {
 	if (!centered) {
@@ -46,6 +60,10 @@ vector<Drawable> ObjectManager::getDrawables() {
 		}
 	}
 
+	for (int i = 0; i < frogs.size(); i++) {
+		drawables.push_back(frogs.at(i)->getDrawable());
+	}
+
 	return drawables;
 }
 
@@ -66,4 +84,33 @@ void ObjectManager::createObject(int row, Objects objType, int count, int space,
 	}
 
 	(*rowObjMap)[row] = objsInRow;
+}
+
+void ObjectManager::createFrog() {
+	frogs.push_back(new Frog(alignInRow(FROG_START_ROW, true)));
+}
+
+Frog* ObjectManager::getActiveFrog() {
+	for (int i = 0; i < frogs.size(); i++) {
+		if (frogs.at(i)->getState() != State::INACTIVE) {
+			return frogs.at(i);
+		}
+	}
+}
+
+int ObjectManager::getFrogsCount() {
+	return frogs.size();
+}
+
+void ObjectManager::clearFrogs() {
+	frogs.clear();
+}
+
+void ObjectManager::repeatObject(GameObject* obj) {
+	if (obj->getPosition().x < -obj->getSize().x) {
+		obj->setPosition(Vec2(700 + obj->getSize().x, obj->getPosition().y));
+	}
+	if (obj->getPosition().x > 700 + obj->getSize().x) {
+		obj->setPosition(Vec2(-obj->getSize().x, obj->getPosition().y));
+	}
 }

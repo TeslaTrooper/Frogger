@@ -13,36 +13,13 @@
 using namespace std;
 
 class GameLogic {
-	bool ready = false;
-
-	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
-
-	const vector<Rectangle> poolHitBoxes = getPoolHitBoxes();
-	const map<int, CollisionStruct> poolCollisionStructMap = {
-		{0, { Event::COLL_POOL, poolHitBoxes[0].position } },
-		{1, { Event::COLL_POOL, poolHitBoxes[1].position } },
-		{2, { Event::COLL_POOL, poolHitBoxes[2].position } },
-		{3, { Event::COLL_POOL, poolHitBoxes[3].position } },
-		{4, { Event::COLL_POOL, poolHitBoxes[4].position } },
-	};
-
-	vector<Pool> pools = {
-		{ poolCollisionStructMap.at(0), poolHitBoxes.at(0), false},
-		{ poolCollisionStructMap.at(1), poolHitBoxes.at(1), false },
-		{ poolCollisionStructMap.at(2), poolHitBoxes.at(2), false },
-		{ poolCollisionStructMap.at(3), poolHitBoxes.at(3), false },
-		{ poolCollisionStructMap.at(4), poolHitBoxes.at(4), false },
-	};
-
 	int score;
 	int currentPoolIndex;
 
+	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
+	vector<Pool> pools;
 	ObjectManager objectManager;
 	FontManager fontManager;
-
-	vector<Frog*> frogs;
-
-
 
 	vector<Rectangle> getPoolHitBoxes();
 
@@ -51,13 +28,9 @@ class GameLogic {
 	CollisionStruct checkPoolCollision();
 	CollisionStruct evaluateCollisions(vector<GameObject*> objs, Frog* frog);
 
-	Frog* getActiveFrog();
-
 	void setupObjects();
 	void setupLabels();
-	void repeatObjectPosition(GameObject* obj);
-
-	
+	void createPools();
 
 public:
 	GameLogic();

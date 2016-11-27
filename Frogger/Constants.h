@@ -15,4 +15,6 @@ const int POOL_SPACE = (int) ((1.0f/(POOLS_COUNT - 1))*(((TILES_X * X_TILE_SIZE)
 const float FROG_SPEED = 180.0f;
 const int FROG_START_ROW = 1;
 
+const int RIGHT_OUTER_BORDER = 700;
+
 #endif CONSTANTS 
