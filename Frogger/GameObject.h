@@ -2,6 +2,9 @@
 #define GAME_OBJECT
 
 #include "Util.h"
+#include "StateMachine.h"
+
+using namespace std;
 
 /*
 	Das GameObject repräsentiert ein beliebiges Objekt des Spieles. Es wird 
@@ -16,70 +19,74 @@ class GameObject {
 	// Enthält die Größe des Objektes (ist nicht Abhängig von der Texture)
 	Vec2 size;
 
-	// Die Textur, die für das Zeichnen des Objektes verwendet wird
-	//Texture* texture;
+	// Steuert den Zustandsablauf eines Objektes
+	StateMachine stateMachine;
 
+	// Gibt den Bereich an, aus dem die Textur innerhlb des tilesets stammt
 	Rectangle textureRegion;
 
 	// Die Geschwindigkeit, mit der sich das Objekt bewegen kann
 	float speed;
 
-	// Der aktuelle Zustand des Objektes
-	State state;
-
-	// Stellt den aktuellen Bewegungsvektor dar
-	Vec2 movement;
-
 	// Enthält Informationen darüber, was eine Kollision mit einem anderen Objekt 
 	// für Auswirkungen auf das andere Objekt hat.
 	CollisionStruct collisionStruct;
+
+	// Ist das aktuelle Event, das für dieses Objekt eingetreten ist
+	CollisionStruct currentEvent;
+
+	// Ist die Zustandsübergangsmenge
+	const vector<TransitionElement> transitionSet;
+
+protected:
+	// Aus den 2 Vektoren wird der resultierende Vektor gebildet
+	Vec2 vectors[2];
+
+	virtual bool targetPositionReached(GLfloat dt);
 
 public:
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
 		@param position gibt die initiale Position des Objektes an.
-		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
-	*/
-	GameObject(Vec2 position);
+		@param transitionSet ist die Zustandsübergangsmenge.
 
-	GameObject(Rectangle textureRegion);
+	*/
+	GameObject(Vec2 position, const vector<TransitionElement>& transitionSet);
+
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
-		@param position gibt die initiale Position des Objektes an.
-		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
-		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
+		@param textureRegion gibt die Position und Größe der Textur an.
+		@param transitionSet ist die Zustandsübergangsmenge.
 	*/
-	GameObject(Vec2 position, Rectangle textureRegion);
+	GameObject(Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
+
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
 		@param position gibt die initiale Position des Objektes an.
 		@param size ist die Größe des Objektes.
-		@param color ist die Farbe, die zum Zeichnen verwendet werden soll.
-		@param texture ist die Textur, mit der das Objekt gezeichnet werden soll.
+		@param textureRegion gibt die Position und Größe der Textur an.
+		@param transitionSet ist die Zustandsübergangsmenge.
 	*/
-	GameObject(Vec2 position, Vec2 size, Rectangle textureRegion);
-	
-	
+	GameObject(Vec2 position, Vec2 size, Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
+
 
 	~GameObject();
+
 
 	/*
 		@returns Gibt die aktuelle Position als des Objektes zurück.
 	*/
 	Vec2 getPosition() { return position; };
 
+
 	/*
 		@returns Gibt die Größe als des Objektes zurück.
 	*/
 	Vec2 getSize() { return size; };
 
-	/*
-		@returns Gibt die Texture des Objektes zurück.
-	*/
-	//Texture* getTexture() { return texture; };
 
 	/*
 		@returns Gibt die Geschwindigkeit zurück, mit der sich das
@@ -87,17 +94,20 @@ public:
 	*/
 	float getSpeed() { return speed; };
 
+
 	/*
 		@returns Gibt den aktuellen Zustand, in dem sich das Objekt
 				 befindet, zurück.
 	*/
-	State getState() { return state; };
+	State getState() { return stateMachine.getState(); };
+
 
 	/*
 		@returns Gibt den Bewegungsvektor zurück, mit dem sich das
 				 Objekt fortbewegt.
 	*/
-	Vec2 getCurrentMovement() { return movement; };
+	Vec2 getCurrentMovement() { return vectors[0].add(vectors[1]); };
+
 
 	/*
 		Diese Methode liefert Informationen darüber, welchen
@@ -108,30 +118,55 @@ public:
 	*/
 	CollisionStruct getCollisionStruct() { return collisionStruct; };
 
+
+	/*
+		Löst einen Zustandsübergang aus.
+		@param ev ist das Event, mit dem der Zustandsübergang durchgeführt
+				  werden soll.
+		@return Gibt true zurück, sofern ein neuer Zustand eingenommen wurde.
+	*/
+	bool doTransition(Event ev);
+
+
+	/*
+		Über diese Funktion können alle nötigen Informationen zum Zeichnen
+		des Objektes erhalten werden.
+		@return Gibt ein Drawable zurück, das die Informationen enthält.
+	*/
 	Drawable getDrawable();
 
 	void setPosition(Vec2 position) { this->position = position; };
 	void setSpeed(float speed) { this->speed = speed; };
-	void setState(State state) { this->state = state; };
-	void setMovement(Vec2 movement) { this->movement = movement; };
-	void move(GLfloat dt);
-	//void setTexture(Texture* texture) { this->texture = texture; };
+	void setState(State state) { stateMachine.setInitialState(state); };
 	void setSize(Vec2 size) { this->size = size; };
 	void setCollisionStruct(CollisionStruct collisionStruct) { this->collisionStruct = collisionStruct; };
-	void resetMovement() { this->movement = Vec2(0.0f, 0.0f); };
+
 	Rectangle getTextureRegion() { return this->textureRegion; };
+	CollisionStruct getCurrentEvent() { return currentEvent; };
+
+	void setMovement(Vec2 movement);
+	void resetMovement();
+	void move(GLfloat dt);
+
+
+	/*
+		Registriert ein neues Event.
+	*/
+	void registerEvent(CollisionStruct currentEvent);
+	
 
 	/*
 		@returns Gibt das Rechteck des Objektes zurück.
 	*/
 	Rectangle getCriticalHitBox();
 
+
 	/*
 		Über diese Methode werden alle logischen Prozeduren eines
 		Objektes gesteuert.
 		@param dt ist die Zeit, die seit dem letzten game loop vergangen ist.
 	*/
-	void doLogic(GLfloat dt);
+	virtual void doLogic(GLfloat dt);
 };
 
 #endif GAME_OBJECT

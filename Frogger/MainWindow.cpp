@@ -20,8 +20,6 @@ Window::Window() {
 
 	initProjectionMatrix();
 
-	test();
-
 	this->controller = new Controller();
 	controller->getLogic()->create();
 

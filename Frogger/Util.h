@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <string>
 #include <map>
+#include <vector>
 
 #include "Vec2.h"
 #include "Constants.h"
@@ -106,6 +107,12 @@ struct Initializer {
 	CollisionStruct collisionStruct;
 };
 
+struct TransitionElement {
+	State currentState;
+	Event transitionUnit;
+	State newState;
+};
+
 const map<Direction, Vec2> directions = {
 	{ Direction::LEFT, Vec2(-FROG_SPEED, 0.0f) },
 	{ Direction::UP, Vec2(0.0f, -FROG_SPEED) },
@@ -202,7 +209,8 @@ const map<Objects, Initializer> objDefinitions = {
 	}
 };
 
+const vector<TransitionElement> emptyTransitionSet = {};
+
 bool intersects(Rectangle rect1, Rectangle rect2);
 
-void test();
 #endif UTIL

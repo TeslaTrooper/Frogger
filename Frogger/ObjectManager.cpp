@@ -2,6 +2,7 @@
 
 ObjectManager::ObjectManager() {
 	this->rowObjMap = new map<int, vector<GameObject*>*>();
+	femaleFrog = nullptr;
 }
 
 ObjectManager::~ObjectManager() {
@@ -39,6 +40,10 @@ vector<GameObject*> ObjectManager::getAll() {
 		}
 	}
 
+	if (femaleFrog != nullptr) {
+		objs.push_back(femaleFrog);
+	}
+
 	return objs;
 }
 
@@ -74,7 +79,7 @@ void ObjectManager::createObject(int row, Objects objType, int count, int space,
 	Initializer initializer = objDefinitions.at(objType);
 
 	for (int i = 0; i < count; i++) {
-		GameObject* obj = new GameObject(initializer.textureRegion);
+		GameObject* obj = new GameObject(initializer.textureRegion, emptyTransitionSet);
 
 		obj->setMovement(initializer.movement);
 		obj->setCollisionStruct(initializer.collisionStruct);
@@ -88,6 +93,18 @@ void ObjectManager::createObject(int row, Objects objType, int count, int space,
 
 void ObjectManager::createFrog() {
 	frogs.push_back(new Frog(alignInRow(FROG_START_ROW, true)));
+}
+
+void ObjectManager::createFemaleFrog(int row) {
+	if (femaleFrog != nullptr) {
+		return;
+	}
+
+	Vec2 pos = alignInRow(row, false);
+	pos.x = -X_TILE_SIZE;
+
+	femaleFrog = new Frog(pos, State::IDLE);
+	femaleFrog->registerEvent({ Event::COLL_NONE, Vec2(0.0f, 0.0f) });
 }
 
 Frog* ObjectManager::getActiveFrog() {
@@ -110,7 +127,15 @@ void ObjectManager::repeatObject(GameObject* obj) {
 	if (obj->getPosition().x < -obj->getSize().x) {
 		obj->setPosition(Vec2(700 + obj->getSize().x, obj->getPosition().y));
 	}
+
 	if (obj->getPosition().x > 700 + obj->getSize().x) {
 		obj->setPosition(Vec2(-obj->getSize().x, obj->getPosition().y));
+
+		if (femaleFrog != nullptr && femaleFrog->getPosition().y == obj->getPosition().y) {
+			femaleFrog->setPosition(Vec2(-obj->getSize().x, femaleFrog->getPosition().y));
+			femaleFrog->registerEvent(obj->getCollisionStruct());
+
+			int a = 5;
+		}
 	}
 }

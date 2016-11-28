@@ -144,7 +144,7 @@
     <ClCompile Include="ControllerImpl.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frog.cpp" />
-    <ClCompile Include="FrogStateMachine.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObjectImpl.cpp" />
     <ClCompile Include="Label.cpp" />
@@ -165,7 +165,7 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frog.h" />
-    <ClInclude Include="FrogStateMachine.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Label.h" />

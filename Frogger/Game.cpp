@@ -31,8 +31,9 @@ void GameLogic::gameLoop(const GLfloat dt) {
 	}
 
 	CollisionStruct collisionStruct = evaluateCollisions(objs, activeFrog);
+	activeFrog->registerEvent(collisionStruct);
 
-	activeFrog->doLogic(dt, &collisionStruct);
+	activeFrog->doLogic(dt);
 
 	if (activeFrog->getState() == State::INACTIVE) {
 		pools.at(currentPoolIndex).ocupied = true;
@@ -53,6 +54,7 @@ void GameLogic::moveFrog(const Direction direction) {
 	objectManager.getActiveFrog()->moveTo(direction);
 	score+=1000;
 	fontManager.setText("score", std::to_string(score));
+	objectManager.createFemaleFrog(10);
 }
 
 

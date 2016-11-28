@@ -16,6 +16,8 @@ protected:
 	map<int, vector<GameObject*>*>* rowObjMap;
 	vector<Frog*> frogs;
 
+	Frog* femaleFrog;
+
 public:
 	ObjectManager();
 	~ObjectManager();
@@ -35,6 +37,12 @@ public:
 		Erzeugt einen neuen Frosch.
 	*/
 	void createFrog();
+
+	/*
+		Erzeugt ein Froschweibchen in einer Zeile.
+		@param row gibt an, in welcher Zeile das Froschweibchen positioniert werden soll.
+	*/
+	void createFemaleFrog(int row);
 
 	/*
 		Diese Funktion liefert die Koordinaten für eine bestimmte Zeile zurück.

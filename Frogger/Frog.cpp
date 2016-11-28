@@ -1,37 +1,35 @@
 #include "Frog.h"
 
-Frog::Frog(Vec2 position) : GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objetcs.at(Objects::PLAYER)) {
+Frog::Frog(Vec2 position) 
+	: GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objetcs.at(Objects::PLAYER), transitionSet) {
+
 	this->setState(State::IDLE);
 	this->setSpeed(FROG_SPEED);
 	this->homePosition = position;
 	this->movingDuration = 0.0f;
 	this->decaeseTimer = 0;
-};
+}
+
+Frog::Frog(Vec2 position, State initialState) : Frog(position) {
+	this->setState(initialState);
+}
 
 void Frog::moveTo(Direction direction) {
 	Vec2 movement = directions.at(direction);
 
-	if (!validMovement(movement) || !stateMachine.doTransition(Event::ARROW_KEYS)) {
+	if (!validMovement(movement) || !doTransition(Event::ARROW_KEYS)) {
 		return;
 	}
 
-	this->vectors[0] = movement;
+	this->setMovement(movement);
 
-	this->targetPosition = getPosition().add((getResultingVector().mul(this->getSize().x / getSpeed())));
+	this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
 }
 
-void Frog::move(GLfloat dt) {
-	if (targetPositionReached(dt)) {
-		return;
-	}
-
-	setPosition(this->getPosition().add((this->getResultingVector().mul(dt))));
-}
-
-void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
-	this->stateMachine.doTransition(collisionStruct->effect);
+void Frog::doLogic(GLfloat dt) {
+	doTransition(getCurrentEvent().effect);
 	
-	switch (this->stateMachine.getState()) {
+	switch (getState()) {
 		case State::DIEING: {
 			die(dt);
 		}; break;
@@ -49,7 +47,7 @@ void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
 			}
 		}; break;
 		case State::TRANSPORT: {
-			vectors[1] = collisionStruct->movement;
+			vectors[1] = getCurrentEvent().movement;
 			move(dt);
 
 			if (isOutsideOfBorders()) {
@@ -57,10 +55,10 @@ void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
 			}
 		}; break;
 		case State::ALIGNING: {
-			float length = getResultingVector().length();
+			float length = getCurrentMovement().length();
 			this->resetMovement();
-			vectors[0] = this->getPosition().rotateTo(collisionStruct->movement, length);
-			targetPosition = collisionStruct->movement;
+			vectors[0] = this->getPosition().rotateTo(getCurrentEvent().movement, length);
+			targetPosition = getCurrentEvent().movement;
 		}; break;
 		case State::NAVIGATING: {
 			move(dt);
@@ -68,18 +66,10 @@ void Frog::doLogic(GLfloat dt, CollisionStruct* collisionStruct) {
 	}
 }
 
-Rectangle Frog::getCriticalHitBox() {
-	return { this->getPosition(), this->getSize() };
-}
-
-void Frog::resetMovement() {
-	vectors[0].clear();
-	vectors[1].clear();
-}
-
 void Frog::reset() {
+	doTransition(Event::DIE_SEQUENCE_EXPIRED);
+
 	this->setPosition(homePosition);
-	this->stateMachine.doTransition(Event::DIE_SEQUENCE_EXPIRED);
 	this->resetMovement();
 	this->decaeseTimer = 0;
 	this->movingDuration = 0;
@@ -93,7 +83,7 @@ void Frog::die(GLfloat dt) {
 }
 
 bool Frog::targetPositionReached(GLfloat dt) {
-	if (stateMachine.getState() == State::TRANSPORT) {
+	if (getState() == State::TRANSPORT) {
 		return false;
 	}
 
@@ -103,7 +93,7 @@ bool Frog::targetPositionReached(GLfloat dt) {
 		this->movingDuration = 0.0f;
 		this->setPosition(targetPosition);
 		this->resetMovement();
-		this->stateMachine.doTransition(Event::TARGET_POSITION_REACHED);
+		doTransition(Event::TARGET_POSITION_REACHED);
 
 		return true;
 	}
