@@ -21,7 +21,7 @@ void Frog::moveTo(Direction direction) {
 		return;
 	}
 
-	this->setMovement(movement);
+	this->setMovement(movement.add(getCurrentEvent().movement));
 
 	this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
 }

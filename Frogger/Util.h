@@ -27,7 +27,8 @@ enum Event {
 	COLL_LETHAL_OBJECTS,
 	COLL_NONE,
 	NEUTRAL,
-	COLL_POOL
+	COLL_POOL,
+	START_MOVING,
 };
 
 enum Direction {
@@ -64,7 +65,7 @@ enum State {
 	KILLED,
 	ALIGNING,
 	NAVIGATING,
-	INACTIVE
+	INACTIVE,
 };
 
 enum DrawableType {
@@ -82,6 +83,7 @@ Auswirkungen auf den aktuellen Bewegungsvektor hat.
 struct CollisionStruct {
 	Event effect;
 	Vec2 movement;
+	Vec2 size;
 };
 
 struct Rectangle {
@@ -178,34 +180,44 @@ const map<Objects, Rectangle> objetcs = {
 
 const map<Objects, Initializer> objDefinitions = {
 	{ Objects::CAR_YELLOW,
-	{ Vec2(-30.0f, 0.0f), objetcs.at(Objects::CAR_YELLOW),{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) } }
+		{ Vec2(-30.0f, 0.0f), objetcs.at(Objects::CAR_YELLOW),
+		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::CAR_YELLOW).size } }
 	},
 	{ Objects::CAR_WHITE,
-	{ Vec2(80.0f, 0.0f), objetcs.at(Objects::CAR_WHITE),{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) } }
+		{ Vec2(80.0f, 0.0f), objetcs.at(Objects::CAR_WHITE),
+		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::CAR_WHITE).size } }
 	},
 	{ Objects::CAR_RED,
-	{ Vec2(-45.0f, 0.0f), objetcs.at(Objects::CAR_RED),{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) } }
+		{ Vec2(-45.0f, 0.0f), objetcs.at(Objects::CAR_RED),
+		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::CAR_RED).size } }
 	},
 	{ Objects::TRUCK,
-	{ Vec2(-60.0f, 0.0f), objetcs.at(Objects::TRUCK),{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) } }
+		{ Vec2(-60.0f, 0.0f), objetcs.at(Objects::TRUCK),
+		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::TRUCK).size } }
 	},
 	{ Objects::CAR_ORANGE,
-	{ Vec2(50.0f, 0.0f), objetcs.at(Objects::CAR_ORANGE),{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) } }
+		{ Vec2(50.0f, 0.0f), objetcs.at(Objects::CAR_ORANGE),
+		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::CAR_ORANGE).size } }
 	},
 	{ Objects::LARGE_TREE,
-	{ Vec2(90.0f, 0.0f), objetcs.at(Objects::LARGE_TREE),{ Event::COLL_TREE_TURTLE, Vec2(90.0f, 0.0f) } }
+		{ Vec2(90.0f, 0.0f), objetcs.at(Objects::LARGE_TREE),
+		{ Event::COLL_TREE_TURTLE, Vec2(90.0f, 0.0f), objetcs.at(Objects::LARGE_TREE).size } }
 	},
 	{ Objects::MEDIUM_TREE,
-	{ Vec2(60.0f, 0.0f), objetcs.at(Objects::MEDIUM_TREE),{ Event::COLL_TREE_TURTLE, Vec2(60.0f, 0.0f) } }
+		{ Vec2(60.0f, 0.0f), objetcs.at(Objects::MEDIUM_TREE),
+		{ Event::COLL_TREE_TURTLE, Vec2(60.0f, 0.0f), objetcs.at(Objects::MEDIUM_TREE).size } }
 	},
 	{ Objects::SMALL_TREE,
-	{ Vec2(40.0f, 0.0f), objetcs.at(Objects::SMALL_TREE),{ Event::COLL_TREE_TURTLE, Vec2(40.0f, 0.0f) } }
+		{ Vec2(40.0f, 0.0f), objetcs.at(Objects::SMALL_TREE),
+		{ Event::COLL_TREE_TURTLE, Vec2(40.0f, 0.0f), objetcs.at(Objects::SMALL_TREE).size } }
 	},
 	{ Objects::TWO_ELEMENT_CHAIN,
-	{ Vec2(-50.0f, 0.0f), objetcs.at(Objects::TWO_ELEMENT_CHAIN),{ Event::COLL_TREE_TURTLE, Vec2(-50.0f, 0.0f) } }
+		{ Vec2(-50.0f, 0.0f), objetcs.at(Objects::TWO_ELEMENT_CHAIN),
+		{ Event::COLL_TREE_TURTLE, Vec2(-50.0f, 0.0f), objetcs.at(Objects::TWO_ELEMENT_CHAIN).size } }
 	},
 	{ Objects::THREE_ELEMENT_CHAIN,
-	{ Vec2(-50.0f, 0.0f), objetcs.at(Objects::THREE_ELEMENT_CHAIN),{ Event::COLL_TREE_TURTLE, Vec2(-50.0f, 0.0f) } }
+		{ Vec2(-50.0f, 0.0f), objetcs.at(Objects::THREE_ELEMENT_CHAIN),
+		{ Event::COLL_TREE_TURTLE, Vec2(-50.0f, 0.0f), objetcs.at(Objects::THREE_ELEMENT_CHAIN).size } }
 	}
 };
 

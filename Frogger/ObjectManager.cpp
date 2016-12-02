@@ -40,7 +40,9 @@ vector<GameObject*> ObjectManager::getAll() {
 		}
 	}
 
-	if (femaleFrog != nullptr) {
+	if (femaleFrog != nullptr && femaleFrog->isExpired()) {
+		femaleFrog = nullptr;
+	} else if (femaleFrog != nullptr) {
 		objs.push_back(femaleFrog);
 	}
 
@@ -67,6 +69,10 @@ vector<Drawable> ObjectManager::getDrawables() {
 
 	for (int i = 0; i < frogs.size(); i++) {
 		drawables.push_back(frogs.at(i)->getDrawable());
+	}
+
+	if (femaleFrog != nullptr) {
+		drawables.push_back(femaleFrog->getDrawable());
 	}
 
 	return drawables;
@@ -103,7 +109,7 @@ void ObjectManager::createFemaleFrog(int row) {
 	Vec2 pos = alignInRow(row, false);
 	pos.x = -X_TILE_SIZE;
 
-	femaleFrog = new Frog(pos, State::IDLE);
+	femaleFrog = new FemaleFrog(pos);
 	femaleFrog->registerEvent({ Event::COLL_NONE, Vec2(0.0f, 0.0f) });
 }
 
@@ -124,6 +130,11 @@ void ObjectManager::clearFrogs() {
 }
 
 void ObjectManager::repeatObject(GameObject* obj) {
+	if (FemaleFrog* femaleFrog = dynamic_cast<FemaleFrog*>(obj)) {
+		return;
+	}
+
+
 	if (obj->getPosition().x < -obj->getSize().x) {
 		obj->setPosition(Vec2(700 + obj->getSize().x, obj->getPosition().y));
 	}
@@ -132,10 +143,11 @@ void ObjectManager::repeatObject(GameObject* obj) {
 		obj->setPosition(Vec2(-obj->getSize().x, obj->getPosition().y));
 
 		if (femaleFrog != nullptr && femaleFrog->getPosition().y == obj->getPosition().y) {
-			femaleFrog->setPosition(Vec2(-obj->getSize().x, femaleFrog->getPosition().y));
-			femaleFrog->registerEvent(obj->getCollisionStruct());
-
-			int a = 5;
+			if (femaleFrog->getState() == State::IDLE) {
+				femaleFrog->setPosition(Vec2(-obj->getSize().x, femaleFrog->getPosition().y));
+				femaleFrog->useAsNewHomePosition(Vec2(-obj->getSize().x, femaleFrog->getPosition().y));
+				femaleFrog->registerEvent(obj->getCollisionStruct());
+			}
 		}
 	}
 }

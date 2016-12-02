@@ -4,6 +4,7 @@
 
 Window::Window() {
 	this->window = glfwCreateWindow(560, 590, "Frogger", nullptr, nullptr);
+	glfwSetWindowPos(this->window, 500, 100);
 	glfwMakeContextCurrent(window);
 
 	glewExperimental = GL_TRUE;

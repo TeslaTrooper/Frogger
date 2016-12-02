@@ -5,6 +5,7 @@
 #include <map>
 
 #include "Frog.h"
+#include "FemaleFrog.h"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ protected:
 	map<int, vector<GameObject*>*>* rowObjMap;
 	vector<Frog*> frogs;
 
-	Frog* femaleFrog;
+	FemaleFrog* femaleFrog;
 
 public:
 	ObjectManager();
