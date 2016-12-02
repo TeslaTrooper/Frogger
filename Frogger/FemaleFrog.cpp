@@ -2,7 +2,7 @@
 #include <iostream>
 
 FemaleFrog::FemaleFrog(Vec2 position) 
-	: GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objetcs.at(Objects::PLAYER), transitionSet) {
+	: GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objectTextureRegions.at(Objects::PLAYER), transitionSet) {
 
 	this->setState(State::IDLE);
 	this->setSpeed(FROG_SPEED);
@@ -42,7 +42,7 @@ void FemaleFrog::doLogic(GLfloat dt) {
 			GLfloat currentTransportPosition = homePosition.x + (getCurrentEvent().movement.x * livingTime);
 
 			Rectangle targetPositionHitBox = { targetPosition, Vec2(1, 1) };
-			Rectangle transporterHitBox = { Vec2(currentTransportPosition, homePosition.y), getCurrentEvent().size.mul(X_TILE_SIZE) };
+			Rectangle transporterHitBox = { Vec2(currentTransportPosition, homePosition.y), getCurrentEvent().textureRegion.size.mul(X_TILE_SIZE) };
 
 			if (!(intersects(targetPositionHitBox, transporterHitBox))) {
 				if (currentDirection == Direction::RIGHT) {

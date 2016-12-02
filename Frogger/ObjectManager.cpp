@@ -82,13 +82,13 @@ void ObjectManager::createObject(int row, Objects objType, int count, int space,
 	vector<GameObject*>* objsInRow = new vector<GameObject*>();
 
 	Vec2 pos = alignInRow(row, false);
-	Initializer initializer = objDefinitions.at(objType);
+	CollisionStruct initializer = objDefinitions.at(objType);
 
 	for (int i = 0; i < count; i++) {
 		GameObject* obj = new GameObject(initializer.textureRegion, emptyTransitionSet);
 
 		obj->setMovement(initializer.movement);
-		obj->setCollisionStruct(initializer.collisionStruct);
+		obj->setCollisionStruct(initializer);
 		obj->setPosition(Vec2(startX + (i * (obj->getSize().x + space)), pos.y));
 
 		objsInRow->push_back(obj);

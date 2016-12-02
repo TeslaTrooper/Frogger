@@ -17,4 +17,15 @@ const int FROG_START_ROW = 1;
 
 const int RIGHT_OUTER_BORDER = 700;
 
+const float SPEED_CAR_YELLOW = -30.0f;
+const float SPEED_CAR_WHITE = 80.0f;
+const float SPEED_CAR_RED = -45.0f;
+const float SPEED_TRUCK = -60.0f;
+const float SPEED_CAR_ORANGE = 50.0f;
+const float SPEED_LARGE_TRRE = 90.0f;
+const float SPEED_MEDIUM_TREE = 60.0f;
+const float SPEED_SMALL_TREE = 40.0f;
+const float SPEED_TWO_ELEMENT_CHAIN = -50.0f;
+const float SPEED_THREE_ELEMENT_CHAIN = -50.0f;
+
 #endif CONSTANTS 

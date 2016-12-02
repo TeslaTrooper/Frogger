@@ -73,6 +73,11 @@ enum DrawableType {
 	FONT
 };
 
+struct Rectangle {
+	Vec2 position;
+	Vec2 size;
+};
+
 /*
 Definiert Auswirkungen bei einer Kollision zweier Objekte.
 effect gibt an, was bei einer Kollision hinsichtlich der Spielogik
@@ -83,12 +88,7 @@ Auswirkungen auf den aktuellen Bewegungsvektor hat.
 struct CollisionStruct {
 	Event effect;
 	Vec2 movement;
-	Vec2 size;
-};
-
-struct Rectangle {
-	Vec2 position;
-	Vec2 size;
+	Rectangle textureRegion;
 };
 
 struct Drawable {
@@ -101,12 +101,6 @@ struct Pool {
 	CollisionStruct collisionStruct;
 	Rectangle hitBox;
 	bool ocupied;
-};
-
-struct Initializer {
-	Vec2 movement;
-	Rectangle textureRegion;
-	CollisionStruct collisionStruct;
 };
 
 struct TransitionElement {
@@ -164,7 +158,7 @@ const map<char, Rectangle> characters = {
 	{ 'Z',{ Vec2(4, 3), Vec2(1,1) } },
 };
 
-const map<Objects, Rectangle> objetcs = {
+const map<Objects, Rectangle> objectTextureRegions = {
 	{ CAR_ORANGE,{ Vec2(5, 3), Vec2(1,1) } },
 	{ CAR_RED,{ Vec2(6, 3), Vec2(1,1) } },
 	{ CAR_WHITE,{ Vec2(7, 3), Vec2(1,1) } },
@@ -178,47 +172,17 @@ const map<Objects, Rectangle> objetcs = {
 	{ THREE_ELEMENT_CHAIN,{ Vec2(7, 5), Vec2(3,1) } },
 };
 
-const map<Objects, Initializer> objDefinitions = {
-	{ Objects::CAR_YELLOW,
-		{ Vec2(-30.0f, 0.0f), objetcs.at(Objects::CAR_YELLOW),
-		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::CAR_YELLOW).size } }
-	},
-	{ Objects::CAR_WHITE,
-		{ Vec2(80.0f, 0.0f), objetcs.at(Objects::CAR_WHITE),
-		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::CAR_WHITE).size } }
-	},
-	{ Objects::CAR_RED,
-		{ Vec2(-45.0f, 0.0f), objetcs.at(Objects::CAR_RED),
-		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::CAR_RED).size } }
-	},
-	{ Objects::TRUCK,
-		{ Vec2(-60.0f, 0.0f), objetcs.at(Objects::TRUCK),
-		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::TRUCK).size } }
-	},
-	{ Objects::CAR_ORANGE,
-		{ Vec2(50.0f, 0.0f), objetcs.at(Objects::CAR_ORANGE),
-		{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), objetcs.at(Objects::CAR_ORANGE).size } }
-	},
-	{ Objects::LARGE_TREE,
-		{ Vec2(90.0f, 0.0f), objetcs.at(Objects::LARGE_TREE),
-		{ Event::COLL_TREE_TURTLE, Vec2(90.0f, 0.0f), objetcs.at(Objects::LARGE_TREE).size } }
-	},
-	{ Objects::MEDIUM_TREE,
-		{ Vec2(60.0f, 0.0f), objetcs.at(Objects::MEDIUM_TREE),
-		{ Event::COLL_TREE_TURTLE, Vec2(60.0f, 0.0f), objetcs.at(Objects::MEDIUM_TREE).size } }
-	},
-	{ Objects::SMALL_TREE,
-		{ Vec2(40.0f, 0.0f), objetcs.at(Objects::SMALL_TREE),
-		{ Event::COLL_TREE_TURTLE, Vec2(40.0f, 0.0f), objetcs.at(Objects::SMALL_TREE).size } }
-	},
-	{ Objects::TWO_ELEMENT_CHAIN,
-		{ Vec2(-50.0f, 0.0f), objetcs.at(Objects::TWO_ELEMENT_CHAIN),
-		{ Event::COLL_TREE_TURTLE, Vec2(-50.0f, 0.0f), objetcs.at(Objects::TWO_ELEMENT_CHAIN).size } }
-	},
-	{ Objects::THREE_ELEMENT_CHAIN,
-		{ Vec2(-50.0f, 0.0f), objetcs.at(Objects::THREE_ELEMENT_CHAIN),
-		{ Event::COLL_TREE_TURTLE, Vec2(-50.0f, 0.0f), objetcs.at(Objects::THREE_ELEMENT_CHAIN).size } }
-	}
+const map<Objects, CollisionStruct> objDefinitions = {
+	{ CAR_ORANGE, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_ORANGE, 0.0f), objectTextureRegions.at(CAR_ORANGE) } },
+	{ CAR_RED, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_RED, 0.0f), objectTextureRegions.at(CAR_RED) } },
+	{ CAR_WHITE, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_WHITE, 0.0f), objectTextureRegions.at(CAR_WHITE) } },
+	{ CAR_YELLOW, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_YELLOW, 0.0f), objectTextureRegions.at(CAR_YELLOW) } },
+	{ TRUCK, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_TRUCK, 0.0f), objectTextureRegions.at(TRUCK) } },
+	{ LARGE_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_LARGE_TRRE, 0.0f), objectTextureRegions.at(LARGE_TREE) } },
+	{ TWO_ELEMENT_CHAIN, { Event::COLL_TREE_TURTLE, Vec2(SPEED_TWO_ELEMENT_CHAIN, 0.0f), objectTextureRegions.at(TWO_ELEMENT_CHAIN) } },
+	{ MEDIUM_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_MEDIUM_TREE, 0.0f), objectTextureRegions.at(MEDIUM_TREE) } },
+	{ SMALL_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_SMALL_TREE, 0.0f), objectTextureRegions.at(SMALL_TREE) } },
+	{ THREE_ELEMENT_CHAIN, { Event::COLL_TREE_TURTLE, Vec2(SPEED_THREE_ELEMENT_CHAIN, 0.0f), objectTextureRegions.at(THREE_ELEMENT_CHAIN) } }
 };
 
 const vector<TransitionElement> emptyTransitionSet = {};

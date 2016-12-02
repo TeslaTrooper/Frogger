@@ -1,7 +1,7 @@
 #include "Frog.h"
 
 Frog::Frog(Vec2 position) 
-	: GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objetcs.at(Objects::PLAYER), transitionSet) {
+	: GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objectTextureRegions.at(Objects::PLAYER), transitionSet) {
 
 	this->setState(State::IDLE);
 	this->setSpeed(FROG_SPEED);
