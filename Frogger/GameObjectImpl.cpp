@@ -58,6 +58,10 @@ bool GameObject::doTransition(Event ev) {
 	return stateMachine.doTransition(ev);
 }
 
+void GameObject::gotoPreviousState() {
+	stateMachine.gotoPreviousState();
+}
+
 void GameObject::registerEvent(CollisionStruct currentEvent) {
 	this->currentEvent = currentEvent;
 }

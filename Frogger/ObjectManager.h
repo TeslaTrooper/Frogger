@@ -45,6 +45,8 @@ public:
 	*/
 	void createFemaleFrog(int row);
 
+	void registerEventOnFemaleFrog(CollisionStruct collision);
+
 	/*
 		Diese Funktion liefert die Koordinaten für eine bestimmte Zeile zurück.
 		@param centered gibt an, ob die x Koordinate in der Zeile zentriert werden soll.

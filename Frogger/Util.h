@@ -29,6 +29,7 @@ enum Event {
 	NEUTRAL,
 	COLL_POOL,
 	START_MOVING,
+	COLLECTING
 };
 
 enum Direction {
@@ -66,6 +67,7 @@ enum State {
 	ALIGNING,
 	NAVIGATING,
 	INACTIVE,
+	COLLECTED
 };
 
 enum DrawableType {
@@ -89,6 +91,7 @@ struct CollisionStruct {
 	Event effect;
 	Vec2 movement;
 	Rectangle textureRegion;
+	int priority;
 };
 
 struct Drawable {
@@ -173,16 +176,16 @@ const map<Objects, Rectangle> objectTextureRegions = {
 };
 
 const map<Objects, CollisionStruct> objDefinitions = {
-	{ CAR_ORANGE, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_ORANGE, 0.0f), objectTextureRegions.at(CAR_ORANGE) } },
-	{ CAR_RED, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_RED, 0.0f), objectTextureRegions.at(CAR_RED) } },
-	{ CAR_WHITE, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_WHITE, 0.0f), objectTextureRegions.at(CAR_WHITE) } },
-	{ CAR_YELLOW, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_YELLOW, 0.0f), objectTextureRegions.at(CAR_YELLOW) } },
-	{ TRUCK, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_TRUCK, 0.0f), objectTextureRegions.at(TRUCK) } },
-	{ LARGE_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_LARGE_TRRE, 0.0f), objectTextureRegions.at(LARGE_TREE) } },
-	{ TWO_ELEMENT_CHAIN, { Event::COLL_TREE_TURTLE, Vec2(SPEED_TWO_ELEMENT_CHAIN, 0.0f), objectTextureRegions.at(TWO_ELEMENT_CHAIN) } },
-	{ MEDIUM_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_MEDIUM_TREE, 0.0f), objectTextureRegions.at(MEDIUM_TREE) } },
-	{ SMALL_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_SMALL_TREE, 0.0f), objectTextureRegions.at(SMALL_TREE) } },
-	{ THREE_ELEMENT_CHAIN, { Event::COLL_TREE_TURTLE, Vec2(SPEED_THREE_ELEMENT_CHAIN, 0.0f), objectTextureRegions.at(THREE_ELEMENT_CHAIN) } }
+	{ CAR_ORANGE, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_ORANGE, 0.0f), objectTextureRegions.at(CAR_ORANGE), 10 } },
+	{ CAR_RED, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_RED, 0.0f), objectTextureRegions.at(CAR_RED), 10 } },
+	{ CAR_WHITE, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_WHITE, 0.0f), objectTextureRegions.at(CAR_WHITE), 10 } },
+	{ CAR_YELLOW, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_YELLOW, 0.0f), objectTextureRegions.at(CAR_YELLOW), 10 } },
+	{ TRUCK, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_TRUCK, 0.0f), objectTextureRegions.at(TRUCK), 10 } },
+	{ LARGE_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_LARGE_TRRE, 0.0f), objectTextureRegions.at(LARGE_TREE), 5 } },
+	{ TWO_ELEMENT_CHAIN, { Event::COLL_TREE_TURTLE, Vec2(SPEED_TWO_ELEMENT_CHAIN, 0.0f), objectTextureRegions.at(TWO_ELEMENT_CHAIN), 5 } },
+	{ MEDIUM_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_MEDIUM_TREE, 0.0f), objectTextureRegions.at(MEDIUM_TREE), 5 } },
+	{ SMALL_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_SMALL_TREE, 0.0f), objectTextureRegions.at(SMALL_TREE), 5 } },
+	{ THREE_ELEMENT_CHAIN, { Event::COLL_TREE_TURTLE, Vec2(SPEED_THREE_ELEMENT_CHAIN, 0.0f), objectTextureRegions.at(THREE_ELEMENT_CHAIN), 5 } }
 };
 
 const vector<TransitionElement> emptyTransitionSet = {};

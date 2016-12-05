@@ -121,6 +121,12 @@ Frog* ObjectManager::getActiveFrog() {
 	}
 }
 
+void ObjectManager::registerEventOnFemaleFrog(CollisionStruct collision) {
+	if (femaleFrog != nullptr) {
+		femaleFrog->registerEvent(collision);
+	}
+}
+
 int ObjectManager::getFrogsCount() {
 	return frogs.size();
 }

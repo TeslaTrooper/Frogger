@@ -12,6 +12,7 @@ using namespace std;
 */
 class StateMachine {
 	State currentState;
+	State prevState;
 
 	const vector<TransitionElement>& transitionSet;
 
@@ -37,6 +38,8 @@ public:
 		@return aktueller Zustand.
 	*/
 	State getState();
+
+	void gotoPreviousState();
 
 	void setInitialState(State state);
 

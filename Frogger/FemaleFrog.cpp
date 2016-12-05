@@ -12,6 +12,7 @@ FemaleFrog::FemaleFrog(Vec2 position)
 	this->expired = false;
 	this->livingTime = 0;
 	this->currentDirection = Direction::RIGHT;
+	this->setCollisionStruct({ Event::COLLECTING, Vec2(0.0f, 0.0f), Rectangle(), 6 });
 }
 
 void FemaleFrog::doLogic(GLfloat dt) {
@@ -59,6 +60,9 @@ void FemaleFrog::doLogic(GLfloat dt) {
 
 			move(dt);
 		}; break;
+		case State::COLLECTED: {
+			this->expired = true;
+		}; return;
 	}
 
 	

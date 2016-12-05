@@ -33,6 +33,11 @@ void GameLogic::gameLoop(const GLfloat dt) {
 	CollisionStruct collisionStruct = evaluateCollisions(objs, activeFrog);
 	activeFrog->registerEvent(collisionStruct);
 
+	if (collisionStruct.effect == Event::COLLECTING) {
+		objectManager.registerEventOnFemaleFrog(collisionStruct);
+	}
+	
+
 	activeFrog->doLogic(dt);
 
 	if (activeFrog->getState() == State::INACTIVE) {
@@ -86,56 +91,67 @@ void GameLogic::setupLabels() {
 }
 
 CollisionStruct GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
-	CollisionStruct resultingCollision = { Event::COLL_NONE, Vec2(0.0f, 0.0f) };
+	Rectangle emptyRectangle = { Vec2(), Vec2() };
+	CollisionStruct objCollision = { Event::COLL_NONE, Vec2(0.0f, 0.0f), emptyRectangle, 0 };
+	int lastPriority = 0;
 
-	CollisionStruct objCollision = { Event::COLL_NONE, Vec2(0.0f, 0.0f) };
 	for (int i = 0; i < objs.size(); i++) {
-		if (objCollision.effect != Event::COLL_NONE) {
-			break;
-		}
+		CollisionStruct currentCollision = getExistingCollisionStruct(frog, objs.at(i));
 
-		objCollision = getExistingCollisionStruct(frog, objs.at(i));
+		if (currentCollision.effect != Event::COLL_NONE && currentCollision.priority > lastPriority) {
+			objCollision = currentCollision;
+			lastPriority = currentCollision.priority;
+		}
 	}
 
 	CollisionStruct riverCollision = checkRiverCollision();
 	CollisionStruct poolCollision = checkPoolCollision();
 
-	if (objCollision.effect == Event::COLL_LETHAL_OBJECTS || riverCollision.effect == Event::COLL_LETHAL_OBJECTS) {
-		resultingCollision.effect = Event::COLL_LETHAL_OBJECTS;
-	}
-	if (objCollision.effect == Event::COLL_TREE_TURTLE) {
-		resultingCollision = objCollision;
-	}
-	if (objCollision.effect == Event::COLL_TREE_TURTLE && poolCollision.effect == Event::COLL_POOL) {
-		resultingCollision = poolCollision;
+	int priorities[3] = { objCollision.priority, riverCollision.priority, poolCollision.priority };
+
+	int last = 0;
+	for (int i = 0; i < sizeof(priorities) / sizeof(int); i++) {
+		if (priorities[i] > last) last = priorities[i];
 	}
 
-	return resultingCollision;
+	if (objCollision.priority == last) return objCollision;
+	if (riverCollision.priority == last) return riverCollision;
+	if (poolCollision.priority == last) return poolCollision;
+
+	return { Event::COLL_NONE };
 }
 
 CollisionStruct GameLogic::getExistingCollisionStruct(Frog* frog, GameObject* obj) {
 	Rectangle frogHitbox = frog->getCriticalHitBox();
 	Rectangle objHitbox = obj->getCriticalHitBox();
+	Rectangle emptyRectangle = { Vec2(), Vec2() };
 
 	if (intersects(frogHitbox, objHitbox)) {
+		if (obj->getCollisionStruct().effect == Event::COLLECTING) {
+			CollisionStruct a = obj->getCollisionStruct();
+			int d = 5;
+		}
+
 		return obj->getCollisionStruct();
 	}
 
-	return{ Event::COLL_NONE, Vec2(0.0f, 0.0f) };
+	return { Event::COLL_NONE, Vec2(0.0f, 0.0f), emptyRectangle, 0 };
 }
 
 CollisionStruct GameLogic::checkRiverCollision() {
 	Rectangle frogHitbox = objectManager.getActiveFrog()->getCriticalHitBox();
+	Rectangle emptyRectangle = { Vec2(), Vec2() };
 
 	if (intersects(frogHitbox, riverHitBox)) {
-		return{ Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) };
+		return { Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), emptyRectangle, 4 };
 	}
 
-	return{ Event::COLL_NONE, Vec2(0.0f, 0.0f) };
+	return { Event::COLL_NONE, Vec2(0.0f, 0.0f), emptyRectangle, 0};
 }
 
 CollisionStruct GameLogic::checkPoolCollision() {
 	Frog* activeFrog = objectManager.getActiveFrog();
+	Rectangle emptyRectangle = { Vec2(), Vec2() };
 
 
 	for (int i = 0; i < pools.size(); i++) {
@@ -157,7 +173,7 @@ CollisionStruct GameLogic::checkPoolCollision() {
 		}
 	}
 
-	return{ Event::COLL_NONE, Vec2(0.0f, 0.0f) };
+	return { Event::COLL_NONE, Vec2(0.0f, 0.0f), emptyRectangle, 0 };
 }
 
 vector<Rectangle> GameLogic::getPoolHitBoxes() {
@@ -177,8 +193,10 @@ void GameLogic::createPools() {
 	vector<Rectangle> poolHitBoxes = getPoolHitBoxes();
 	map<int, CollisionStruct> collisionStructs = map<int, CollisionStruct>();
 
+	Rectangle emptyRectangle = { Vec2(), Vec2() };
+
 	for (int i = 0; i < POOLS_COUNT; i++) {
-		pools.push_back({ { Event::COLL_POOL, poolHitBoxes[i].position }, poolHitBoxes.at(i), false });
+		pools.push_back({ { Event::COLL_POOL, poolHitBoxes[i].position, emptyRectangle, 7 }, poolHitBoxes.at(i), false });
 	}
 }
 

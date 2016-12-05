@@ -25,7 +25,9 @@ class FemaleFrog : public GameObject {
 	const vector<TransitionElement> transitionSet = {
 		{ State::IDLE, Event::COLL_TREE_TURTLE, State::TRANSPORT },
 		{ State::TRANSPORT, Event::START_MOVING, State::MOVE_TRANSPORT },
-		{ State::MOVE_TRANSPORT, Event::TARGET_POSITION_REACHED, State::TRANSPORT }
+		{ State::MOVE_TRANSPORT, Event::TARGET_POSITION_REACHED, State::TRANSPORT },
+		{ State::TRANSPORT, Event::COLLECTING, State::COLLECTED },
+		{ State::MOVE_TRANSPORT, Event::COLLECTING, State::COLLECTED }
 	};
 
 protected:

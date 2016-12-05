@@ -35,7 +35,9 @@ class Frog : public GameObject {
 		{ State::DIEING, Event::DIE_SEQUENCE_EXPIRED, State::IDLE },
 		{ State::MOVE_TRANSPORT, Event::COLL_POOL, State::ALIGNING },
 		{ State::ALIGNING, Event::COLL_POOL, State::NAVIGATING },
-		{ State::NAVIGATING, Event::TARGET_POSITION_REACHED, State::INACTIVE }
+		{ State::NAVIGATING, Event::TARGET_POSITION_REACHED, State::INACTIVE },
+		{ State::TRANSPORT, Event::COLLECTING, State::COLLECTED },
+		{ State::MOVE_TRANSPORT, Event::COLLECTING, State::COLLECTED }
 	};
 
 protected:

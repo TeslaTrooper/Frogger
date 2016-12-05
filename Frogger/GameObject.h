@@ -127,6 +127,8 @@ public:
 	*/
 	bool doTransition(Event ev);
 
+	void gotoPreviousState();
+
 
 	/*
 		Über diese Funktion können alle nötigen Informationen zum Zeichnen
@@ -140,6 +142,7 @@ public:
 	void setState(State state) { stateMachine.setInitialState(state); };
 	void setSize(Vec2 size) { this->size = size; };
 	void setCollisionStruct(CollisionStruct collisionStruct) { this->collisionStruct = collisionStruct; };
+	void setTextureRegion(Rectangle textureRegion) { this->textureRegion = textureRegion; };
 
 	Rectangle getTextureRegion() { return this->textureRegion; };
 	CollisionStruct getCurrentEvent() { return currentEvent; };

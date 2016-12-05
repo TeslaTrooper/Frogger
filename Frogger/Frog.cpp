@@ -8,6 +8,7 @@ Frog::Frog(Vec2 position)
 	this->homePosition = position;
 	this->movingDuration = 0.0f;
 	this->decaeseTimer = 0;
+	this->setCollisionStruct({ Event::COLLECTING });
 }
 
 Frog::Frog(Vec2 position, State initialState) : Frog(position) {
@@ -63,6 +64,11 @@ void Frog::doLogic(GLfloat dt) {
 		case State::NAVIGATING: {
 			move(dt);
 		}; break;
+		case State::COLLECTED: {
+			setTextureRegion(objectTextureRegions.at(Objects::CAR_ORANGE));
+			gotoPreviousState();
+			move(dt);
+		}; break;
 	}
 }
 
@@ -76,6 +82,8 @@ void Frog::reset() {
 }
 
 void Frog::die(GLfloat dt) {
+	resetMovement();
+
 	decaeseTimer += dt;
 	if (decaeseTimer > 1) {
 		reset();
