@@ -181,7 +181,7 @@ void GameLogic::createPools() {
 void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 	activeFrog->doLogic(dt);
 
-	if (objectManager.getActiveFrog()->getState() == State::INACTIVE) {
+	if (activeFrog->getState() == State::INACTIVE) {
 		pools.at(currentPoolIndex).ocupied = true;
 
 		if (objectManager.getFrogsCount() > 4) {
