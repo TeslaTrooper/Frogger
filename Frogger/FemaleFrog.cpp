@@ -12,18 +12,18 @@ FemaleFrog::FemaleFrog(Vec2 position)
 	this->expired = false;
 	this->livingTime = 0;
 	this->currentDirection = Direction::RIGHT;
-	this->setCollisionStruct({ Event::COLLECTING, Vec2(0.0f, 0.0f), Rectangle(), 6 });
+	this->setCollisionInfo({ Event::COLLECTING, 6 });
 }
 
 void FemaleFrog::doLogic(GLfloat dt) {
-	doTransition(getCurrentEvent().effect);
+	doTransition(getCurrentInteraction().collisionInfo.effect);
 
 	switch (getState()) {
 		case State::TRANSPORT: {
 			idleTimer += dt;
 			livingTime += dt;
 
-			setMovement(getCurrentEvent().movement);
+			setMovement(getCurrentInteraction().movement);
 
 			if (idleTimer > 0.2) {
 				doTransition(Event::START_MOVING);
@@ -31,7 +31,7 @@ void FemaleFrog::doLogic(GLfloat dt) {
 
 				Vec2 movement = directions.at(currentDirection);
 
-				setMovement(movement.add(getCurrentEvent().movement));
+				setMovement(movement.add(getCurrentInteraction().movement));
 				this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
 			}
 
@@ -40,10 +40,10 @@ void FemaleFrog::doLogic(GLfloat dt) {
 		case State::MOVE_TRANSPORT: {
 			livingTime += dt;
 
-			GLfloat currentTransportPosition = homePosition.x + (getCurrentEvent().movement.x * livingTime);
+			GLfloat currentTransportPosition = homePosition.x + (getCurrentInteraction().movement.x * livingTime);
 
 			Rectangle targetPositionHitBox = { targetPosition, Vec2(1, 1) };
-			Rectangle transporterHitBox = { Vec2(currentTransportPosition, homePosition.y), getCurrentEvent().textureRegion.size.mul(X_TILE_SIZE) };
+			Rectangle transporterHitBox = { Vec2(currentTransportPosition, homePosition.y), getCurrentInteraction().textureRegion.size.mul(X_TILE_SIZE) };
 
 			if (!(intersects(targetPositionHitBox, transporterHitBox))) {
 				if (currentDirection == Direction::RIGHT) {
@@ -54,7 +54,7 @@ void FemaleFrog::doLogic(GLfloat dt) {
 
 				Vec2 movement = directions.at(currentDirection);
 
-				setMovement(movement.add(getCurrentEvent().movement));
+				setMovement(movement.add(getCurrentInteraction().movement));
 				this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
 			}
 

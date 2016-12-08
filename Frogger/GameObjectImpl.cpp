@@ -11,6 +11,7 @@ GameObject::GameObject(Rectangle textureRegion, const vector<TransitionElement>&
 
 	this->textureRegion = textureRegion;
 	this->setSize(Vec2(getTextureRegion().size.x*X_TILE_SIZE, getTextureRegion().size.y*Y_TILE_SIZE));
+	this->objectInfo.textureRegion = textureRegion;
 }
 
 GameObject::GameObject(Vec2 position, Vec2 size, Rectangle textureRegion, const vector<TransitionElement>& transitionSet) 
@@ -18,6 +19,12 @@ GameObject::GameObject(Vec2 position, Vec2 size, Rectangle textureRegion, const 
 
 	this->setSize(size);
 	this->textureRegion = textureRegion;
+}
+
+GameObject::GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& transitionSet) 
+	: GameObject(objectInfo.hitBox.position, objectInfo.hitBox.size, objectInfo.textureRegion, transitionSet) {
+	this->objectInfo = objectInfo;
+	this->setMovement(objectInfo.movement);
 }
 
 GameObject::~GameObject() {}
@@ -62,8 +69,8 @@ void GameObject::gotoPreviousState() {
 	stateMachine.gotoPreviousState();
 }
 
-void GameObject::registerEvent(CollisionStruct currentEvent) {
-	this->currentEvent = currentEvent;
+void GameObject::registerInteraction(ObjectInfo objectInfo) {
+	this->interactingObjectInfo = objectInfo;
 }
 
 bool GameObject::targetPositionReached(GLfloat dt) {

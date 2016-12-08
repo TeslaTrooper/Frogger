@@ -8,7 +8,7 @@ Frog::Frog(Vec2 position)
 	this->homePosition = position;
 	this->movingDuration = 0.0f;
 	this->decaeseTimer = 0;
-	this->setCollisionStruct({ Event::COLLECTING });
+	this->setCollisionInfo({ Event::COLLECTING, 6});
 }
 
 Frog::Frog(Vec2 position, State initialState) : Frog(position) {
@@ -22,13 +22,13 @@ void Frog::moveTo(Direction direction) {
 		return;
 	}
 
-	this->setMovement(movement.add(getCurrentEvent().movement));
+	this->setMovement(movement.add(getCurrentInteraction().movement));
 
 	this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
 }
 
 void Frog::doLogic(GLfloat dt) {
-	doTransition(getCurrentEvent().effect);
+	doTransition(getCurrentInteraction().collisionInfo.effect);
 	
 	switch (getState()) {
 		case State::DIEING: {
@@ -48,7 +48,7 @@ void Frog::doLogic(GLfloat dt) {
 			}
 		}; break;
 		case State::TRANSPORT: {
-			vectors[1] = getCurrentEvent().movement;
+			vectors[1] = getCurrentInteraction().movement;
 			move(dt);
 
 			if (isOutsideOfBorders()) {
@@ -58,8 +58,8 @@ void Frog::doLogic(GLfloat dt) {
 		case State::ALIGNING: {
 			float length = getCurrentMovement().length();
 			this->resetMovement();
-			vectors[0] = this->getPosition().rotateTo(getCurrentEvent().movement, length);
-			targetPosition = getCurrentEvent().movement;
+			vectors[0] = this->getPosition().rotateTo(getCurrentInteraction().hitBox.position, length);
+			targetPosition = getCurrentInteraction().hitBox.position;
 		}; break;
 		case State::NAVIGATING: {
 			move(dt);

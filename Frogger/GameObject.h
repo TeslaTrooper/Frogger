@@ -28,12 +28,10 @@ class GameObject {
 	// Die Geschwindigkeit, mit der sich das Objekt bewegen kann
 	float speed;
 
-	// Enthält Informationen darüber, was eine Kollision mit einem anderen Objekt 
-	// für Auswirkungen auf das andere Objekt hat.
-	CollisionStruct collisionStruct;
 
-	// Ist das aktuelle Event, das für dieses Objekt eingetreten ist
-	CollisionStruct currentEvent;
+	ObjectInfo objectInfo;
+	ObjectInfo interactingObjectInfo;
+
 
 	// Ist die Zustandsübergangsmenge
 	const vector<TransitionElement> transitionSet;
@@ -71,6 +69,8 @@ public:
 		@param transitionSet ist die Zustandsübergangsmenge.
 	*/
 	GameObject(Vec2 position, Vec2 size, Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
+
+	GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& transitionSet);
 
 
 	~GameObject();
@@ -116,7 +116,6 @@ public:
 		@returns Gibt ein struct zurück, welches die entsprechenden
 				 Informationen liefert.
 	*/
-	CollisionStruct getCollisionStruct() { return collisionStruct; };
 
 
 	/*
@@ -141,21 +140,23 @@ public:
 	void setSpeed(float speed) { this->speed = speed; };
 	void setState(State state) { stateMachine.setInitialState(state); };
 	void setSize(Vec2 size) { this->size = size; };
-	void setCollisionStruct(CollisionStruct collisionStruct) { this->collisionStruct = collisionStruct; };
+	void setCollisionInfo(CollisionInfo info) { this->objectInfo.collisionInfo = info; };
 	void setTextureRegion(Rectangle textureRegion) { this->textureRegion = textureRegion; };
 
 	Rectangle getTextureRegion() { return this->textureRegion; };
-	CollisionStruct getCurrentEvent() { return currentEvent; };
+
+	ObjectInfo getCurrentInteraction() { return interactingObjectInfo; };
+	ObjectInfo getObjectInfo() { return { textureRegion, getCriticalHitBox(), getCurrentMovement(), objectInfo.collisionInfo }; };
+	CollisionInfo getCollisionInfo() { return objectInfo.collisionInfo; };
 
 	void setMovement(Vec2 movement);
 	void resetMovement();
 	void move(GLfloat dt);
 
-
 	/*
 		Registriert ein neues Event.
 	*/
-	void registerEvent(CollisionStruct currentEvent);
+	void registerInteraction(ObjectInfo info);
 	
 
 	/*

@@ -23,14 +23,15 @@ class GameLogic {
 
 	vector<Rectangle> getPoolHitBoxes();
 
-	CollisionStruct getExistingCollisionStruct(Frog* frog, GameObject* obj);
-	CollisionStruct checkRiverCollision();
-	CollisionStruct checkPoolCollision();
-	CollisionStruct evaluateCollisions(vector<GameObject*> objs, Frog* frog);
+	ObjectInfo checkForCollision(Frog* frog, GameObject* obj);
+	ObjectInfo checkForRiverCollision();
+	ObjectInfo checkForPoolCollision();
+	ObjectInfo evaluateCollisions(vector<GameObject*> objs, Frog* frog);
 
 	void setupObjects();
 	void setupLabels();
 	void createPools();
+	void manageFrogs(Frog* activeFrog, float dt);
 
 public:
 	GameLogic();

@@ -45,7 +45,8 @@ public:
 	*/
 	void createFemaleFrog(int row);
 
-	void registerEventOnFemaleFrog(CollisionStruct collision);
+	//void registerEventOnFemaleFrog(CollisionStruct collision);
+	void registerInteractionOnFemaleFrog(ObjectInfo objInfo);
 
 	/*
 		Diese Funktion liefert die Koordinaten für eine bestimmte Zeile zurück.

@@ -30,34 +30,19 @@ void GameLogic::gameLoop(const GLfloat dt) {
 		objectManager.repeatObject(objs.at(i));
 	}
 
-	CollisionStruct collisionStruct = evaluateCollisions(objs, activeFrog);
-	activeFrog->registerEvent(collisionStruct);
+	ObjectInfo interactingObject = evaluateCollisions(objs, activeFrog);
+	activeFrog->registerInteraction(interactingObject);
 
-	if (collisionStruct.effect == Event::COLLECTING) {
-		objectManager.registerEventOnFemaleFrog(collisionStruct);
+	if (interactingObject.collisionInfo.effect == Event::COLLECTING) {
+		objectManager.registerInteractionOnFemaleFrog(interactingObject);
 	}
-	
 
-	activeFrog->doLogic(dt);
-
-	if (activeFrog->getState() == State::INACTIVE) {
-		pools.at(currentPoolIndex).ocupied = true;
-
-		if (objectManager.getFrogsCount() > 4) {
-			objectManager.clearFrogs();
-
-			for (int i = 0; i < pools.size(); i++) {
-				pools.at(i).ocupied = false;
-			}
-		}
-
-		objectManager.createFrog();
-	}
+	manageFrogs(activeFrog, dt);
 }
 
 void GameLogic::moveFrog(const Direction direction) {
 	objectManager.getActiveFrog()->moveTo(direction);
-	score+=1000;
+	score+=1234;
 	fontManager.setText("score", std::to_string(score));
 	objectManager.createFemaleFrog(10);
 }
@@ -90,90 +75,83 @@ void GameLogic::setupLabels() {
 	fontManager.createNewLabel("timeLabel", "TIME", Vec2(480.0f, 565.f), 0.5f);
 }
 
-CollisionStruct GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
-	Rectangle emptyRectangle = { Vec2(), Vec2() };
-	CollisionStruct objCollision = { Event::COLL_NONE, Vec2(0.0f, 0.0f), emptyRectangle, 0 };
+ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
+	ObjectInfo objInfo;
+
 	int lastPriority = 0;
-
 	for (int i = 0; i < objs.size(); i++) {
-		CollisionStruct currentCollision = getExistingCollisionStruct(frog, objs.at(i));
+		ObjectInfo currentObjInfo = checkForCollision(frog, objs.at(i));
+		Event collEffect = currentObjInfo.collisionInfo.effect;
+		int priority = currentObjInfo.collisionInfo.priority;
 
-		if (currentCollision.effect != Event::COLL_NONE && currentCollision.priority > lastPriority) {
-			objCollision = currentCollision;
-			lastPriority = currentCollision.priority;
+		if (collEffect != Event::COLL_NONE && priority > lastPriority) {
+			objInfo = currentObjInfo;
+			lastPriority = currentObjInfo.collisionInfo.priority;
 		}
 	}
 
-	CollisionStruct riverCollision = checkRiverCollision();
-	CollisionStruct poolCollision = checkPoolCollision();
+	ObjectInfo riverInfo = checkForRiverCollision();
+	ObjectInfo poolInfo = checkForPoolCollision();
 
-	int priorities[3] = { objCollision.priority, riverCollision.priority, poolCollision.priority };
+	int priorities[3] = { objInfo.collisionInfo.priority, riverInfo.collisionInfo.priority, poolInfo.collisionInfo.priority };
 
 	int last = 0;
 	for (int i = 0; i < sizeof(priorities) / sizeof(int); i++) {
 		if (priorities[i] > last) last = priorities[i];
 	}
 
-	if (objCollision.priority == last) return objCollision;
-	if (riverCollision.priority == last) return riverCollision;
-	if (poolCollision.priority == last) return poolCollision;
+	if (objInfo.collisionInfo.priority == last) return objInfo;
+	if (riverInfo.collisionInfo.priority == last) return riverInfo;
+	if (poolInfo.collisionInfo.priority == last) return poolInfo;
 
-	return { Event::COLL_NONE };
+	return EMPTY_OBJECT_INFO;
 }
 
-CollisionStruct GameLogic::getExistingCollisionStruct(Frog* frog, GameObject* obj) {
+ObjectInfo GameLogic::checkForCollision(Frog* frog, GameObject* obj) {
 	Rectangle frogHitbox = frog->getCriticalHitBox();
 	Rectangle objHitbox = obj->getCriticalHitBox();
-	Rectangle emptyRectangle = { Vec2(), Vec2() };
 
 	if (intersects(frogHitbox, objHitbox)) {
-		if (obj->getCollisionStruct().effect == Event::COLLECTING) {
-			CollisionStruct a = obj->getCollisionStruct();
-			int d = 5;
-		}
-
-		return obj->getCollisionStruct();
+		return obj->getObjectInfo();
 	}
 
-	return { Event::COLL_NONE, Vec2(0.0f, 0.0f), emptyRectangle, 0 };
+	return EMPTY_OBJECT_INFO;
 }
 
-CollisionStruct GameLogic::checkRiverCollision() {
+ObjectInfo GameLogic::checkForRiverCollision() {
 	Rectangle frogHitbox = objectManager.getActiveFrog()->getCriticalHitBox();
-	Rectangle emptyRectangle = { Vec2(), Vec2() };
 
 	if (intersects(frogHitbox, riverHitBox)) {
-		return { Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f), emptyRectangle, 4 };
+		return { Rectangle(), riverHitBox, Vec2(), {Event::COLL_LETHAL_OBJECTS, 4 } };
 	}
 
-	return { Event::COLL_NONE, Vec2(0.0f, 0.0f), emptyRectangle, 0};
+	return EMPTY_OBJECT_INFO;
 }
 
-CollisionStruct GameLogic::checkPoolCollision() {
+ObjectInfo GameLogic::checkForPoolCollision() {
 	Frog* activeFrog = objectManager.getActiveFrog();
-	Rectangle emptyRectangle = { Vec2(), Vec2() };
 
 
 	for (int i = 0; i < pools.size(); i++) {
-		if (intersects(activeFrog->getCriticalHitBox(), pools.at(i).hitBox)) {
+		if (intersects(activeFrog->getCriticalHitBox(), pools.at(i).objInfo.hitBox)) {
 			if (pools.at(i).ocupied) {
-				return { Event::COLL_LETHAL_OBJECTS, Vec2(0.0f, 0.0f) };
+				return { Rectangle(), pools.at(i).objInfo.hitBox, Vec2(), {Event::COLL_LETHAL_OBJECTS, 10 } };
 			}
 
 			float frogMiddle = activeFrog->getPosition().x + activeFrog->getSize().x / 2;
-			float poolMiddle = pools.at(i).hitBox.position.x + pools.at(i).hitBox.size.x / 2;
+			float poolMiddle = pools.at(i).objInfo.hitBox.position.x + pools.at(i).objInfo.hitBox.size.x / 2;
 
 			if (abs(frogMiddle - poolMiddle) <= X_TILE_SIZE * POOL_VALID_INTERSECTION) {
 				currentPoolIndex = i;
 
-				return pools.at(i).collisionStruct;
+				return pools.at(i).objInfo;
 			}
 
 			break;
 		}
 	}
 
-	return { Event::COLL_NONE, Vec2(0.0f, 0.0f), emptyRectangle, 0 };
+	return EMPTY_OBJECT_INFO;
 }
 
 vector<Rectangle> GameLogic::getPoolHitBoxes() {
@@ -191,12 +169,30 @@ vector<Rectangle> GameLogic::getPoolHitBoxes() {
 
 void GameLogic::createPools() {
 	vector<Rectangle> poolHitBoxes = getPoolHitBoxes();
-	map<int, CollisionStruct> collisionStructs = map<int, CollisionStruct>();
-
-	Rectangle emptyRectangle = { Vec2(), Vec2() };
 
 	for (int i = 0; i < POOLS_COUNT; i++) {
-		pools.push_back({ { Event::COLL_POOL, poolHitBoxes[i].position, emptyRectangle, 7 }, poolHitBoxes.at(i), false });
+		ObjectInfo info = EMPTY_OBJECT_INFO;
+		info.hitBox = poolHitBoxes.at(i);
+		info.collisionInfo = { Event::COLL_POOL, 7 };
+		pools.push_back({ info, false });
+	}
+}
+
+void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
+	activeFrog->doLogic(dt);
+
+	if (objectManager.getActiveFrog()->getState() == State::INACTIVE) {
+		pools.at(currentPoolIndex).ocupied = true;
+
+		if (objectManager.getFrogsCount() > 4) {
+			objectManager.clearFrogs();
+
+			for (int i = 0; i < pools.size(); i++) {
+				pools.at(i).ocupied = false;
+			}
+		}
+
+		objectManager.createFrog();
 	}
 }
 
