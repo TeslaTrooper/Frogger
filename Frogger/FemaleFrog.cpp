@@ -9,6 +9,8 @@ FemaleFrog::FemaleFrog(Vec2 position) : Opponent(position, transitionSet) {
 }
 
 void FemaleFrog::doLogic(GLfloat dt) {
+	doTransition(getCurrentInteraction().collisionInfo.effect);
+
 	switch (getState()) {
 		case State::TRANSPORT: {
 			idleTimer += dt;

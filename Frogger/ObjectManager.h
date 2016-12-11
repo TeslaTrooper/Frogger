@@ -47,14 +47,6 @@ public:
 	*/
 	void createFrog();
 
-	/*
-		Erzeugt ein Froschweibchen in einer Zeile.
-		@param row gibt an, in welcher Zeile das Froschweibchen positioniert werden soll.
-	*/
-	void createFemaleFrog(int row);
-
-	void createSnake(int row);
-
 	void createOpponent(OpponentInfo opponentInfo);
 
 	//void registerEventOnFemaleFrog(CollisionStruct collision);

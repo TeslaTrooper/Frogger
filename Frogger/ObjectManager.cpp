@@ -110,30 +110,6 @@ void ObjectManager::createFrog() {
 	frogs.push_back(new Frog(alignInRow(FROG_START_ROW, true)));
 }
 
-void ObjectManager::createFemaleFrog(int row) {
-	if (femaleFrog != nullptr) {
-		return;
-	}
-
-	Vec2 pos = alignInRow(row, false);
-	pos.x = -X_TILE_SIZE;
-
-	FemaleFrog* femaleFrog = new FemaleFrog(pos);
-	femaleFrog->registerInteraction(EMPTY_OBJECT_INFO);
-
-	//waitingOpponents.push_back(femaleFrog);
-}
-
-void ObjectManager::createSnake(int row) {
-	Vec2 pos = alignInRow(row, false);
-	pos.x = -X_TILE_SIZE;
-
-	Snake* snake = new Snake(pos);
-	snake->registerInteraction(EMPTY_OBJECT_INFO);
-
-	waitingOpponents.push_back({ Objects::SNAKE, row });
-}
-
 void ObjectManager::createOpponent(OpponentInfo opponentInfo) {
 	waitingOpponents.push_back(opponentInfo);
 }
@@ -157,12 +133,6 @@ void ObjectManager::registerInteractionOnFemaleFrog(const ObjectInfo& objInfo) {
 			return;
 		}
 	}
-
-	//Da es mehrere female frogs geben kann, muss das femaleFrog gefunden werden, welches zur
-	//interaktion geführt hat. Das muss über den vergleich der objInfo geschehen
-	//if (femaleFrog != nullptr) {
-	//	femaleFrog->registerInteraction(objInfo);
-	//}
 }
 
 int ObjectManager::getFrogsCount() {
