@@ -17,6 +17,7 @@ Frog::Frog(Vec2 position, State initialState) : Frog(position) {
 
 void Frog::moveTo(Direction direction) {
 	Vec2 movement = directions.at(direction);
+	movement = movement.mul(getSpeed());
 
 	if (!validMovement(movement) || !doTransition(Event::ARROW_KEYS)) {
 		return;
@@ -65,7 +66,7 @@ void Frog::doLogic(GLfloat dt) {
 			move(dt);
 		}; break;
 		case State::COLLECTED: {
-			setTextureRegion(objectTextureRegions.at(Objects::CAR_ORANGE));
+			setTextureRegion(objectTextureRegions.at(Objects::FROG_CARRIYING));
 			gotoPreviousState();
 			move(dt);
 		}; break;
@@ -75,6 +76,7 @@ void Frog::doLogic(GLfloat dt) {
 void Frog::reset() {
 	doTransition(Event::DIE_SEQUENCE_EXPIRED);
 
+	this->setTextureRegion(objectTextureRegions.at(Objects::PLAYER));
 	this->setPosition(homePosition);
 	this->resetMovement();
 	this->decaeseTimer = 0;

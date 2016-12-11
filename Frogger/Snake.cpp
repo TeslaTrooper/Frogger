@@ -1,6 +1,7 @@
 #include "Snake.h"
 
-Snake::Snake(Vec2 position) : Opponent(position, transitionSet) {
+Snake::Snake(Vec2 position) : Opponent(position, transitionSet, objectTextureRegions.at(Objects::SNAKE)) {
+	this->setSpeed(SPEED_SNAKE);
 	this->setCollisionInfo({ Event::COLL_LETHAL_OBJECTS, 10 });
 }
 
@@ -25,6 +26,7 @@ void Snake::doLogic(GLfloat dt) {
 			}
 
 			Vec2 movement = directions.at(getDirection());
+			movement = movement.mul(getSpeed());
 			setMovement(movement.add(getCurrentInteraction().movement));
 
 			move(dt);

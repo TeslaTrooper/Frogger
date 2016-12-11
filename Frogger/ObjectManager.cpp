@@ -167,14 +167,19 @@ void ObjectManager::createWaitingOpponent(const ObjectInfo& objInfo) {
 		return;
 	}
 
-	OpponentInfo opponentInfo = waitingOpponents.front();
+	OpponentInfo opponentInfo = { Objects::PLAYER, -1 };
+	for (int i = 0; i < waitingOpponents.size(); i++) {
+		int y = (int) alignInRow(waitingOpponents.at(i).row, false).y;
+
+		if (y == (int) objInfo.hitBox.position.y) {
+			opponentInfo = waitingOpponents.at(i);
+			break;
+		}
+	}
+
+	if (opponentInfo.row == -1) return;
 
 	Vec2 pos = alignInRow(opponentInfo.row, false);
-	pos.x = -X_TILE_SIZE;
-
-	if (pos.y != objInfo.hitBox.position.y) {
-		return;
-	}
 
 	Opponent* opponent;
 	switch (opponentInfo.objectType) {

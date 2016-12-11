@@ -21,6 +21,9 @@ GameObject::GameObject(Vec2 position, Vec2 size, Rectangle textureRegion, const 
 	this->textureRegion = textureRegion;
 }
 
+GameObject::GameObject(Vec2 position, Rectangle textureRegion, const vector<TransitionElement>& transitionSet) 
+	: GameObject(position, textureRegion.size.mul(X_TILE_SIZE), textureRegion, transitionSet) {}
+
 GameObject::GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& transitionSet) 
 	: GameObject(objectInfo.hitBox.position, objectInfo.hitBox.size, objectInfo.textureRegion, transitionSet) {
 	this->objectInfo = objectInfo;

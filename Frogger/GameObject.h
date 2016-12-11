@@ -72,6 +72,8 @@ public:
 
 	GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& transitionSet);
 
+	GameObject(Vec2 position, Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
+
 
 	~GameObject();
 

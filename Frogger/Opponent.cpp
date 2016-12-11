@@ -1,10 +1,9 @@
 #include "Opponent.h"
 
-Opponent::Opponent(Vec2 position, const vector<TransitionElement>& transitionSet)
-	: GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objectTextureRegions.at(Objects::PLAYER), transitionSet) {
+Opponent::Opponent(Vec2 position, const vector<TransitionElement>& transitionSet, const Rectangle& textureRegion)
+	: GameObject(position, textureRegion, transitionSet) {
 
 	this->setState(State::IDLE);
-	this->setSpeed(FROG_SPEED);
 	this->homePosition = position;
 	this->expired = false;
 	this->livingTime = 0;

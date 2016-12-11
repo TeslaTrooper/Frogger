@@ -28,17 +28,11 @@
     <Filter Include="Source Files\Objects\Derived">
       <UniqueIdentifier>{43d19e57-335b-4ca1-b7f9-83b154967266}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\numbers">
-      <UniqueIdentifier>{acd763c6-f01a-4e9b-97f2-6e6588b15473}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Fonts">
       <UniqueIdentifier>{44040fd6-b7de-4942-8bea-bec5ff390e0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Fonts">
       <UniqueIdentifier>{6e319dd0-e307-4929-9d8e-9a169b50b4ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\letters">
-      <UniqueIdentifier>{cbb74bb3-3d0c-4ea0-ac26-f1ce7ebf3934}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{38370d5d-3a73-436d-8535-36dba10e19ba}</UniqueIdentifier>
@@ -179,130 +173,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\textures\wall.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\textures\bg.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\textures\1.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\2.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\3.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\4.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\5.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\6.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\7.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\8.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\9.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\0.png">
-      <Filter>Resource Files\numbers</Filter>
-    </Image>
-    <Image Include="..\textures\65.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\66.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\67.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\68.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\69.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\70.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\71.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\72.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\73.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\74.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\75.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\76.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\77.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\78.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\79.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\80.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\81.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\82.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\89.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\90.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\83.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\84.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\85.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\86.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\87.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\88.png">
-      <Filter>Resource Files\letters</Filter>
-    </Image>
-    <Image Include="..\textures\stammSmall.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\textures\stammLarge.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\textures\stammMedium.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
 </Project>

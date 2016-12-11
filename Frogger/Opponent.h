@@ -17,7 +17,7 @@ protected:
 	bool isOutsideOfBorders();
 
 public:
-	Opponent(Vec2 position, const vector<TransitionElement>& transitionSet);
+	Opponent(Vec2 position, const vector<TransitionElement>& transitionSet, const Rectangle& textureRegion);
 	~Opponent() {};
 
 	void setExpired(bool value) { this->expired = value; };

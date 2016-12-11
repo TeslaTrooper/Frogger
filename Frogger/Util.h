@@ -53,7 +53,8 @@ enum Objects {
 	THREE_ELEMENT_CHAIN,
 	PLAYER,
 	FEMALE_FROG,
-	SNAKE
+	SNAKE,
+	FROG_CARRIYING
 };
 
 enum State {
@@ -143,10 +144,10 @@ struct TransitionElement {
 };
 
 const map<Direction, Vec2> directions = {
-	{ Direction::LEFT, Vec2(-FROG_SPEED, 0.0f) },
-	{ Direction::UP, Vec2(0.0f, -FROG_SPEED) },
-	{ Direction::RIGHT, Vec2(FROG_SPEED, 0.0f) },
-	{ Direction::DOWN, Vec2(0.0f, FROG_SPEED) },
+	{ Direction::LEFT, Vec2(-1.0f, 0.0f) },
+	{ Direction::UP, Vec2(0.0f, -1.0f) },
+	{ Direction::RIGHT, Vec2(1.0f, 0.0f) },
+	{ Direction::DOWN, Vec2(0.0f, 1.0f) },
 	{ Direction::NONE, Vec2(0.0f, 0.0f) }
 };
 
@@ -204,6 +205,9 @@ const map<Objects, Rectangle> objectTextureRegions = {
 	{ MEDIUM_TREE,{ Vec2(0, 5), Vec2(4,1) } },
 	{ SMALL_TREE,{ Vec2(4, 5), Vec2(3,1) } },
 	{ THREE_ELEMENT_CHAIN,{ Vec2(7, 5), Vec2(3,1) } },
+	{ FEMALE_FROG,{Vec2(1, 6), Vec2(1, 1)}},
+	{ SNAKE,{ Vec2(7, 6), Vec2(2, 1) } },
+	{ FROG_CARRIYING,{ Vec2(9, 6), Vec2(1, 1) } }
 };
 
 const map<Objects, ObjectInfo> objectInitializer = {

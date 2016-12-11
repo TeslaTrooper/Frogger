@@ -1,10 +1,10 @@
 #include "FemaleFrog.h"
 #include <iostream>
 
-FemaleFrog::FemaleFrog(Vec2 position) : Opponent(position, transitionSet) {
-
+FemaleFrog::FemaleFrog(Vec2 position) : Opponent(position, transitionSet, objectTextureRegions.at(Objects::FEMALE_FROG)) {
 	this->movingDuration = 0.0f;
 	this->idleTimer = 0;
+	this->setSpeed(FROG_SPEED);
 	this->setCollisionInfo({ Event::COLLECTING, 6 });
 }
 
@@ -17,11 +17,12 @@ void FemaleFrog::doLogic(GLfloat dt) {
 
 			setMovement(getCurrentInteraction().movement);
 
-			if (idleTimer > 0.2) {
+			if (idleTimer > 1.0) {
 				doTransition(Event::START_MOVING);
 				idleTimer = 0;
 
 				Vec2 movement = directions.at(getDirection());
+				movement = movement.mul(getSpeed());
 
 				setMovement(movement.add(getCurrentInteraction().movement));
 				this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
@@ -43,6 +44,7 @@ void FemaleFrog::doLogic(GLfloat dt) {
 				}
 
 				Vec2 movement = directions.at(getDirection());
+				movement = movement.mul(getSpeed());
 
 				setMovement(movement.add(getCurrentInteraction().movement));
 				this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));

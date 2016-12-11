@@ -189,49 +189,6 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\textures\0.png" />
-    <Image Include="..\textures\1.png" />
-    <Image Include="..\textures\2.png" />
-    <Image Include="..\textures\3.png" />
-    <Image Include="..\textures\4.png" />
-    <Image Include="..\textures\5.png" />
-    <Image Include="..\textures\6.png" />
-    <Image Include="..\textures\65.png" />
-    <Image Include="..\textures\66.png" />
-    <Image Include="..\textures\67.png" />
-    <Image Include="..\textures\68.png" />
-    <Image Include="..\textures\69.png" />
-    <Image Include="..\textures\7.png" />
-    <Image Include="..\textures\70.png" />
-    <Image Include="..\textures\71.png" />
-    <Image Include="..\textures\72.png" />
-    <Image Include="..\textures\73.png" />
-    <Image Include="..\textures\74.png" />
-    <Image Include="..\textures\75.png" />
-    <Image Include="..\textures\76.png" />
-    <Image Include="..\textures\77.png" />
-    <Image Include="..\textures\78.png" />
-    <Image Include="..\textures\79.png" />
-    <Image Include="..\textures\8.png" />
-    <Image Include="..\textures\80.png" />
-    <Image Include="..\textures\81.png" />
-    <Image Include="..\textures\82.png" />
-    <Image Include="..\textures\83.png" />
-    <Image Include="..\textures\84.png" />
-    <Image Include="..\textures\85.png" />
-    <Image Include="..\textures\86.png" />
-    <Image Include="..\textures\87.png" />
-    <Image Include="..\textures\88.png" />
-    <Image Include="..\textures\89.png" />
-    <Image Include="..\textures\9.png" />
-    <Image Include="..\textures\90.png" />
-    <Image Include="..\textures\bg.jpg" />
-    <Image Include="..\textures\stammLarge.jpg" />
-    <Image Include="..\textures\stammMedium.jpg" />
-    <Image Include="..\textures\stammSmall.jpg" />
-    <Image Include="..\textures\wall.jpg" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
