@@ -29,6 +29,10 @@ Vec2 ObjectManager::alignInRow(int row, bool centered) {
 	return Vec2(320.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
 }
 
+int ObjectManager::fromYToRow(float y) {
+	return ((y - OFFSET_Y) / -Y_TILE_SIZE) + TILES_Y;
+}
+
 vector<GameObject*> ObjectManager::getAll() {
 	vector<GameObject*> objs = vector<GameObject*>();
 
@@ -36,6 +40,10 @@ vector<GameObject*> ObjectManager::getAll() {
 		vector<GameObject*>* objsInRow = iterator->second;
 
 		for (int i = 0; i < objsInRow->size(); i++) {
+			if (Opponent* opp = dynamic_cast<Opponent*>(objsInRow->at(i))) {
+				if (opp->isExpired()) continue;
+			}
+
 			objs.push_back(objsInRow->at(i));
 		}
 	}
@@ -63,6 +71,10 @@ vector<Drawable> ObjectManager::getDrawables() {
 
 	for (it_type iterator = rowObjMap->begin(); iterator != rowObjMap->end(); iterator++) {
 		for (int i = 0; i < iterator->second->size(); i++) {
+			if (Opponent* opp = dynamic_cast<Opponent*>(iterator->second->at(i))) {
+				if (opp->isExpired()) continue;
+			}
+
 			drawables.push_back(iterator->second->at(i)->getDrawable());
 		}
 	}
@@ -106,8 +118,24 @@ void ObjectManager::createFemaleFrog(int row) {
 	Vec2 pos = alignInRow(row, false);
 	pos.x = -X_TILE_SIZE;
 
-	femaleFrog = new FemaleFrog(pos);
+	FemaleFrog* femaleFrog = new FemaleFrog(pos);
 	femaleFrog->registerInteraction(EMPTY_OBJECT_INFO);
+
+	//waitingOpponents.push_back(femaleFrog);
+}
+
+void ObjectManager::createSnake(int row) {
+	Vec2 pos = alignInRow(row, false);
+	pos.x = -X_TILE_SIZE;
+
+	Snake* snake = new Snake(pos);
+	snake->registerInteraction(EMPTY_OBJECT_INFO);
+
+	waitingOpponents.push_back({ Objects::SNAKE, row });
+}
+
+void ObjectManager::createOpponent(OpponentInfo opponentInfo) {
+	waitingOpponents.push_back(opponentInfo);
 }
 
 Frog* ObjectManager::getActiveFrog() {
@@ -118,10 +146,23 @@ Frog* ObjectManager::getActiveFrog() {
 	}
 }
 
-void ObjectManager::registerInteractionOnFemaleFrog(ObjectInfo objInfo) {
-	if (femaleFrog != nullptr) {
-		femaleFrog->registerInteraction(objInfo);
+void ObjectManager::registerInteractionOnFemaleFrog(const ObjectInfo& objInfo) {
+	int row = fromYToRow(objInfo.hitBox.position.y);
+
+	vector<GameObject*>* objs = rowObjMap->at(row);
+
+	for (int i = 0; i < objs->size(); i++) {
+		if (objs->at(i)->getObjectInfo() == objInfo) {
+			objs->at(i)->registerInteraction(objInfo);
+			return;
+		}
 	}
+
+	//Da es mehrere female frogs geben kann, muss das femaleFrog gefunden werden, welches zur
+	//interaktion geführt hat. Das muss über den vergleich der objInfo geschehen
+	//if (femaleFrog != nullptr) {
+	//	femaleFrog->registerInteraction(objInfo);
+	//}
 }
 
 int ObjectManager::getFrogsCount() {
@@ -133,24 +174,51 @@ void ObjectManager::clearFrogs() {
 }
 
 void ObjectManager::repeatObject(GameObject* obj) {
-	if (FemaleFrog* femaleFrog = dynamic_cast<FemaleFrog*>(obj)) {
+	if (Opponent* opp = dynamic_cast<Opponent*>(obj)) {
 		return;
 	}
 
 
 	if (obj->getPosition().x < -obj->getSize().x) {
 		obj->setPosition(Vec2(700 + obj->getSize().x, obj->getPosition().y));
+
+		createWaitingOpponent(obj->getObjectInfo());
 	}
 
 	if (obj->getPosition().x > 700 + obj->getSize().x) {
 		obj->setPosition(Vec2(-obj->getSize().x, obj->getPosition().y));
 
-		if (femaleFrog != nullptr && femaleFrog->getPosition().y == obj->getPosition().y) {
-			if (femaleFrog->getState() == State::IDLE) {
-				femaleFrog->setPosition(Vec2(-obj->getSize().x, femaleFrog->getPosition().y));
-				femaleFrog->useAsNewHomePosition(Vec2(-obj->getSize().x, femaleFrog->getPosition().y));
-				femaleFrog->registerInteraction(obj->getObjectInfo());
-			}
-		}
+		createWaitingOpponent(obj->getObjectInfo());
 	}
+}
+
+void ObjectManager::createWaitingOpponent(const ObjectInfo& objInfo) {
+	if (waitingOpponents.size() == 0) {
+		return;
+	}
+
+	OpponentInfo opponentInfo = waitingOpponents.front();
+
+	Vec2 pos = alignInRow(opponentInfo.row, false);
+	pos.x = -X_TILE_SIZE;
+
+	if (pos.y != objInfo.hitBox.position.y) {
+		return;
+	}
+
+	Opponent* opponent;
+	switch (opponentInfo.objectType) {
+		case Objects::SNAKE: opponent = new Snake(pos); break;
+		case Objects::FEMALE_FROG: opponent = new FemaleFrog(pos); break;
+	}
+
+	opponent->setPosition(Vec2(objInfo.hitBox.position.x, opponent->getPosition().y));
+	opponent->useAsNewHomePosition(Vec2(objInfo.hitBox.position.x, opponent->getPosition().y));
+	opponent->registerInteraction(objInfo);
+
+	rowObjMap->at(opponentInfo.row)->push_back(opponent);
+
+	vector<OpponentInfo>::iterator it = find_if(waitingOpponents.begin(), waitingOpponents.end(),
+		[&](const OpponentInfo& info) -> bool { return opponentInfo.objectType == info.objectType && opponentInfo.row == info.row; });
+	waitingOpponents.erase(it);
 }

@@ -25,6 +25,10 @@ public:
 
 	float length();
 
+	bool operator==(const Vec2& vec) {
+		return vec.x == x && vec.y == y;
+	};
+
 };
 
 #endif VEC2

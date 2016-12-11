@@ -40,11 +40,14 @@ void GameLogic::gameLoop(const GLfloat dt) {
 	manageFrogs(activeFrog, dt);
 }
 
+int a = 8;
+
 void GameLogic::moveFrog(const Direction direction) {
 	objectManager.getActiveFrog()->moveTo(direction);
 	score+=1234;
 	fontManager.setText("score", std::to_string(score));
-	objectManager.createFemaleFrog(10);
+	objectManager.createOpponent({ Objects::SNAKE, 9 });
+	objectManager.createOpponent({ Objects::FEMALE_FROG, 9 });
 }
 
 

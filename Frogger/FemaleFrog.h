@@ -1,26 +1,17 @@
-#ifndef FEMALE_FROG
-#define FEMALE_FROG
+#ifndef _FEMALE_FROG
+#define _FEMALE_FROG
 
 #include <vector>
 
-#include "GameObject.h"
+#include "Opponent.h"
 #include "Util.h"
 
 using namespace std;
 
-class FemaleFrog : public GameObject {
+class FemaleFrog : public Opponent {
 	GLfloat movingDuration;
 	GLfloat idleTimer;
-	GLfloat livingTime;
-
 	Vec2 targetPosition;
-	Vec2 homePosition;
-
-	Direction currentDirection;
-
-	bool expired;
-
-	bool isOutsideOfBorders();
 
 	const vector<TransitionElement> transitionSet = {
 		{ State::IDLE, Event::COLL_TREE_TURTLE, State::TRANSPORT },
@@ -37,12 +28,8 @@ protected:
 public:
 	FemaleFrog(Vec2 position);
 
-	bool isExpired() { return expired; };
-
-	void useAsNewHomePosition(Vec2 pos);
-
 	// @Override
-	void doLogic(GLfloat dt);
+	virtual void doLogic(GLfloat dt);
 };
 
-#endif FEMALE_FROG
+#endif _FEMALE_FROG

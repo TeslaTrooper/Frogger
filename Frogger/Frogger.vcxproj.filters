@@ -105,6 +105,12 @@
     <ClCompile Include="FemaleFrog.cpp">
       <Filter>Source Files\Objects\Derived</Filter>
     </ClCompile>
+    <ClCompile Include="Opponent.cpp">
+      <Filter>Source Files\Objects\Derived</Filter>
+    </ClCompile>
+    <ClCompile Include="Snake.cpp">
+      <Filter>Source Files\Objects\Derived</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -162,6 +168,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FemaleFrog.h">
+      <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake.h">
+      <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="Opponent.h">
       <Filter>Header Files\Objects\Derived</Filter>
     </ClInclude>
   </ItemGroup>

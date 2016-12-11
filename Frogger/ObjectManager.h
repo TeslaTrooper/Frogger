@@ -3,9 +3,12 @@
 
 #include <vector>
 #include <map>
+#include <algorithm>
 
 #include "Frog.h"
 #include "FemaleFrog.h"
+#include "Snake.h"
+#include "Util.h"
 
 using namespace std;
 
@@ -16,8 +19,13 @@ protected:
 
 	map<int, vector<GameObject*>*>* rowObjMap;
 	vector<Frog*> frogs;
+	vector<OpponentInfo> waitingOpponents;
 
 	FemaleFrog* femaleFrog;
+
+	void createWaitingOpponent(const ObjectInfo& objInfo);
+
+	int fromYToRow(float y);
 
 public:
 	ObjectManager();
@@ -45,8 +53,12 @@ public:
 	*/
 	void createFemaleFrog(int row);
 
+	void createSnake(int row);
+
+	void createOpponent(OpponentInfo opponentInfo);
+
 	//void registerEventOnFemaleFrog(CollisionStruct collision);
-	void registerInteractionOnFemaleFrog(ObjectInfo objInfo);
+	void registerInteractionOnFemaleFrog(const ObjectInfo& objInfo);
 
 	/*
 		Diese Funktion liefert die Koordinaten für eine bestimmte Zeile zurück.

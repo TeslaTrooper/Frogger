@@ -1,27 +1,17 @@
 #include "FemaleFrog.h"
 #include <iostream>
 
-FemaleFrog::FemaleFrog(Vec2 position) 
-	: GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objectTextureRegions.at(Objects::PLAYER), transitionSet) {
+FemaleFrog::FemaleFrog(Vec2 position) : Opponent(position, transitionSet) {
 
-	this->setState(State::IDLE);
-	this->setSpeed(FROG_SPEED);
 	this->movingDuration = 0.0f;
 	this->idleTimer = 0;
-	this->homePosition = position;
-	this->expired = false;
-	this->livingTime = 0;
-	this->currentDirection = Direction::RIGHT;
 	this->setCollisionInfo({ Event::COLLECTING, 6 });
 }
 
 void FemaleFrog::doLogic(GLfloat dt) {
-	doTransition(getCurrentInteraction().collisionInfo.effect);
-
 	switch (getState()) {
 		case State::TRANSPORT: {
 			idleTimer += dt;
-			livingTime += dt;
 
 			setMovement(getCurrentInteraction().movement);
 
@@ -29,7 +19,7 @@ void FemaleFrog::doLogic(GLfloat dt) {
 				doTransition(Event::START_MOVING);
 				idleTimer = 0;
 
-				Vec2 movement = directions.at(currentDirection);
+				Vec2 movement = directions.at(getDirection());
 
 				setMovement(movement.add(getCurrentInteraction().movement));
 				this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
@@ -38,21 +28,19 @@ void FemaleFrog::doLogic(GLfloat dt) {
 			move(dt);
 		}; break;
 		case State::MOVE_TRANSPORT: {
-			livingTime += dt;
-
-			GLfloat currentTransportPosition = homePosition.x + (getCurrentInteraction().movement.x * livingTime);
+			GLfloat currentTransportPosition = getHomePosition().x + (getCurrentInteraction().movement.x * getLivingTime());
 
 			Rectangle targetPositionHitBox = { targetPosition, Vec2(1, 1) };
-			Rectangle transporterHitBox = { Vec2(currentTransportPosition, homePosition.y), getCurrentInteraction().textureRegion.size.mul(X_TILE_SIZE) };
+			Rectangle transporterHitBox = { Vec2(currentTransportPosition, getHomePosition().y), getCurrentInteraction().textureRegion.size.mul(X_TILE_SIZE) };
 
 			if (!(intersects(targetPositionHitBox, transporterHitBox))) {
-				if (currentDirection == Direction::RIGHT) {
-					currentDirection = Direction::LEFT;
+				if (getDirection() == Direction::RIGHT) {
+					setDirection(Direction::LEFT);
 				} else {
-					currentDirection = Direction::RIGHT;
+					setDirection(Direction::RIGHT);
 				}
 
-				Vec2 movement = directions.at(currentDirection);
+				Vec2 movement = directions.at(getDirection());
 
 				setMovement(movement.add(getCurrentInteraction().movement));
 				this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
@@ -61,29 +49,14 @@ void FemaleFrog::doLogic(GLfloat dt) {
 			move(dt);
 		}; break;
 		case State::COLLECTED: {
-			this->expired = true;
+			setExpired(true);
 		}; return;
 	}
 
-	
-	this->expired = isOutsideOfBorders();
+	increaseLivingTime(dt);
+	setExpired(Opponent::isOutsideOfBorders());
 }
 
-void FemaleFrog::useAsNewHomePosition(Vec2 position) {
-	homePosition = position;
-}
-
-bool FemaleFrog::isOutsideOfBorders() {
-	if (this->getPosition().x > X_TILE_SIZE * TILES_X && homePosition.x < 0) {
-		return true;
-	}
-
-	if (this->getPosition().x < 0 && homePosition.x > 0) {
-		return true;
-	}
-
-	return false;
-}
 
 bool FemaleFrog::targetPositionReached(GLfloat dt) {
 	if (getState() == State::TRANSPORT) {

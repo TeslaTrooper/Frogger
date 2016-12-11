@@ -51,7 +51,9 @@ enum Objects {
 	SMALL_TREE,
 	TWO_ELEMENT_CHAIN,
 	THREE_ELEMENT_CHAIN,
-	PLAYER
+	PLAYER,
+	FEMALE_FROG,
+	SNAKE
 };
 
 enum State {
@@ -78,6 +80,10 @@ enum DrawableType {
 struct Rectangle {
 	Vec2 position;
 	Vec2 size;
+
+	bool operator==(const Rectangle& rect) {
+		return position == rect.position && size == rect.size;
+	}
 };
 
 /*
@@ -87,16 +93,14 @@ passieren soll.
 movement gibt in Abhängigkeit von effect an, in wie weit die Kollision
 Auswirkungen auf den aktuellen Bewegungsvektor hat.
 */
-struct CollisionStruct {
-	Event effect;
-	Vec2 movement;
-	Rectangle textureRegion;
-	int priority;
-};
-
 struct CollisionInfo {
 	Event effect;
 	int priority;
+
+	bool operator==(const CollisionInfo& collInfo) {
+		return collInfo.effect == effect &&
+			collInfo.priority == priority;
+	}
 };
 
 /*
@@ -107,6 +111,18 @@ struct ObjectInfo {
 	Rectangle hitBox;
 	Vec2 movement;
 	CollisionInfo collisionInfo;
+
+	bool operator==(const ObjectInfo& objInfo) {
+		return collisionInfo == objInfo.collisionInfo &&
+			movement == objInfo.movement &&
+			hitBox == objInfo.hitBox &&
+			textureRegion == objInfo.textureRegion;
+	}
+};
+
+struct OpponentInfo {
+	Objects objectType;
+	int row;
 };
 
 struct Drawable {
@@ -187,19 +203,6 @@ const map<Objects, Rectangle> objectTextureRegions = {
 	{ MEDIUM_TREE,{ Vec2(0, 5), Vec2(4,1) } },
 	{ SMALL_TREE,{ Vec2(4, 5), Vec2(3,1) } },
 	{ THREE_ELEMENT_CHAIN,{ Vec2(7, 5), Vec2(3,1) } },
-};
-
-const map<Objects, CollisionStruct> objDefinitions = {
-	{ CAR_ORANGE, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_ORANGE, 0.0f), objectTextureRegions.at(CAR_ORANGE), 10 } },
-	{ CAR_RED, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_RED, 0.0f), objectTextureRegions.at(CAR_RED), 10 } },
-	{ CAR_WHITE, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_WHITE, 0.0f), objectTextureRegions.at(CAR_WHITE), 10 } },
-	{ CAR_YELLOW, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_CAR_YELLOW, 0.0f), objectTextureRegions.at(CAR_YELLOW), 10 } },
-	{ TRUCK, { Event::COLL_LETHAL_OBJECTS, Vec2(SPEED_TRUCK, 0.0f), objectTextureRegions.at(TRUCK), 10 } },
-	{ LARGE_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_LARGE_TREE, 0.0f), objectTextureRegions.at(LARGE_TREE), 5 } },
-	{ TWO_ELEMENT_CHAIN, { Event::COLL_TREE_TURTLE, Vec2(SPEED_TWO_ELEMENT_CHAIN, 0.0f), objectTextureRegions.at(TWO_ELEMENT_CHAIN), 5 } },
-	{ MEDIUM_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_MEDIUM_TREE, 0.0f), objectTextureRegions.at(MEDIUM_TREE), 5 } },
-	{ SMALL_TREE, { Event::COLL_TREE_TURTLE, Vec2(SPEED_SMALL_TREE, 0.0f), objectTextureRegions.at(SMALL_TREE), 5 } },
-	{ THREE_ELEMENT_CHAIN, { Event::COLL_TREE_TURTLE, Vec2(SPEED_THREE_ELEMENT_CHAIN, 0.0f), objectTextureRegions.at(THREE_ELEMENT_CHAIN), 5 } }
 };
 
 const map<Objects, ObjectInfo> objectInitializer = {
