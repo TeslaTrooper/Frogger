@@ -23,7 +23,6 @@ class FemaleFrog : public Opponent {
 
 	static const map<Direction, Rectangle> textureSet;
 
-	void setValidMovement(GLfloat dt);
 	void idle(GLfloat dt);
 protected:
 	// @Override

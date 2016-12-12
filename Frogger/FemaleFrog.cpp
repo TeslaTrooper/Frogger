@@ -43,7 +43,12 @@ void FemaleFrog::idle(GLfloat dt) {
 		doTransition(Event::START_MOVING);
 		idleTimer = 0;
 
-		setValidMovement(dt);
+		Vec2 currentMovement = directions.at(getDirection());
+
+		Vec2 tmpTargetPosition = getPosition().add(currentMovement.mul(getSize().x));
+		tmpTargetPosition = tmpTargetPosition.add({ getSize().x / 2, 0.0f });
+
+		setValidMovement(tmpTargetPosition.x, tmpTargetPosition.x);
 
 		Vec2 movement = directions.at(getDirection());
 		movement = movement.mul(getSpeed());
@@ -56,28 +61,6 @@ void FemaleFrog::idle(GLfloat dt) {
 	}
 
 	move(dt);
-}
-
-void FemaleFrog::setValidMovement(GLfloat dt) {
-	Vec2 movement = directions.at(getDirection());
-
-	Vec2 tmpTargetPosition = getPosition().add(movement.mul(getSize().x));
-	tmpTargetPosition = tmpTargetPosition.add({ getSize().x / 2, 0.0f });
-
-	GLfloat currentTransportPosition = getHomePosition().x + (getCurrentInteraction().movement.x * getLivingTime());
-	Rectangle transporterHitBox = { Vec2(currentTransportPosition, getHomePosition().y), getCurrentInteraction().textureRegion.size.mul(X_TILE_SIZE) };
-
-	if (getDirection() == Direction::RIGHT) {
-		if (tmpTargetPosition.x > currentTransportPosition + transporterHitBox.size.x) {
-			setDirection(Direction::LEFT);
-		}
-	}
-
-	if (getDirection() == Direction::LEFT) {
-		if (tmpTargetPosition.x < currentTransportPosition) {
-			setDirection(Direction::RIGHT);
-		}
-	}
 }
 
 bool FemaleFrog::targetPositionReached(GLfloat dt) {

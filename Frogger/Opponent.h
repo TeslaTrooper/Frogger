@@ -15,6 +15,7 @@ class Opponent : public GameObject {
 
 protected:
 	bool isOutsideOfBorders();
+	void setValidMovement(float leftThreshold, float rightThreshold);
 
 public:
 	Opponent(Vec2 position, const Rectangle& textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet);

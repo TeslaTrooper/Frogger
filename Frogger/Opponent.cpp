@@ -22,6 +22,23 @@ bool Opponent::isOutsideOfBorders() {
 	return false;
 }
 
+void Opponent::setValidMovement(float leftThreshold, float rightThreshold) {
+	GLfloat currentTransportPosition = getHomePosition().x + (getCurrentInteraction().movement.x * getLivingTime());
+	Rectangle transporterHitBox = { Vec2(currentTransportPosition, getHomePosition().y), getCurrentInteraction().textureRegion.size.mul(X_TILE_SIZE) };
+
+	if (getDirection() == Direction::RIGHT) {
+		if (rightThreshold > currentTransportPosition + transporterHitBox.size.x) {
+			setDirection(Direction::LEFT);
+		}
+	}
+
+	if (getDirection() == Direction::LEFT) {
+		if (leftThreshold < currentTransportPosition) {
+			setDirection(Direction::RIGHT);
+		}
+	}
+}
+
 void Opponent::doLogic(GLfloat dt) {
 	GameObject::doLogic(dt);
 }

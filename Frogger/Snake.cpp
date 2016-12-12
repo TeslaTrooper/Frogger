@@ -18,17 +18,7 @@ void Snake::doLogic(GLfloat dt) {
 			float currentTransportPosition = getHomePosition().x + (getCurrentInteraction().movement.x * getLivingTime());
 			Rectangle transporterHitBox = { Vec2(currentTransportPosition, getHomePosition().y), getCurrentInteraction().textureRegion.size.mul(X_TILE_SIZE) };
 
-			if (getDirection() == Direction::LEFT) {
-				if (getPosition().x < transporterHitBox.position.x) {
-					setDirection(Direction::RIGHT);
-				}
-			}
-
-			if (getDirection() == Direction::RIGHT) {
-				if (getPosition().x + getSize().x > transporterHitBox.position.x + transporterHitBox.size.x) {
-					setDirection(Direction::LEFT);
-				}
-			}
+			setValidMovement(getPosition().x, getPosition().x + getSize().x);
 
 			Vec2 movement = directions.at(getDirection());
 			movement = movement.mul(getSpeed());
