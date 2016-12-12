@@ -20,7 +20,6 @@ class Frog : public GameObject {
 
 	bool isOutsideOfBorders();
 
-
 	const vector<TransitionElement> transitionSet = {
 		{ State::IDLE, Event::ARROW_KEYS, State::MOVING },
 		{ State::MOVING, Event::TARGET_POSITION_REACHED, State::IDLE },
@@ -39,6 +38,8 @@ class Frog : public GameObject {
 		{ State::TRANSPORT, Event::COLLECTING, State::COLLECTED },
 		{ State::MOVE_TRANSPORT, Event::COLLECTING, State::COLLECTED }
 	};
+
+	static const map<Direction, Rectangle> textureSet;
 
 protected:
 	// @Override

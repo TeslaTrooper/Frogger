@@ -150,12 +150,12 @@ void ObjectManager::repeatObject(GameObject* obj) {
 
 
 	if (obj->getPosition().x < -obj->getSize().x) {
-		obj->setPosition(Vec2(700 + obj->getSize().x, obj->getPosition().y));
+		obj->setPosition(Vec2(WINDOW_WIDTH, obj->getPosition().y));
 
 		createWaitingOpponent(obj->getObjectInfo());
 	}
 
-	if (obj->getPosition().x > 700 + obj->getSize().x) {
+	if (obj->getPosition().x > WINDOW_WIDTH + obj->getSize().x) {
 		obj->setPosition(Vec2(-obj->getSize().x, obj->getPosition().y));
 
 		createWaitingOpponent(obj->getObjectInfo());

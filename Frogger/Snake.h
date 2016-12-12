@@ -9,6 +9,8 @@ class Snake : public Opponent {
 		{ State::IDLE, Event::COLL_TREE_TURTLE, State::MOVE_TRANSPORT }
 	};
 
+	static const map<Direction, Rectangle> textureSet;
+
 public:
 	Snake(Vec2 position);
 	~Snake() {};

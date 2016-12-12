@@ -1,13 +1,13 @@
 #include "Opponent.h"
 
-Opponent::Opponent(Vec2 position, const vector<TransitionElement>& transitionSet, const Rectangle& textureRegion)
-	: GameObject(position, textureRegion, transitionSet) {
+Opponent::Opponent(Vec2 position, const Rectangle& textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet)
+	: GameObject(position, textureRegion, textureSet, transitionSet) {
 
 	this->setState(State::IDLE);
 	this->homePosition = position;
 	this->expired = false;
 	this->livingTime = 0;
-	this->currentDirection = Direction::RIGHT;
+	this->currentDirection = Direction::LEFT;
 }
 
 bool Opponent::isOutsideOfBorders() {

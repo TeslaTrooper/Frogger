@@ -36,11 +36,16 @@ class GameObject {
 	// Ist die Zustandsübergangsmenge
 	const vector<TransitionElement> transitionSet;
 
+	map<Direction, Rectangle> textureSet;
+
 protected:
 	// Aus den 2 Vektoren wird der resultierende Vektor gebildet
 	Vec2 vectors[2];
 
 	virtual bool targetPositionReached(GLfloat dt);
+
+	Rectangle getTextureRegionFor(Direction direction) { return this->textureSet.at(direction); };
+	void setTextureRegion(Rectangle textureRegion) { this->textureRegion = textureRegion; };
 
 public:
 
@@ -58,7 +63,7 @@ public:
 		@param textureRegion gibt die Position und Größe der Textur an.
 		@param transitionSet ist die Zustandsübergangsmenge.
 	*/
-	GameObject(Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
+	//GameObject(Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
 
 
 	/*
@@ -68,11 +73,9 @@ public:
 		@param textureRegion gibt die Position und Größe der Textur an.
 		@param transitionSet ist die Zustandsübergangsmenge.
 	*/
-	GameObject(Vec2 position, Vec2 size, Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
+	GameObject(Vec2 position, Rectangle textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet);
 
 	GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& transitionSet);
-
-	GameObject(Vec2 position, Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
 
 
 	~GameObject();
@@ -143,9 +146,9 @@ public:
 	void setState(State state) { stateMachine.setInitialState(state); };
 	void setSize(Vec2 size) { this->size = size; };
 	void setCollisionInfo(CollisionInfo info) { this->objectInfo.collisionInfo = info; };
-	void setTextureRegion(Rectangle textureRegion) { this->textureRegion = textureRegion; };
 
 	Rectangle getTextureRegion() { return this->textureRegion; };
+	
 
 	ObjectInfo getCurrentInteraction() { return interactingObjectInfo; };
 	ObjectInfo getObjectInfo() { return { textureRegion, getCriticalHitBox(), getCurrentMovement(), objectInfo.collisionInfo }; };

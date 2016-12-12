@@ -1,7 +1,14 @@
 #include "Frog.h"
 
+const map<Direction, Rectangle> Frog::textureSet = {
+	{ Direction::UP,{ Vec2(2, 4), Vec2(1,1) } },
+	{ Direction::RIGHT,{ Vec2(2, 6), Vec2(1,1) } },
+	{ Direction::LEFT,{ Vec2(3, 6), Vec2(1,1) } },
+	{ Direction::DOWN,{ Vec2(4, 6), Vec2(1,1) } }
+};
+
 Frog::Frog(Vec2 position) 
-	: GameObject(position, Vec2(X_TILE_SIZE, Y_TILE_SIZE), objectTextureRegions.at(Objects::PLAYER), transitionSet) {
+	: GameObject(position, textureSet.at(Direction::UP), textureSet, transitionSet) {
 
 	this->setState(State::IDLE);
 	this->setSpeed(FROG_SPEED);
@@ -23,6 +30,7 @@ void Frog::moveTo(Direction direction) {
 		return;
 	}
 
+	this->setTextureRegion(getTextureRegionFor(direction));
 	this->setMovement(movement.add(getCurrentInteraction().movement));
 
 	this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));

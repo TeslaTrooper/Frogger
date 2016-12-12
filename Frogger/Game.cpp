@@ -45,8 +45,8 @@ void GameLogic::moveFrog(const Direction direction) {
 	score+=1234;
 	fontManager.setText("score", std::to_string(score));
 	objectManager.createOpponent({ Objects::SNAKE, 10 });
-	objectManager.createOpponent({ Objects::FEMALE_FROG, 9 });
-	objectManager.createOpponent({ Objects::FEMALE_FROG, 12 });
+	objectManager.createOpponent({ Objects::SNAKE, 9 });
+	objectManager.createOpponent({ Objects::SNAKE, 12 });
 	objectManager.createOpponent({ Objects::SNAKE, 8 });
 	objectManager.createOpponent({ Objects::SNAKE, 11 });
 }
@@ -67,7 +67,7 @@ void GameLogic::setupObjects() {
 	objectManager.createObject(10, Objects::LARGE_TREE, 3, 50, 30);
 	objectManager.createObject(12, Objects::MEDIUM_TREE, 3, 100, 10);
 
-	objectManager.createObject(8, Objects::THREE_ELEMENT_CHAIN, 5, 40, 0);
+	objectManager.createObject(8, Objects::THREE_ELEMENT_CHAIN, 4, 40, 0);
 	objectManager.createObject(11, Objects::TWO_ELEMENT_CHAIN, 4, 80, 0);
 }
 

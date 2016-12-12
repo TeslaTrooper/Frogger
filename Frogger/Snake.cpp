@@ -1,6 +1,11 @@
 #include "Snake.h"
 
-Snake::Snake(Vec2 position) : Opponent(position, transitionSet, objectTextureRegions.at(Objects::SNAKE)) {
+const map<Direction, Rectangle> Snake::textureSet = {
+	{ Direction::LEFT,{ Vec2(7, 6), Vec2(2, 1) } },
+	{ Direction::RIGHT,{ Vec2(0, 7), Vec2(2, 1) } }
+};
+
+Snake::Snake(Vec2 position) : Opponent(position, textureSet.at(Direction::LEFT), textureSet, transitionSet) {
 	this->setSpeed(SPEED_SNAKE);
 	this->setCollisionInfo({ Event::COLL_LETHAL_OBJECTS, 10 });
 }
@@ -27,6 +32,7 @@ void Snake::doLogic(GLfloat dt) {
 
 			Vec2 movement = directions.at(getDirection());
 			movement = movement.mul(getSpeed());
+			setTextureRegion(getTextureRegionFor(getDirection()));
 			setMovement(movement.add(getCurrentInteraction().movement));
 
 			move(dt);
