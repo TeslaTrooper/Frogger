@@ -42,3 +42,7 @@ void Opponent::setValidMovement(float leftThreshold, float rightThreshold) {
 void Opponent::doLogic(GLfloat dt) {
 	GameObject::doLogic(dt);
 }
+
+Rectangle Opponent::getCriticalHitBox() {
+	return GameObject::getCriticalHitBox();
+}

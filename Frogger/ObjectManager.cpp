@@ -2,6 +2,11 @@
 
 ObjectManager::ObjectManager() {
 	this->rowObjMap = new map<int, vector<GameObject*>*>();
+
+	for (int i = 1; i <= TILES_Y; i++) {
+		(*rowObjMap)[i] = new vector<GameObject*>();
+	}
+
 	femaleFrog = nullptr;
 }
 
@@ -91,7 +96,7 @@ vector<Drawable> ObjectManager::getDrawables() {
 }
 
 void ObjectManager::createObject(int row, Objects objType, int count, int space, int startX) {
-	vector<GameObject*>* objsInRow = new vector<GameObject*>();
+	vector<GameObject*>* objsInRow = rowObjMap->at(row);
 
 	Vec2 pos = alignInRow(row, false);
 	ObjectInfo objectInfo = objectInitializer.at(objType);
@@ -144,10 +149,15 @@ void ObjectManager::clearFrogs() {
 }
 
 void ObjectManager::repeatObject(GameObject* obj) {
-	if (Opponent* opp = dynamic_cast<Opponent*>(obj)) {
-		return;
-	}
+	Crocodile* crocodile = nullptr;
 
+	if (Opponent* opp = dynamic_cast<Opponent*>(obj)) {
+		crocodile = dynamic_cast<Crocodile*>(opp);
+
+		if (!crocodile) {
+			return;
+		}
+	}
 
 	if (obj->getPosition().x < -obj->getSize().x) {
 		obj->setPosition(Vec2(WINDOW_WIDTH, obj->getPosition().y));
@@ -158,16 +168,62 @@ void ObjectManager::repeatObject(GameObject* obj) {
 	if (obj->getPosition().x > WINDOW_WIDTH + obj->getSize().x) {
 		obj->setPosition(Vec2(-obj->getSize().x, obj->getPosition().y));
 
-		createWaitingOpponent(obj->getObjectInfo());
+		OpponentInfo opp = createWaitingOpponent(obj->getObjectInfo());
+		if (opp.objectType == Objects::CROCODILE) {
+			obj->resetMovement();
+
+			return;
+		}
+
+		if (crocodile) {
+			Objects objType = Objects::MEDIUM_TREE;
+			int row = fromYToRow(obj->getObjectInfo().hitBox.position.y);
+
+			createObject(row, objType, 1, 0, obj->getPosition().x);
+
+			obj->resetMovement();
+		}
 	}
 }
 
-void ObjectManager::createWaitingOpponent(const ObjectInfo& objInfo) {
-	if (waitingOpponents.size() == 0) {
-		return;
+OpponentInfo ObjectManager::createWaitingOpponent(const ObjectInfo& objInfo) {
+	OpponentInfo opponentInfo = getNextOpponentInfo(objInfo);
+	if (opponentInfo.row == -1) return opponentInfo;
+
+	Vec2 pos = alignInRow(opponentInfo.row, false);
+
+	Opponent* opponent;
+	switch (opponentInfo.objectType) {
+		case Objects::SNAKE: {
+			opponent = new Snake(pos); 
+			initOpponentWithObjectInfo(opponent, objInfo);
+		}; break;
+		case Objects::FEMALE_FROG: {
+			opponent = new FemaleFrog(pos);
+			initOpponentWithObjectInfo(opponent, objInfo);
+		}; break;
+		case Objects::CROCODILE: {
+			opponent = new Crocodile(pos);
+			initOpponent(opponent, -opponent->getSize().x);
+		}; break;
 	}
 
+	rowObjMap->at(opponentInfo.row)->push_back(opponent);
+
+	vector<OpponentInfo>::iterator it = find_if(waitingOpponents.begin(), waitingOpponents.end(),
+		[&](const OpponentInfo& info) -> bool { return opponentInfo.objectType == info.objectType && opponentInfo.row == info.row; });
+	waitingOpponents.erase(it);
+
+	return opponentInfo;
+}
+
+OpponentInfo ObjectManager::getNextOpponentInfo(const ObjectInfo& objInfo) {
 	OpponentInfo opponentInfo = { Objects::PLAYER, -1 };
+
+	if (waitingOpponents.size() == 0) {
+		return opponentInfo;
+	}
+
 	for (int i = 0; i < waitingOpponents.size(); i++) {
 		int y = (int) alignInRow(waitingOpponents.at(i).row, false).y;
 
@@ -177,23 +233,15 @@ void ObjectManager::createWaitingOpponent(const ObjectInfo& objInfo) {
 		}
 	}
 
-	if (opponentInfo.row == -1) return;
+	return opponentInfo;
+}
 
-	Vec2 pos = alignInRow(opponentInfo.row, false);
-
-	Opponent* opponent;
-	switch (opponentInfo.objectType) {
-		case Objects::SNAKE: opponent = new Snake(pos); break;
-		case Objects::FEMALE_FROG: opponent = new FemaleFrog(pos); break;
-	}
-
+void ObjectManager::initOpponentWithObjectInfo(Opponent* opponent, const ObjectInfo& objInfo) {
 	opponent->setPosition(Vec2(objInfo.hitBox.position.x, opponent->getPosition().y));
 	opponent->useAsNewHomePosition(Vec2(objInfo.hitBox.position.x, opponent->getPosition().y));
 	opponent->registerInteraction(objInfo);
+}
 
-	rowObjMap->at(opponentInfo.row)->push_back(opponent);
-
-	vector<OpponentInfo>::iterator it = find_if(waitingOpponents.begin(), waitingOpponents.end(),
-		[&](const OpponentInfo& info) -> bool { return opponentInfo.objectType == info.objectType && opponentInfo.row == info.row; });
-	waitingOpponents.erase(it);
+void ObjectManager::initOpponent(Opponent* opponent, float x) {
+	opponent->setPosition(Vec2(x, opponent->getPosition().y));
 }

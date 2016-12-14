@@ -35,6 +35,9 @@ public:
 
 	// @Override
 	virtual void doLogic(GLfloat dt);
+
+	// @Override
+	virtual Rectangle getCriticalHitBox();
 };
 
 #endif OPPONENT

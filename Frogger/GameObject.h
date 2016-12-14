@@ -167,7 +167,7 @@ public:
 	/*
 		@returns Gibt das Rechteck des Objektes zurück.
 	*/
-	Rectangle getCriticalHitBox();
+	virtual Rectangle getCriticalHitBox();
 
 
 	/*

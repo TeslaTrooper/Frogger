@@ -54,7 +54,8 @@ enum Objects {
 	PLAYER,
 	FEMALE_FROG,
 	SNAKE,
-	FROG_CARRIYING
+	FROG_CARRIYING,
+	CROCODILE
 };
 
 enum State {

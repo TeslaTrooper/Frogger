@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ControllerImpl.cpp" />
+    <ClCompile Include="Crocodile.cpp" />
     <ClCompile Include="FemaleFrog.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frog.cpp" />
@@ -166,6 +167,7 @@
   <ItemGroup>
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="Crocodile.h" />
     <ClInclude Include="FemaleFrog.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frog.h" />

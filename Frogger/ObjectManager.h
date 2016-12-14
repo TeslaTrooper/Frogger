@@ -7,6 +7,7 @@
 
 #include "Frog.h"
 #include "FemaleFrog.h"
+#include "Crocodile.h"
 #include "Snake.h"
 #include "Util.h"
 
@@ -23,9 +24,13 @@ protected:
 
 	FemaleFrog* femaleFrog;
 
-	void createWaitingOpponent(const ObjectInfo& objInfo);
+	OpponentInfo createWaitingOpponent(const ObjectInfo& objInfo);
 
 	int fromYToRow(float y);
+
+	OpponentInfo getNextOpponentInfo(const ObjectInfo& objInfo);
+	void initOpponentWithObjectInfo(Opponent* opponent, const ObjectInfo& objInfo);
+	void initOpponent(Opponent* opponent, float x);
 
 public:
 	ObjectManager();
