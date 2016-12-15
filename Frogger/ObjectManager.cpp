@@ -149,10 +149,10 @@ void ObjectManager::clearFrogs() {
 }
 
 void ObjectManager::repeatObject(GameObject* obj) {
-	Crocodile* crocodile = nullptr;
+	CrocodileBody* crocodile = nullptr;
 
 	if (Opponent* opp = dynamic_cast<Opponent*>(obj)) {
-		crocodile = dynamic_cast<Crocodile*>(opp);
+		crocodile = dynamic_cast<CrocodileBody*>(opp);
 
 		if (!crocodile) {
 			return;
@@ -192,23 +192,18 @@ OpponentInfo ObjectManager::createWaitingOpponent(const ObjectInfo& objInfo) {
 
 	Vec2 pos = alignInRow(opponentInfo.row, false);
 
-	Opponent* opponent;
 	switch (opponentInfo.objectType) {
 		case Objects::SNAKE: {
-			opponent = new Snake(pos); 
-			initOpponentWithObjectInfo(opponent, objInfo);
+			rowObjMap->at(opponentInfo.row)->push_back(initOpponentWithObjectInfo(new Snake(pos), objInfo));
 		}; break;
 		case Objects::FEMALE_FROG: {
-			opponent = new FemaleFrog(pos);
-			initOpponentWithObjectInfo(opponent, objInfo);
+			rowObjMap->at(opponentInfo.row)->push_back(initOpponentWithObjectInfo(new FemaleFrog(pos), objInfo));
 		}; break;
 		case Objects::CROCODILE: {
-			opponent = new Crocodile(pos);
-			initOpponent(opponent, -opponent->getSize().x);
+			rowObjMap->at(opponentInfo.row)->push_back(initOpponent(new CrocodileHead(pos), -X_TILE_SIZE));
+			rowObjMap->at(opponentInfo.row)->push_back(initOpponent(new CrocodileBody(pos), -4*X_TILE_SIZE));
 		}; break;
 	}
-
-	rowObjMap->at(opponentInfo.row)->push_back(opponent);
 
 	vector<OpponentInfo>::iterator it = find_if(waitingOpponents.begin(), waitingOpponents.end(),
 		[&](const OpponentInfo& info) -> bool { return opponentInfo.objectType == info.objectType && opponentInfo.row == info.row; });
@@ -236,12 +231,16 @@ OpponentInfo ObjectManager::getNextOpponentInfo(const ObjectInfo& objInfo) {
 	return opponentInfo;
 }
 
-void ObjectManager::initOpponentWithObjectInfo(Opponent* opponent, const ObjectInfo& objInfo) {
+Opponent* ObjectManager::initOpponentWithObjectInfo(Opponent* opponent, const ObjectInfo& objInfo) {
 	opponent->setPosition(Vec2(objInfo.hitBox.position.x, opponent->getPosition().y));
 	opponent->useAsNewHomePosition(Vec2(objInfo.hitBox.position.x, opponent->getPosition().y));
 	opponent->registerInteraction(objInfo);
+
+	return opponent;
 }
 
-void ObjectManager::initOpponent(Opponent* opponent, float x) {
+Opponent* ObjectManager::initOpponent(Opponent* opponent, float x) {
 	opponent->setPosition(Vec2(x, opponent->getPosition().y));
+
+	return opponent;
 }

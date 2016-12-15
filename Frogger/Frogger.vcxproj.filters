@@ -105,7 +105,10 @@
     <ClCompile Include="Snake.cpp">
       <Filter>Source Files\Objects\Derived</Filter>
     </ClCompile>
-    <ClCompile Include="Crocodile.cpp">
+    <ClCompile Include="CrocodileHead.cpp">
+      <Filter>Source Files\Objects\Derived</Filter>
+    </ClCompile>
+    <ClCompile Include="CrocodileBody.cpp">
       <Filter>Source Files\Objects\Derived</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,7 +176,10 @@
     <ClInclude Include="Opponent.h">
       <Filter>Header Files\Objects\Derived</Filter>
     </ClInclude>
-    <ClInclude Include="Crocodile.h">
+    <ClInclude Include="CrocodileHead.h">
+      <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="CrocodileBody.h">
       <Filter>Header Files\Objects\Derived</Filter>
     </ClInclude>
   </ItemGroup>

@@ -46,7 +46,7 @@ void GameLogic::moveFrog(const Direction direction) {
 	fontManager.setText("score", std::to_string(score));
 	//objectManager.createOpponent({ Objects::SNAKE, 10 });
 	//objectManager.createOpponent({ Objects::FEMALE_FROG, 9 });
-	//objectManager.createOpponent({ Objects::CROCODILE, 12 });
+	objectManager.createOpponent({ Objects::CROCODILE, 12 });
 	//objectManager.createOpponent({ Objects::FEMALE_FROG, 8 });
 	//objectManager.createOpponent({ Objects::FEMALE_FROG, 11 });
 }
@@ -112,10 +112,6 @@ ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
 }
 
 ObjectInfo GameLogic::checkForCollision(Frog* frog, GameObject* obj) {
-	if (Crocodile* c = dynamic_cast<Crocodile*>(obj)) {
-		int a = 5;
-		a += 4;
-	}
 	Rectangle frogHitbox = frog->getCriticalHitBox();
 	Rectangle objHitbox = obj->getCriticalHitBox();
 

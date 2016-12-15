@@ -7,7 +7,8 @@
 
 #include "Frog.h"
 #include "FemaleFrog.h"
-#include "Crocodile.h"
+#include "CrocodileHead.h"
+#include "CrocodileBody.h"
 #include "Snake.h"
 #include "Util.h"
 
@@ -29,8 +30,8 @@ protected:
 	int fromYToRow(float y);
 
 	OpponentInfo getNextOpponentInfo(const ObjectInfo& objInfo);
-	void initOpponentWithObjectInfo(Opponent* opponent, const ObjectInfo& objInfo);
-	void initOpponent(Opponent* opponent, float x);
+	Opponent* initOpponentWithObjectInfo(Opponent* opponent, const ObjectInfo& objInfo);
+	Opponent* initOpponent(Opponent* opponent, float x);
 
 public:
 	ObjectManager();
