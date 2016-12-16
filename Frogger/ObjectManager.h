@@ -104,6 +104,8 @@ public:
 		@return Gibt die Anzahl an Froschobjekten zurück.
 	*/
 	int getFrogsCount();
+
+	int getCurrentRowOf(GameObject* obj);
 };
 
 #endif OBJECT_MANAGER

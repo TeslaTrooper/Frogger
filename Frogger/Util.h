@@ -29,7 +29,8 @@ enum Event {
 	NEUTRAL,
 	COLL_POOL,
 	START_MOVING,
-	COLLECTING
+	COLLECTING,
+	COLL_INSECT
 };
 
 enum Direction {

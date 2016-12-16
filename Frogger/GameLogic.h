@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <math.h>
+#include <iostream>
 
 #include "GameObject.h"
 #include "Frog.h"
@@ -13,10 +14,15 @@
 using namespace std;
 
 class GameLogic {
-	int score;
+	int overAllScore;
+	int collectedScore;
+	int lastRow;
 	int currentPoolIndex;
+	float time;
 
 	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
+	Rectangle insectHitBox = { Vec2(0.0f, 0.0f), Vec2(X_TILE_SIZE, Y_TILE_SIZE) };
+
 	vector<Pool> pools;
 	ObjectManager objectManager;
 	FontManager fontManager;
@@ -26,12 +32,16 @@ class GameLogic {
 	ObjectInfo checkForCollision(Frog* frog, GameObject* obj);
 	ObjectInfo checkForRiverCollision();
 	ObjectInfo checkForPoolCollision();
+	ObjectInfo checkForInsectCollision();
 	ObjectInfo evaluateCollisions(vector<GameObject*> objs, Frog* frog);
 
 	void setupObjects();
 	void setupLabels();
 	void createPools();
 	void manageFrogs(Frog* activeFrog, float dt);
+	void updateUIElements(float dt);
+	void increaseCollectedScoreBy(Event ev);
+	void reset();
 
 public:
 	GameLogic();

@@ -8,7 +8,7 @@ const int OFFSET_Y = 20;
 const int X_TILE_SIZE = 40;
 const int Y_TILE_SIZE = 40;
 const int POOLS_COUNT = 5;
-const float POOL_VALID_INTERSECTION = 0.75;
+const float POOL_VALID_INTERSECTION = 0.5;
 
 const int POOL_SPACE = (int) ((1.0f/(POOLS_COUNT - 1))*(((TILES_X * X_TILE_SIZE) - (2 * OFFSET_X)) - (POOLS_COUNT * X_TILE_SIZE)));
 

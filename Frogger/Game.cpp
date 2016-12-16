@@ -7,12 +7,16 @@ void GameLogic::create() {
 	setupObjects();
 	setupLabels();
 	createPools();
+
+	insectHitBox.position = pools.at(0).objInfo.hitBox.position;
 }
 
 map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
 	map<DrawableType, vector<Drawable>> drawables = map<DrawableType, vector<Drawable>>();
 
 	vector<Drawable> objDrawables = this->objectManager.getDrawables();
+	objDrawables.push_back({insectHitBox.position, insectHitBox.size, { Vec2(6, 7), Vec2(1, 1) } });
+
 	vector<Drawable> fontDrawables = this->fontManager.getDrawables();
 
 	drawables[DrawableType::OBJECT] = objDrawables;
@@ -25,28 +29,48 @@ void GameLogic::gameLoop(const GLfloat dt) {
 	vector<GameObject*> objs = objectManager.getAll();
 	Frog* activeFrog = objectManager.getActiveFrog();
 
+	ObjectInfo interactingObject = evaluateCollisions(objs, activeFrog);
+
+	if (time <= 0.0f) {
+		interactingObject = { Rectangle(), Rectangle(), Vec2(),{ Event::COLL_LETHAL_OBJECTS, 0 } };
+		reset();
+	}
+
+	activeFrog->registerInteraction(interactingObject);
+
+	if (interactingObject.collisionInfo.effect == Event::COLLECTING) {
+		increaseCollectedScoreBy(interactingObject.collisionInfo.effect);
+		objectManager.registerInteractionOnFemaleFrog(interactingObject);
+	}
+
 	for (int i = 0; i < objs.size(); i++) {
 		objs.at(i)->doLogic(dt);
 		objectManager.repeatObject(objs.at(i));
 	}
 
-	ObjectInfo interactingObject = evaluateCollisions(objs, activeFrog);
-	activeFrog->registerInteraction(interactingObject);
-
-	if (interactingObject.collisionInfo.effect == Event::COLLECTING) {
-		objectManager.registerInteractionOnFemaleFrog(interactingObject);
+	if (objectManager.getCurrentRowOf(activeFrog) > lastRow) {
+		overAllScore += 10;
+		lastRow = objectManager.getCurrentRowOf(activeFrog);
 	}
 
 	manageFrogs(activeFrog, dt);
+
+	updateUIElements(dt);
 }
 
 void GameLogic::moveFrog(const Direction direction) {
 	objectManager.getActiveFrog()->moveTo(direction);
-	score+=1234;
-	fontManager.setText("score", std::to_string(score));
+
+	
 	//objectManager.createOpponent({ Objects::SNAKE, 10 });
-	//objectManager.createOpponent({ Objects::FEMALE_FROG, 9 });
-	objectManager.createOpponent({ Objects::CROCODILE, 12 });
+	objectManager.createOpponent({ Objects::FEMALE_FROG, 9 });
+	if (direction == Direction::RIGHT) {
+		objectManager.createOpponent({ Objects::CROCODILE, 12 });
+	}
+	else {
+		objectManager.createOpponent({ Objects::FEMALE_FROG, 12 });
+	}
+	
 	//objectManager.createOpponent({ Objects::FEMALE_FROG, 8 });
 	//objectManager.createOpponent({ Objects::FEMALE_FROG, 11 });
 }
@@ -72,11 +96,15 @@ void GameLogic::setupObjects() {
 }
 
 void GameLogic::setupLabels() {
-	score = 0;
+	overAllScore = 0;
+	collectedScore = 0;
+	lastRow = 1;
+	time = 5.0f;
 
 	fontManager.createNewLabel("scoreLabel", "SCORE", Vec2(10.0f, 545.f), 0.5f);
-	fontManager.createNewLabel("score", to_string(score), Vec2(120.0f, 545.f), 0.5f);
+	fontManager.createNewLabel("score", to_string(overAllScore), Vec2(120.0f, 545.f), 0.5f);
 	fontManager.createNewLabel("timeLabel", "TIME", Vec2(480.0f, 565.f), 0.5f);
+	fontManager.createNewLabel("time", "60", Vec2(430.0f, 565.f), 0.5f);
 }
 
 ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
@@ -96,6 +124,12 @@ ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
 
 	ObjectInfo riverInfo = checkForRiverCollision();
 	ObjectInfo poolInfo = checkForPoolCollision();
+	ObjectInfo insectInfo = checkForInsectCollision();
+
+	if (insectInfo.collisionInfo.effect == Event::COLL_INSECT && poolInfo.collisionInfo.effect == Event::COLL_POOL) {
+		increaseCollectedScoreBy(insectInfo.collisionInfo.effect);
+		insectHitBox.position = Vec2(-X_TILE_SIZE, 0.0f);
+	}
 
 	int priorities[3] = { objInfo.collisionInfo.priority, riverInfo.collisionInfo.priority, poolInfo.collisionInfo.priority };
 
@@ -135,7 +169,6 @@ ObjectInfo GameLogic::checkForRiverCollision() {
 ObjectInfo GameLogic::checkForPoolCollision() {
 	Frog* activeFrog = objectManager.getActiveFrog();
 
-
 	for (int i = 0; i < pools.size(); i++) {
 		if (intersects(activeFrog->getCriticalHitBox(), pools.at(i).objInfo.hitBox)) {
 			if (pools.at(i).ocupied) {
@@ -153,6 +186,16 @@ ObjectInfo GameLogic::checkForPoolCollision() {
 
 			break;
 		}
+	}
+
+	return EMPTY_OBJECT_INFO;
+}
+
+ObjectInfo GameLogic::checkForInsectCollision() {
+	Frog* activeFrog = objectManager.getActiveFrog();
+
+	if (intersects(activeFrog->getCriticalHitBox(), insectHitBox)) {
+		return { Rectangle(), insectHitBox, Vec2(), { Event::COLL_INSECT, 8 } };
 	}
 
 	return EMPTY_OBJECT_INFO;
@@ -186,6 +229,8 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 	activeFrog->doLogic(dt);
 
 	if (activeFrog->getState() == State::INACTIVE) {
+		reset();
+
 		pools.at(currentPoolIndex).ocupied = true;
 
 		if (objectManager.getFrogsCount() > 4) {
@@ -194,10 +239,37 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 			for (int i = 0; i < pools.size(); i++) {
 				pools.at(i).ocupied = false;
 			}
+
+			overAllScore += 1000;
 		}
 
 		objectManager.createFrog();
 	}
+}
+
+void GameLogic::updateUIElements(float dt) {
+	time -= dt;
+	time = time < 0 ? 0 : time;
+
+	fontManager.setText("score", std::to_string(overAllScore));
+	fontManager.setText("time", std::to_string((int)time));
+}
+
+void GameLogic::increaseCollectedScoreBy(Event ev) {
+	switch (ev) {
+		case Event::COLLECTING: 
+			collectedScore += 200; break;
+		case Event::COLL_INSECT: 
+			collectedScore += 200; break;
+	}
+}
+
+void GameLogic::reset() {
+	overAllScore += collectedScore;
+	overAllScore += (int)time * 10;
+	collectedScore = 0;
+	lastRow = 1;
+	time = 60.0f;
 }
 
 GameLogic::~GameLogic() {}
