@@ -1,10 +1,10 @@
 #include "Frog.h"
 
 const map<Direction, Rectangle> Frog::textureSet = {
-	{ Direction::UP,{ Vec2(2, 4), Vec2(1,1) } },
-	{ Direction::RIGHT,{ Vec2(2, 6), Vec2(1,1) } },
-	{ Direction::LEFT,{ Vec2(3, 6), Vec2(1,1) } },
-	{ Direction::DOWN,{ Vec2(4, 6), Vec2(1,1) } }
+	{ Direction::UP,{ Vec2(2, 8), Vec2(1,1) } },
+	{ Direction::RIGHT,{ Vec2(3, 8), Vec2(1,1) } },
+	{ Direction::LEFT,{ Vec2(5, 8), Vec2(1,1) } },
+	{ Direction::DOWN,{ Vec2(4, 8), Vec2(1,1) } }
 };
 
 Frog::Frog(Vec2 position) 
@@ -16,6 +16,7 @@ Frog::Frog(Vec2 position)
 	this->movingDuration = 0.0f;
 	this->decaeseTimer = 0;
 	this->setCollisionInfo({ Event::COLLECTING, 6});
+	textureOffset = 0;
 }
 
 Frog::Frog(Vec2 position, State initialState) : Frog(position) {
@@ -30,7 +31,10 @@ void Frog::moveTo(Direction direction) {
 		return;
 	}
 
-	this->setTextureRegion(getTextureRegionFor(direction));
+	Rectangle textureRegion = getTextureRegionFor(direction);
+	textureRegion.position.y += textureOffset;
+
+	this->setTextureRegion(textureRegion);
 	this->setMovement(movement.add(getCurrentInteraction().movement));
 
 	this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
@@ -74,7 +78,11 @@ void Frog::doLogic(GLfloat dt) {
 			move(dt);
 		}; break;
 		case State::COLLECTED: {
-			setTextureRegion(objectTextureRegions.at(Objects::FROG_CARRIYING));
+			textureOffset = 1;
+			Rectangle textureRegion = getTextureRegion();
+			textureRegion.position.y += textureOffset;
+
+			this->setTextureRegion(textureRegion);
 			gotoPreviousState();
 			move(dt);
 		}; break;
@@ -89,6 +97,7 @@ void Frog::reset() {
 	this->resetMovement();
 	this->decaeseTimer = 0;
 	this->movingDuration = 0;
+	this->textureOffset = 0;
 }
 
 void Frog::die(GLfloat dt) {

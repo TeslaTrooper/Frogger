@@ -8,7 +8,6 @@ void GameLogic::create() {
 	createPools();
 	setupLabels();
 	
-
 	insectHitBox.position = pools.at(0).objInfo.hitBox.position;
 }
 

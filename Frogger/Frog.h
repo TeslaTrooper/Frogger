@@ -14,6 +14,8 @@ class Frog : public GameObject {
 	Vec2 targetPosition;
 	Vec2 homePosition;
 
+	int textureOffset;
+
 	void die(GLfloat dt);
 
 	bool validMovement(Vec2 movement);
