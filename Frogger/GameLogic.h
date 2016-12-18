@@ -19,6 +19,11 @@ class GameLogic {
 	int lastRow;
 	int currentPoolIndex;
 	float time;
+	int remainingTries;
+	bool isGameOver;
+	float remainingTimeLabelDuration;
+	float currentLevelLabelDuration;
+	int currentLevel;
 
 	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
 	Rectangle insectHitBox = { Vec2(0.0f, 0.0f), Vec2(X_TILE_SIZE, Y_TILE_SIZE) };
@@ -41,7 +46,9 @@ class GameLogic {
 	void manageFrogs(Frog* activeFrog, float dt);
 	void updateUIElements(float dt);
 	void increaseCollectedScoreBy(Event ev);
-	void reset();
+	void reset(bool resetAll);
+	void gameOver(Frog* activeFrog);
+	void updateGameRules(Frog* activeFrog, GLfloat dt);
 
 public:
 	GameLogic();
@@ -71,6 +78,8 @@ public:
 			   Bewegen soll.
 	*/
 	void moveFrog(const Direction direction);
+
+	void restart();
 };
 
 #endif GAME_LOGIC

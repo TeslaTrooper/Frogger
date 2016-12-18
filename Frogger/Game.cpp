@@ -5,8 +5,9 @@ GameLogic::GameLogic() {}
 
 void GameLogic::create() {
 	setupObjects();
-	setupLabels();
 	createPools();
+	setupLabels();
+	
 
 	insectHitBox.position = pools.at(0).objInfo.hitBox.position;
 }
@@ -33,7 +34,6 @@ void GameLogic::gameLoop(const GLfloat dt) {
 
 	if (time <= 0.0f) {
 		interactingObject = { Rectangle(), Rectangle(), Vec2(),{ Event::COLL_LETHAL_OBJECTS, 0 } };
-		reset();
 	}
 
 	activeFrog->registerInteraction(interactingObject);
@@ -48,31 +48,36 @@ void GameLogic::gameLoop(const GLfloat dt) {
 		objectManager.repeatObject(objs.at(i));
 	}
 
-	if (objectManager.getCurrentRowOf(activeFrog) > lastRow) {
-		overAllScore += 10;
-		lastRow = objectManager.getCurrentRowOf(activeFrog);
-	}
-
 	manageFrogs(activeFrog, dt);
+
+	updateGameRules(activeFrog, dt);
 
 	updateUIElements(dt);
 }
 
 void GameLogic::moveFrog(const Direction direction) {
+	if (isGameOver) return;
+
 	objectManager.getActiveFrog()->moveTo(direction);
 
 	
 	//objectManager.createOpponent({ Objects::SNAKE, 10 });
 	objectManager.createOpponent({ Objects::FEMALE_FROG, 9 });
 	if (direction == Direction::RIGHT) {
-		objectManager.createOpponent({ Objects::CROCODILE, 12 });
+		//objectManager.createOpponent({ Objects::CROCODILE, 12 });
 	}
 	else {
-		objectManager.createOpponent({ Objects::FEMALE_FROG, 12 });
+		//objectManager.createOpponent({ Objects::FEMALE_FROG, 12 });
 	}
 	
 	//objectManager.createOpponent({ Objects::FEMALE_FROG, 8 });
 	//objectManager.createOpponent({ Objects::FEMALE_FROG, 11 });
+}
+
+void GameLogic::restart() {
+	if (!isGameOver) return;
+
+	reset(true);
 }
 
 
@@ -99,12 +104,31 @@ void GameLogic::setupLabels() {
 	overAllScore = 0;
 	collectedScore = 0;
 	lastRow = 1;
-	time = 5.0f;
+	time = 60.0f;
+	remainingTries = 3;
+	isGameOver = false;
+	remainingTimeLabelDuration = 0;
+	currentLevelLabelDuration = 0;
+	currentLevel = 1;
 
 	fontManager.createNewLabel("scoreLabel", "SCORE", Vec2(10.0f, 545.f), 0.5f);
 	fontManager.createNewLabel("score", to_string(overAllScore), Vec2(120.0f, 545.f), 0.5f);
 	fontManager.createNewLabel("timeLabel", "TIME", Vec2(480.0f, 565.f), 0.5f);
-	fontManager.createNewLabel("time", "60", Vec2(430.0f, 565.f), 0.5f);
+	fontManager.createNewLabel("time", to_string((int)time), Vec2(430.0f, 565.f), 0.5f);
+	fontManager.createNewLabel("remainingTriesLabel", "FROGS", Vec2(10.0f, 565.f), 0.5f);
+	fontManager.createNewLabel("remainingTries", to_string(remainingTries), Vec2(120.0f, 565.f), 0.5f);
+	fontManager.createNewLabel("remainingTimeLabel", "TIME", Vec2(WINDOW_WIDTH / 2 - 60, WINDOW_HEIGHT / 2 - 25), 0.5f);
+	fontManager.createNewLabel("remainingTime", to_string((int)time), Vec2(WINDOW_WIDTH / 2 + 20, WINDOW_HEIGHT / 2 - 25), 0.5f);
+	fontManager.hideLabel("remainingTimeLabel");
+	fontManager.hideLabel("remainingTime");
+	fontManager.createNewLabel("collectedScore", to_string(collectedScore), pools.at(0).objInfo.hitBox.position.sub(Vec2(0.f, 20.f)), 0.3f);
+	fontManager.hideLabel("collectedScore");
+	fontManager.createNewLabel("currentLevelLabel", "LEVEL", Vec2(WINDOW_WIDTH / 2 - 60, WINDOW_HEIGHT / 2 - 25), 0.5f);
+	fontManager.createNewLabel("currentLevel", to_string(currentLevel), Vec2(WINDOW_WIDTH / 2 + 40, WINDOW_HEIGHT / 2 - 25), 0.5f);
+	fontManager.hideLabel("currentLevelLabel");
+	fontManager.hideLabel("currentLevel");
+	fontManager.createNewLabel("gameOver", "GAME OVER SPACE TO RESTART", Vec2(WINDOW_WIDTH / 2 - 260, WINDOW_HEIGHT / 2 - 25), 0.5f);
+	fontManager.hideLabel("gameOver");
 }
 
 ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
@@ -229,7 +253,21 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 	activeFrog->doLogic(dt);
 
 	if (activeFrog->getState() == State::INACTIVE) {
-		reset();
+		overAllScore += collectedScore;
+		overAllScore += (int)time * 10;
+
+		if (collectedScore > 0) {
+			fontManager.setText("collectedScore", std::to_string(collectedScore));
+			fontManager.setPosition("collectedScore", pools.at(currentPoolIndex).objInfo.hitBox.position.sub(Vec2(0.f, 15.f)));
+			fontManager.showLabel("collectedScore");
+		}
+
+		fontManager.setText("remainingTime", std::to_string((int)time));
+		fontManager.showLabel("remainingTimeLabel");
+		fontManager.showLabel("remainingTime");
+		
+
+		reset(false);
 
 		pools.at(currentPoolIndex).ocupied = true;
 
@@ -241,18 +279,60 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 			}
 
 			overAllScore += 1000;
+			currentLevel++;
+			fontManager.setText("currentLevel", std::to_string((int)currentLevel));
+			fontManager.showLabel("currentLevelLabel");
+			fontManager.showLabel("currentLevel");
 		}
 
 		objectManager.createFrog();
 	}
 }
 
-void GameLogic::updateUIElements(float dt) {
+void GameLogic::updateGameRules(Frog* activeFrog, GLfloat dt) {
+	if (isGameOver) return;
+
 	time -= dt;
+
+	if (activeFrog->getState() != State::INACTIVE && objectManager.getCurrentRowOf(activeFrog) > lastRow) {
+		overAllScore += 10;
+		lastRow = objectManager.getCurrentRowOf(activeFrog);
+	}
+
+	if (activeFrog->getState() == State::KILLED) {
+		reset(false);
+		remainingTries--;
+	}
+
+	gameOver(activeFrog);
+}
+
+void GameLogic::updateUIElements(float dt) {
 	time = time < 0 ? 0 : time;
+	remainingTries = remainingTries < 0 ? 0 : remainingTries;
 
 	fontManager.setText("score", std::to_string(overAllScore));
 	fontManager.setText("time", std::to_string((int)time));
+	fontManager.setText("remainingTries", std::to_string(remainingTries));
+
+	if (fontManager.isVisible("remainingTime")) {
+		remainingTimeLabelDuration += dt;
+		if (remainingTimeLabelDuration > 2) {
+			fontManager.hideLabel("remainingTimeLabel");
+			fontManager.hideLabel("remainingTime");
+			fontManager.hideLabel("collectedScore");
+			remainingTimeLabelDuration = 0;
+		}
+	}
+
+	if (fontManager.isVisible("currentLevel")) {
+		currentLevelLabelDuration += dt;
+		if (currentLevelLabelDuration > 4) {
+			fontManager.hideLabel("currentLevelLabel");
+			fontManager.hideLabel("currentLevel");
+			currentLevelLabelDuration = 0;
+		}
+	}
 }
 
 void GameLogic::increaseCollectedScoreBy(Event ev) {
@@ -264,12 +344,24 @@ void GameLogic::increaseCollectedScoreBy(Event ev) {
 	}
 }
 
-void GameLogic::reset() {
-	overAllScore += collectedScore;
-	overAllScore += (int)time * 10;
+void GameLogic::reset(bool resetAll) {
+	if (resetAll) {
+		isGameOver = false;
+		fontManager.hideLabel("gameOver");
+		remainingTries = 3;
+		overAllScore = 0;
+	}
+	
+	time = 60;
 	collectedScore = 0;
 	lastRow = 1;
-	time = 60.0f;
+}
+
+void GameLogic::gameOver(Frog* activeFrog) {
+	if (remainingTries < 0) {
+		isGameOver = true;
+		fontManager.showLabel("gameOver");
+	}
 }
 
 GameLogic::~GameLogic() {}

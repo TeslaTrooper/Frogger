@@ -21,6 +21,8 @@ class Label {
 	void alignPosition();
 	Vec2 getSize(int index);
 
+	bool visible;
+
 public:
 	Label(std::string text);
 	~Label();
@@ -32,6 +34,9 @@ public:
 	
 	void setScale(float scale);
 	void setText(std::string text);
+	void hide() {this->visible = false;};
+	void show() { this->visible = true; };
+	bool isVisible() { return this->visible; };
 
 	static std::map<char, Rectangle>* initTextures();
 };

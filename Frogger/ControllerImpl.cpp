@@ -11,6 +11,7 @@ void Controller::key_callback(GLFWwindow* window, int key, int scancode, int act
 			case GLFW_KEY_UP: Controller::gameLogic->moveFrog(Direction::UP); break;
 			case GLFW_KEY_RIGHT: Controller::gameLogic->moveFrog(Direction::RIGHT); break;
 			case GLFW_KEY_DOWN: Controller::gameLogic->moveFrog(Direction::DOWN); break;
+			case GLFW_KEY_SPACE: Controller::gameLogic->restart(); break;
 			default: return;
 		}
 	}

@@ -15,12 +15,16 @@ std::map<char, Rectangle>* Label::initTextures() {
 		(*nums)[i] = characters.at(i);
 	}
 
+	(*nums)[32] = characters.at(' ');
+
 	return nums;
 }
 
 // ---------- static -------------
 
 Label::Label(std::string text) {
+	visible = true;
+
 	if (charCollection == nullptr) {
 		charCollection = initTextures();
 	}
@@ -64,8 +68,6 @@ void Label::setText(std::string text) {
 
 	for (int i = 0; i < text.length(); i++) {
 		char c = text.at(i);
-		Rectangle t = charCollection->at(c);
-
 		chars->push_back(charCollection->at(c));
 	}
 
@@ -76,7 +78,10 @@ std::vector<Drawable> Label::getDrawables() {
 	std::vector<Drawable> drawables = std::vector<Drawable>();
 
 	for (int i = 0; i < chars->size(); i++) {
-		drawables.push_back({ charPositions->at(i), getSize(i), chars->at(i) });
+		if(visible)
+			drawables.push_back({ charPositions->at(i), getSize(i), chars->at(i) });
+		else
+			drawables.push_back({ charPositions->at(i).sub(Vec2(0.0f, 1000)), getSize(i), chars->at(i) });
 	}
 
 	return drawables;

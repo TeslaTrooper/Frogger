@@ -30,7 +30,8 @@ enum Event {
 	COLL_POOL,
 	START_MOVING,
 	COLLECTING,
-	COLL_INSECT
+	COLL_INSECT,
+	RESET
 };
 
 enum Direction {
@@ -195,6 +196,7 @@ const map<char, Rectangle> characters = {
 	{ 'X',{ Vec2(2, 3), Vec2(1,1) } },
 	{ 'Y',{ Vec2(3, 3), Vec2(1,1) } },
 	{ 'Z',{ Vec2(4, 3), Vec2(1,1) } },
+	{ ' ',{ Vec2(9, 9), Vec2(1,1) } },
 };
 
 const map<Objects, Rectangle> objectTextureRegions = {

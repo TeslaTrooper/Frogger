@@ -82,7 +82,7 @@ void Frog::doLogic(GLfloat dt) {
 }
 
 void Frog::reset() {
-	doTransition(Event::DIE_SEQUENCE_EXPIRED);
+	doTransition(Event::RESET);
 
 	this->setTextureRegion(objectTextureRegions.at(Objects::PLAYER));
 	this->setPosition(homePosition);
@@ -93,10 +93,11 @@ void Frog::reset() {
 
 void Frog::die(GLfloat dt) {
 	resetMovement();
+	this->setTextureRegion({ Vec2(9, 3), Vec2(1, 1) });
 
 	decaeseTimer += dt;
 	if (decaeseTimer > 1) {
-		reset();
+		doTransition(Event::DIE_SEQUENCE_EXPIRED);
 	}
 }
 

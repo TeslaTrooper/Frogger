@@ -172,11 +172,9 @@ void ObjectManager::repeatObject(GameObject* obj) {
 	if (obj->getPosition().x > WINDOW_WIDTH + obj->getSize().x) {
 		obj->setPosition(Vec2(-obj->getSize().x, obj->getPosition().y));
 
+		ObjectInfo objInfo = obj->getObjectInfo();
 		if (getNextOpponentInfo(obj->getObjectInfo()).objectType == Objects::CROCODILE) {
-			createWaitingOpponent(obj->getObjectInfo());
 			obj->resetMovement();
-
-			return;
 		}
 
 		if (crocodile) {
@@ -184,10 +182,12 @@ void ObjectManager::repeatObject(GameObject* obj) {
 			int row = fromYToRow(obj->getObjectInfo().hitBox.position.y);
 
 			createObject(row, objType, 1, 0, obj->getPosition().x);
-			createWaitingOpponent(rowObjMap->at(row)->back()->getObjectInfo());
+			objInfo = rowObjMap->at(row)->back()->getObjectInfo();
 
 			obj->resetMovement();
 		}
+
+		createWaitingOpponent(objInfo);
 	}
 }
 

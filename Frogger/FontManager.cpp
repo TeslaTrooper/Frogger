@@ -40,3 +40,15 @@ vector<Drawable> FontManager::getDrawables() {
 
 	return drawables;
 }
+
+void FontManager::hideLabel(string identifier) {
+	labels.at(identifier)->hide();
+}
+
+void FontManager::showLabel(string identifier) {
+	labels.at(identifier)->show();
+}
+
+bool FontManager::isVisible(string identifier) {
+	return labels.at(identifier)->isVisible();
+}
