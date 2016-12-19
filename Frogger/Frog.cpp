@@ -1,10 +1,10 @@
 #include "Frog.h"
 
 const map<Direction, Rectangle> Frog::textureSet = {
-	{ Direction::UP,{ Vec2(2, 8), Vec2(1,1) } },
-	{ Direction::RIGHT,{ Vec2(3, 8), Vec2(1,1) } },
-	{ Direction::LEFT,{ Vec2(5, 8), Vec2(1,1) } },
-	{ Direction::DOWN,{ Vec2(4, 8), Vec2(1,1) } }
+	{ Direction::UP,{ Vec2(0, 8), Vec2(1,1) } },
+	{ Direction::RIGHT,{ Vec2(1, 8), Vec2(1,1) } },
+	{ Direction::LEFT,{ Vec2(3, 8), Vec2(1,1) } },
+	{ Direction::DOWN,{ Vec2(2, 8), Vec2(1,1) } }
 };
 
 Frog::Frog(Vec2 position) 

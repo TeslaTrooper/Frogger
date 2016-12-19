@@ -1,7 +1,7 @@
 #include "Snake.h"
 
 const map<Direction, Rectangle> Snake::textureSet = {
-	{ Direction::LEFT,{ Vec2(7, 6), Vec2(2, 1) } },
+	{ Direction::LEFT,{ Vec2(8, 6), Vec2(2, 1) } },
 	{ Direction::RIGHT,{ Vec2(0, 7), Vec2(2, 1) } }
 };
 

@@ -11,6 +11,7 @@
 #include "CrocodileBody.h"
 #include "Snake.h"
 #include "Util.h"
+#include "Turtle.h"
 
 using namespace std;
 
@@ -54,6 +55,8 @@ public:
 	void createFrog();
 
 	void createOpponent(OpponentInfo opponentInfo);
+
+	void createTurtle(int row, Objects objType, int count, int space, int startX);
 
 	//void registerEventOnFemaleFrog(CollisionStruct collision);
 	void registerInteractionOnFemaleFrog(const ObjectInfo& objInfo);

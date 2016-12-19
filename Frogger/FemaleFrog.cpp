@@ -3,8 +3,8 @@
 
 const map<Direction, Rectangle> FemaleFrog::textureSet = {
 	{ Direction::UP,{ Vec2(1, 6), Vec2(1, 1) } },
-	{ Direction::RIGHT,{ Vec2(5, 6), Vec2(1, 1) } },
-	{ Direction::LEFT,{ Vec2(6, 6), Vec2(1, 1) } }
+	{ Direction::RIGHT,{ Vec2(2, 6), Vec2(1, 1) } },
+	{ Direction::LEFT,{ Vec2(3, 6), Vec2(1, 1) } }
 };
 
 FemaleFrog::FemaleFrog(Vec2 position) : Opponent(position, textureSet.at(Direction::UP), textureSet, transitionSet) {

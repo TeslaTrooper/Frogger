@@ -31,7 +31,10 @@ enum Event {
 	START_MOVING,
 	COLLECTING,
 	COLL_INSECT,
-	RESET
+	RESET,
+	START_DIVING,
+	DESCENDING_FINISHED,
+	TURNING_UP_FINISHED
 };
 
 enum Direction {
@@ -76,7 +79,10 @@ enum State {
 	ALIGNING,
 	NAVIGATING,
 	INACTIVE,
-	COLLECTED
+	COLLECTED,
+	DESCENDING,
+	DIVING,
+	TURNING_UP
 };
 
 enum DrawableType {
@@ -206,7 +212,7 @@ const map<Objects, Rectangle> objectTextureRegions = {
 	{ CAR_WHITE,{ Vec2(7, 3), Vec2(1,1) } },
 	{ CAR_YELLOW,{ Vec2(8, 3), Vec2(1,1) } },
 	{ TRUCK,{ Vec2(0, 4), Vec2(2,1) } },
-	{ PLAYER,{ Vec2(2, 8), Vec2(1,1) } },
+	{ PLAYER,{ Vec2(0, 8), Vec2(1,1) } },
 	{ LARGE_TREE,{ Vec2(3, 4), Vec2(5,1) } },
 	{ TWO_ELEMENT_CHAIN,{ Vec2(8, 4), Vec2(2,1) } },
 	{ MEDIUM_TREE,{ Vec2(0, 5), Vec2(4,1) } },

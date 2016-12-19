@@ -15,7 +15,7 @@ map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
 	map<DrawableType, vector<Drawable>> drawables = map<DrawableType, vector<Drawable>>();
 
 	vector<Drawable> objDrawables = this->objectManager.getDrawables();
-	objDrawables.push_back({insectHitBox.position, insectHitBox.size, { Vec2(6, 7), Vec2(1, 1) } });
+	objDrawables.push_back({insectHitBox.position, insectHitBox.size, { Vec2(2, 4), Vec2(1, 1) } });
 
 	vector<Drawable> fontDrawables = this->fontManager.getDrawables();
 
@@ -97,8 +97,8 @@ void GameLogic::setupObjects() {
 	objectManager.createObject(10, Objects::LARGE_TREE, 3, 50, 30);
 	objectManager.createObject(12, Objects::MEDIUM_TREE, 3, 100, 10);
 
-	objectManager.createObject(8, Objects::THREE_ELEMENT_CHAIN, 4, 40, 0);
-	objectManager.createObject(11, Objects::TWO_ELEMENT_CHAIN, 4, 80, 0);
+	objectManager.createTurtle(11, Objects::TWO_ELEMENT_CHAIN, 4, 80, 0);
+	objectManager.createTurtle(8, Objects::THREE_ELEMENT_CHAIN, 4, 40, 0);
 }
 
 void GameLogic::setupLabels() {

@@ -111,6 +111,9 @@
     <ClCompile Include="CrocodileBody.cpp">
       <Filter>Source Files\Objects\Derived</Filter>
     </ClCompile>
+    <ClCompile Include="Turtle.cpp">
+      <Filter>Source Files\Objects\Derived</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -180,6 +183,9 @@
       <Filter>Header Files\Objects\Derived</Filter>
     </ClInclude>
     <ClInclude Include="CrocodileBody.h">
+      <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="Turtle.h">
       <Filter>Header Files\Objects\Derived</Filter>
     </ClInclude>
   </ItemGroup>

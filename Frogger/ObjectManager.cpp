@@ -119,6 +119,19 @@ void ObjectManager::createOpponent(OpponentInfo opponentInfo) {
 	waitingOpponents.push_back(opponentInfo);
 }
 
+void ObjectManager::createTurtle(int row, Objects objType, int count, int space, int startX) {
+	vector<GameObject*>* objsInRow = rowObjMap->at(row);
+	Vec2 pos = alignInRow(row, false);
+
+	Vec2 objSize = objectTextureRegions.at(objType).size;
+	objSize = objSize.mul(X_TILE_SIZE);
+
+	for (int i = 0; i < count; i++) {
+		Vec2 position = Vec2(startX + (i * (objSize.x + space)), pos.y); 
+		objsInRow->push_back(new Turtle(objType, position, objectTextureRegions.at(objType), i == 0 ? true : false));
+	}
+}
+
 Frog* ObjectManager::getActiveFrog() {
 	for (int i = 0; i < frogs.size(); i++) {
 		if (frogs.at(i)->getState() != State::INACTIVE) {
@@ -154,17 +167,22 @@ void ObjectManager::clearFrogs() {
 
 void ObjectManager::repeatObject(GameObject* obj) {
 	CrocodileBody* crocodile = nullptr;
+	Turtle* turtle = nullptr;
 
 	if (Opponent* opp = dynamic_cast<Opponent*>(obj)) {
 		crocodile = dynamic_cast<CrocodileBody*>(opp);
+		turtle = dynamic_cast<Turtle*>(opp);
 
-		if (!crocodile) {
+		if (!crocodile && !turtle) {
 			return;
 		}
 	}
 
 	if (obj->getPosition().x < -obj->getSize().x) {
 		obj->setPosition(Vec2(WINDOW_WIDTH, obj->getPosition().y));
+
+		if (turtle && turtle->isAnimating())
+			return;
 
 		createWaitingOpponent(obj->getObjectInfo());
 	}
