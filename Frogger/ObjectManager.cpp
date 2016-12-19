@@ -67,7 +67,7 @@ void ObjectManager::increaseSpeedInRow(int row) {
 
 	for (int i = 0; i < objsInRow->size(); i++) {
 		GameObject* obj = objsInRow->at(i);
-		obj->setMovement(Vec2(obj->getCurrentMovement().x * 1.1, 0.0f));
+		obj->setMovement(Vec2(obj->getCurrentMovement().x * 1.1f, 0.0f));
 	}
 }
 

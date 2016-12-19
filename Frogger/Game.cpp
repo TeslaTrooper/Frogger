@@ -51,6 +51,21 @@ void GameLogic::gameLoop(const GLfloat dt) {
 
 	updateGameRules(activeFrog, dt);
 
+	opponentCreationCounter += dt;
+	if (opponentCreationCounter > 1.0f) {
+		opponentCreationCounter = 0;
+		generateOpponents();
+	}
+
+	if (insectHitBox.position.x > 0) {
+		insectCounter += dt;
+		if (insectCounter > 5.f) {
+			insectHitBox.position.x = -X_TILE_SIZE;
+			insectCounter = 0;
+		}
+	}
+	
+
 	updateUIElements(dt);
 }
 
@@ -58,19 +73,6 @@ void GameLogic::moveFrog(const Direction direction) {
 	if (isGameOver) return;
 
 	objectManager.getActiveFrog()->moveTo(direction);
-
-	
-	//objectManager.createOpponent({ Objects::SNAKE, 10 });
-	objectManager.createOpponent({ Objects::FEMALE_FROG, 9 });
-	if (direction == Direction::RIGHT) {
-		//objectManager.createOpponent({ Objects::CROCODILE, 12 });
-	}
-	else {
-		//objectManager.createOpponent({ Objects::FEMALE_FROG, 12 });
-	}
-	
-	//objectManager.createOpponent({ Objects::FEMALE_FROG, 8 });
-	//objectManager.createOpponent({ Objects::FEMALE_FROG, 11 });
 }
 
 void GameLogic::restart() {
@@ -109,6 +111,14 @@ void GameLogic::setupLabels() {
 	remainingTimeLabelDuration = 0;
 	currentLevelLabelDuration = 0;
 	currentLevel = 1;
+	opponentCreationCounter = 0;
+	insectCounter = 0;
+	
+	appearingObjectProbabilities[Objects::CROCODILE] = 0;
+	appearingObjectProbabilities[Objects::INSECT] = 0;
+	appearingObjectProbabilities[Objects::SNAKE] = 0;
+	appearingObjectProbabilities[Objects::FEMALE_FROG] = 0;
+
 
 	fontManager.createNewLabel("scoreLabel", "SCORE", Vec2(10.0f, 545.f), 0.5f);
 	fontManager.createNewLabel("score", to_string(overAllScore), Vec2(120.0f, 545.f), 0.5f);
@@ -278,7 +288,8 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 			}
 
 			overAllScore += 1000;
-			currentLevel++;
+			updateLevelDifficulty();
+
 			fontManager.setText("currentLevel", std::to_string((int)currentLevel));
 			fontManager.showLabel("currentLevelLabel");
 			fontManager.showLabel("currentLevel");
@@ -360,7 +371,107 @@ void GameLogic::gameOver(Frog* activeFrog) {
 	if (remainingTries < 0) {
 		isGameOver = true;
 		fontManager.showLabel("gameOver");
+		objectManager.clearFrogs();
+		objectManager.createFrog();
+
+		for (int i = 0; i < pools.size(); i++) {
+			pools.at(i).ocupied = false;
+		}
 	}
+}
+
+void GameLogic::updateLevelDifficulty() {
+	switch (++currentLevel) {
+		case 2: {
+			setObjectProbability(Objects::FEMALE_FROG, 5);
+			setObjectProbability(Objects::INSECT, 5);
+
+			int randomStreet = randomNumber(2, 6);
+			objectManager.increaseSpeedInRow(randomStreet);
+			int randomRiver = randomNumber(8, 12);
+			objectManager.increaseSpeedInRow(randomRiver);
+		}; break;
+		case 3: {
+			setObjectProbability(Objects::FEMALE_FROG, 8);
+			setObjectProbability(Objects::INSECT, 8);
+			setObjectProbability(Objects::SNAKE, 5);
+
+			int randomStreet = randomNumber(2, 6);
+			objectManager.increaseSpeedInRow(randomStreet);
+			int randomRiver = randomNumber(8, 12);
+			objectManager.increaseSpeedInRow(randomRiver);
+		}; break;
+		case 4: {
+			setObjectProbability(Objects::FEMALE_FROG, 12);
+			setObjectProbability(Objects::INSECT, 12);
+			setObjectProbability(Objects::SNAKE, 10);
+			setObjectProbability(Objects::CROCODILE, 5);
+
+			int randomStreet = randomNumber(2, 6);
+			objectManager.increaseSpeedInRow(randomStreet);
+			int randomRiver = randomNumber(8, 12);
+			objectManager.increaseSpeedInRow(randomRiver);
+		}; break;
+		case 5: {
+			setObjectProbability(Objects::FEMALE_FROG, 20);
+			setObjectProbability(Objects::INSECT, 15);
+			setObjectProbability(Objects::SNAKE, 20);
+			setObjectProbability(Objects::CROCODILE, 10);
+
+			int randomStreet = randomNumber(2, 6);
+			objectManager.increaseSpeedInRow(randomStreet);
+			int randomRiver = randomNumber(8, 12);
+			objectManager.increaseSpeedInRow(randomRiver);
+		}; break;
+	}
+}
+
+void GameLogic::generateOpponents() {
+	map<Objects, int>::iterator it;
+	for (it = appearingObjectProbabilities.begin(); it != appearingObjectProbabilities.end(); it++) {
+		Objects type = it->first;
+		int probability = it->second;
+
+		if (!random(probability))
+			continue;
+
+		int randomRow;
+
+		switch (type) {
+			case Objects::FEMALE_FROG: randomRow = randomNumber(8, 12); break;
+			case Objects::CROCODILE: randomRow = 12; break;
+			case Objects::INSECT: {
+				if (insectHitBox.position.x > 0) 
+					continue;
+
+				randomRow = randomNumber(0, 4);
+				while (pools.at(randomRow).ocupied) {
+					randomRow = randomNumber(0, 4);
+				}
+				insectHitBox.position = pools.at(randomRow).objInfo.hitBox.position;
+			}; continue;
+			case Objects::SNAKE: {
+				randomRow = randomNumber(8, 12);
+				while (randomRow == 11) {
+					randomRow = randomNumber(8, 12);
+				}
+			}; break;
+		}
+
+		objectManager.createOpponent({ type, randomRow });
+	}
+}
+
+int GameLogic::randomNumber(int min, int max) {
+	return rand() % (max - min + 1) + min;
+}
+
+bool GameLogic::random(int probability) {
+	return randomNumber(0, 100) < probability;
+}
+
+void GameLogic::setObjectProbability(Objects key, int value) {
+	appearingObjectProbabilities[key] = value;
 }
 
 GameLogic::~GameLogic() {}
