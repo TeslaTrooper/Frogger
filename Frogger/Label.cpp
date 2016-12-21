@@ -22,19 +22,24 @@ std::map<char, Rectangle>* Label::initTextures() {
 
 // ---------- static -------------
 
-Label::Label(std::string text) {
+Label::Label(string text, bool useAsDescription) {
 	visible = true;
+	durationValue = 0;
+	descriptionLeftAligned = true;
+	isStaticLabel = useAsDescription;
 
 	if (charCollection == nullptr) {
 		charCollection = initTextures();
 	}
 
-	chars = new std::vector<Rectangle>();
-	charPositions = new std::vector<Vec2>();
+	chars = new vector<Rectangle>();
+	charPositions = new vector<Vec2>();
 
 	setScale(1.0f);
 
 	setText(text);
+
+	this->descriptionText = text;
 }
 
 Label::~Label() {
@@ -63,19 +68,31 @@ void Label::setScale(float scale) {
 	alignPosition();
 }
 
-void Label::setText(std::string text) {
+void Label::setText(string text) {
 	chars->clear();
 
-	for (int i = 0; i < text.length(); i++) {
-		char c = text.at(i);
+	string tmpString;
+
+	if (isStaticLabel) {
+		if (descriptionLeftAligned) {
+			tmpString.append(descriptionText).append(" ").append(text);
+		} else {
+			tmpString.append(text).append(" ").append(descriptionText);
+		}
+	} else {
+		tmpString = text;
+	}
+
+	for (int i = 0; i < tmpString.length(); i++) {
+		char c = tmpString.at(i);
 		chars->push_back(charCollection->at(c));
 	}
 
 	alignPosition();
 }
 
-std::vector<Drawable> Label::getDrawables() {
-	std::vector<Drawable> drawables = std::vector<Drawable>();
+vector<Drawable> Label::getDrawables() {
+	vector<Drawable> drawables = std::vector<Drawable>();
 
 	for (int i = 0; i < chars->size(); i++) {
 		if(visible)
@@ -99,4 +116,25 @@ void Label::alignPosition() {
 
 int Label::getLength() {
 	return chars->size();
+}
+
+void Label::hideAfter(float duration) {
+	if (duration <= 0) return;
+
+	this->duration = duration;
+	this->durationValue = duration;
+}
+
+void Label::update(float dt) {
+	if (!isVisible()) return;
+
+	this->duration -= dt;
+	if (duration < 0) {
+		hide();
+		duration = durationValue;
+	}
+}
+
+void Label::useStaticLabel() {
+	isStaticLabel = true;
 }

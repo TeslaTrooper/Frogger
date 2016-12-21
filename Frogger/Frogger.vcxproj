@@ -163,6 +163,7 @@
     <ClCompile Include="ShaderProgramCreator.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Turtle.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
@@ -187,6 +188,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgramService.h" />
     <ClInclude Include="Turtle.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vec2.h" />

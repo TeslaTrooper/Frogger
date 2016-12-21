@@ -8,8 +8,12 @@ FontManager::~FontManager() {
 	labels.clear();
 }
 
-void FontManager::createNewLabel(string identifer, string text, Vec2 position, float scale) {
-	labels[identifer] = new Label(text);
+void FontManager::createNewLabel(string identifier, string text) {
+	createNewLabel(identifier, text, Vec2(), false, 1.f);
+}
+
+void FontManager::createNewLabel(string identifer, string text, Vec2 position, bool useAsDescription, float scale) {
+	labels[identifer] = new Label(text, useAsDescription);
 
 	setPosition(identifer, position);
 	setScale(identifer, scale);
@@ -51,4 +55,34 @@ void FontManager::showLabel(string identifier) {
 
 bool FontManager::isVisible(string identifier) {
 	return labels.at(identifier)->isVisible();
+}
+
+void FontManager::hideAfter(string indentifier, float duration) {
+	labels.at(indentifier)->hideAfter(duration);
+}
+
+void FontManager::update(float dt) {
+	for (it_type iterator = labels.begin(); iterator != labels.end(); iterator++) {
+		Label* label = iterator->second;
+
+		if (label->isAutoHiding()) {
+			label->update(dt);
+		}
+	}
+}
+
+void FontManager::alignDescriptionLeft(string identifier, bool value) {
+	labels.at(identifier)->alignDescriptionLeft(value);
+}
+
+void FontManager::useStaticLabel(string identifier) {
+	labels.at(identifier)->useStaticLabel();
+}
+
+float FontManager::getScale(string identifier) {
+	return labels.at(identifier)->getScale();
+}
+
+int FontManager::getLength(string identifier) {
+	return labels.at(identifier)->getLength();
 }

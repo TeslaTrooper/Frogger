@@ -4,6 +4,7 @@
 GameLogic::GameLogic() {}
 
 void GameLogic::create() {
+	init();
 	setupObjects();
 	createPools();
 	setupLabels();
@@ -17,7 +18,7 @@ map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
 	vector<Drawable> objDrawables = this->objectManager.getDrawables();
 	objDrawables.push_back({insectHitBox.position, insectHitBox.size, { Vec2(2, 4), Vec2(1, 1) } });
 
-	vector<Drawable> fontDrawables = this->fontManager.getDrawables();
+	vector<Drawable> fontDrawables = this->uiManager.getFontManager().getDrawables();
 
 	drawables[DrawableType::OBJECT] = objDrawables;
 	drawables[DrawableType::FONT] = fontDrawables;
@@ -59,7 +60,7 @@ void GameLogic::gameLoop(const GLfloat dt) {
 
 	if (insectHitBox.position.x > 0) {
 		insectCounter += dt;
-		if (insectCounter > 5.f) {
+		if (insectCounter > 50.f) {
 			insectHitBox.position.x = -X_TILE_SIZE;
 			insectCounter = 0;
 		}
@@ -84,6 +85,25 @@ void GameLogic::restart() {
 
 // ------ private methods ------------
 
+void GameLogic::init() {
+	overAllScore = 0;
+	collectedScore = 0;
+	lastRow = 1;
+	time = 60.0f;
+	remainingTries = 3;
+	isGameOver = false;
+	remainingTimeLabelDuration = 0;
+	currentLevelLabelDuration = 0;
+	currentLevel = 1;
+	opponentCreationCounter = 0;
+	insectCounter = 0;
+
+	appearingObjectProbabilities[Objects::CROCODILE] = 0;
+	appearingObjectProbabilities[Objects::INSECT] = 0;
+	appearingObjectProbabilities[Objects::SNAKE] = 0;
+	appearingObjectProbabilities[Objects::FEMALE_FROG] = 0;
+}
+
 void GameLogic::setupObjects() {
 	objectManager.createFrog();
 
@@ -102,42 +122,27 @@ void GameLogic::setupObjects() {
 }
 
 void GameLogic::setupLabels() {
-	overAllScore = 0;
-	collectedScore = 0;
-	lastRow = 1;
-	time = 60.0f;
-	remainingTries = 3;
-	isGameOver = false;
-	remainingTimeLabelDuration = 0;
-	currentLevelLabelDuration = 0;
-	currentLevel = 1;
-	opponentCreationCounter = 0;
-	insectCounter = 0;
-	
-	appearingObjectProbabilities[Objects::CROCODILE] = 0;
-	appearingObjectProbabilities[Objects::INSECT] = 0;
-	appearingObjectProbabilities[Objects::SNAKE] = 0;
-	appearingObjectProbabilities[Objects::FEMALE_FROG] = 0;
+	setupUIElement("scoreLabel", "SCORE", true, .5f, UIManager::Alignment::LEFT_DOWN);
+	setupUIElement("remainingTriesLabel", "FROGS", true, .5f, UIManager::Alignment::LEFT_DOWN);
+	setupUIElement("timeLabel", "TIME", true, .5f, UIManager::Alignment::RIGHT_DOWN);
+	uiManager.getFontManager().alignDescriptionLeft("timeLabel", false);
 
+	setupUIElement("remainingTimeLabel", "TIMES", true, .5f, UIManager::Alignment::CENTER);
+	uiManager.getFontManager().hideAfter("remainingTimeLabel", 2.f);
+	uiManager.getFontManager().hideLabel("remainingTimeLabel");
 
-	fontManager.createNewLabel("scoreLabel", "SCORE", Vec2(10.0f, 545.f), 0.5f);
-	fontManager.createNewLabel("score", to_string(overAllScore), Vec2(120.0f, 545.f), 0.5f);
-	fontManager.createNewLabel("timeLabel", "TIME", Vec2(480.0f, 565.f), 0.5f);
-	fontManager.createNewLabel("time", to_string((int)time), Vec2(430.0f, 565.f), 0.5f);
-	fontManager.createNewLabel("remainingTriesLabel", "FROGS", Vec2(10.0f, 565.f), 0.5f);
-	fontManager.createNewLabel("remainingTries", to_string(remainingTries), Vec2(120.0f, 565.f), 0.5f);
-	fontManager.createNewLabel("remainingTimeLabel", "TIME", Vec2(WINDOW_WIDTH / 2 - 60, WINDOW_HEIGHT / 2 - 25), 0.5f);
-	fontManager.createNewLabel("remainingTime", to_string((int)time), Vec2(WINDOW_WIDTH / 2 + 20, WINDOW_HEIGHT / 2 - 25), 0.5f);
-	fontManager.hideLabel("remainingTimeLabel");
-	fontManager.hideLabel("remainingTime");
-	fontManager.createNewLabel("collectedScore", to_string(collectedScore), pools.at(0).objInfo.hitBox.position.sub(Vec2(0.f, 20.f)), 0.3f);
-	fontManager.hideLabel("collectedScore");
-	fontManager.createNewLabel("currentLevelLabel", "LEVEL", Vec2(WINDOW_WIDTH / 2 - 60, WINDOW_HEIGHT / 2 - 25), 0.5f);
-	fontManager.createNewLabel("currentLevel", to_string(currentLevel), Vec2(WINDOW_WIDTH / 2 + 40, WINDOW_HEIGHT / 2 - 25), 0.5f);
-	fontManager.hideLabel("currentLevelLabel");
-	fontManager.hideLabel("currentLevel");
-	fontManager.createNewLabel("gameOver", "GAME OVER SPACE TO RESTART", Vec2(WINDOW_WIDTH / 2 - 260, WINDOW_HEIGHT / 2 - 25), 0.5f);
-	fontManager.hideLabel("gameOver");
+	setupUIElement("currentLevelLabel", "LEVEL", true, .5f, UIManager::Alignment::CENTER);
+	uiManager.getFontManager().hideAfter("currentLevelLabel", 4.f);
+	uiManager.getFontManager().hideLabel("currentLevelLabel");
+
+	setupUIElement("gameOver", "GAME OVER SPACE TO RESTART", false, .5f, UIManager::Alignment::CENTER);
+	uiManager.getFontManager().hideLabel("gameOver");
+
+	setupUIElement("collectedScore", to_string(collectedScore), false, .3f, UIManager::Alignment::CENTER);
+	uiManager.getFontManager().hideAfter("collectedScore", 2.f);
+	uiManager.getFontManager().hideLabel("collectedScore");
+
+	uiManager.getFontManager().setText("collectedScore", std::to_string(collectedScore));
 }
 
 ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
@@ -259,6 +264,8 @@ void GameLogic::createPools() {
 }
 
 void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
+	FontManager fontManager = uiManager.getFontManager();
+
 	activeFrog->doLogic(dt);
 
 	if (activeFrog->getState() == State::INACTIVE) {
@@ -271,9 +278,8 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 			fontManager.showLabel("collectedScore");
 		}
 
-		fontManager.setText("remainingTime", std::to_string((int)time));
 		fontManager.showLabel("remainingTimeLabel");
-		fontManager.showLabel("remainingTime");
+		fontManager.setText("remainingTimeLabel", std::to_string((int)time));
 		
 
 		reset(false);
@@ -290,9 +296,8 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 			overAllScore += 1000;
 			updateLevelDifficulty();
 
-			fontManager.setText("currentLevel", std::to_string((int)currentLevel));
+			fontManager.setText("currentLevelLabel", std::to_string((int)currentLevel));
 			fontManager.showLabel("currentLevelLabel");
-			fontManager.showLabel("currentLevel");
 		}
 
 		objectManager.createFrog();
@@ -318,31 +323,16 @@ void GameLogic::updateGameRules(Frog* activeFrog, GLfloat dt) {
 }
 
 void GameLogic::updateUIElements(float dt) {
+	FontManager fontManager = uiManager.getFontManager();
+
 	time = time < 0 ? 0 : time;
 	remainingTries = remainingTries < 0 ? 0 : remainingTries;
 
-	fontManager.setText("score", std::to_string(overAllScore));
-	fontManager.setText("time", std::to_string((int)time));
-	fontManager.setText("remainingTries", std::to_string(remainingTries));
+	fontManager.setText("scoreLabel", std::to_string(overAllScore));
+	fontManager.setText("timeLabel", std::to_string((int)time));
+	fontManager.setText("remainingTriesLabel", std::to_string(remainingTries));
 
-	if (fontManager.isVisible("remainingTime")) {
-		remainingTimeLabelDuration += dt;
-		if (remainingTimeLabelDuration > 2) {
-			fontManager.hideLabel("remainingTimeLabel");
-			fontManager.hideLabel("remainingTime");
-			fontManager.hideLabel("collectedScore");
-			remainingTimeLabelDuration = 0;
-		}
-	}
-
-	if (fontManager.isVisible("currentLevel")) {
-		currentLevelLabelDuration += dt;
-		if (currentLevelLabelDuration > 4) {
-			fontManager.hideLabel("currentLevelLabel");
-			fontManager.hideLabel("currentLevel");
-			currentLevelLabelDuration = 0;
-		}
-	}
+	fontManager.update(dt);
 }
 
 void GameLogic::increaseCollectedScoreBy(Event ev) {
@@ -357,9 +347,14 @@ void GameLogic::increaseCollectedScoreBy(Event ev) {
 void GameLogic::reset(bool resetAll) {
 	if (resetAll) {
 		isGameOver = false;
-		fontManager.hideLabel("gameOver");
+		uiManager.getFontManager().hideLabel("gameOver");
 		remainingTries = 3;
 		overAllScore = 0;
+		currentLevel = 1;
+		appearingObjectProbabilities[Objects::CROCODILE] = 0;
+		appearingObjectProbabilities[Objects::INSECT] = 0;
+		appearingObjectProbabilities[Objects::SNAKE] = 0;
+		appearingObjectProbabilities[Objects::FEMALE_FROG] = 0;
 	}
 	
 	time = 60;
@@ -370,7 +365,7 @@ void GameLogic::reset(bool resetAll) {
 void GameLogic::gameOver(Frog* activeFrog) {
 	if (remainingTries < 0) {
 		isGameOver = true;
-		fontManager.showLabel("gameOver");
+		uiManager.getFontManager().showLabel("gameOver");
 		objectManager.clearFrogs();
 		objectManager.createFrog();
 
@@ -472,6 +467,12 @@ bool GameLogic::random(int probability) {
 
 void GameLogic::setObjectProbability(Objects key, int value) {
 	appearingObjectProbabilities[key] = value;
+}
+
+void GameLogic::setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment) {
+	uiManager.createUIElement(identifier, text);
+	uiManager.configureUIElement(identifier, withlabel, scale);
+	uiManager.align(identifier, alignment);
 }
 
 GameLogic::~GameLogic() {}

@@ -114,6 +114,9 @@
     <ClCompile Include="Turtle.cpp">
       <Filter>Source Files\Objects\Derived</Filter>
     </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="Turtle.h">
       <Filter>Header Files\Objects\Derived</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

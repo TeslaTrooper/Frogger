@@ -1,44 +1,52 @@
 #ifndef LABEL
 #define LABEL
 
-#include <vector>
-#include <string>
-#include <map>
-#include <string>
-
-#include "Vec2.h"
 #include "Util.h"
 
-class Label {
-	static std::map<char, Rectangle>* charCollection;
+using namespace std;
 
-	std::vector<Rectangle>* chars;
-	std::vector<Vec2>* charPositions;
+class Label {
+	static map<char, Rectangle>* charCollection;
+
+	vector<Rectangle>* chars;
+	vector<Vec2>* charPositions;
+
+	string descriptionText;
 
 	float scale = 1.0f;
+	float duration, durationValue;
+
 	Vec2 position;
 
 	void alignPosition();
 	Vec2 getSize(int index);
 
-	bool visible;
+	bool visible, descriptionLeftAligned, isStaticLabel;
 
 public:
-	Label(std::string text);
+	Label(string text, bool useAsDescription);
+
 	~Label();
 
 	void setPosition(Vec2 position);
 	Vec2 getPosition();
-	std::vector<Drawable> getDrawables();
+	vector<Drawable> getDrawables();
 	int getLength();
 	
 	void setScale(float scale);
-	void setText(std::string text);
+	void setText(string text);
 	void hide() {this->visible = false;};
 	void show() { this->visible = true; };
 	bool isVisible() { return this->visible; };
+	void hideAfter(float duration);
+	bool isAutoHiding() { return durationValue > 0; };
+	void alignDescriptionLeft(bool value) { this->descriptionLeftAligned = value; };
+	float getScale() { return this->scale; };
+	void useStaticLabel();
 
-	static std::map<char, Rectangle>* initTextures();
+	void update(float dt);
+
+	static map<char, Rectangle>* initTextures();
 };
 
 #endif LABEL

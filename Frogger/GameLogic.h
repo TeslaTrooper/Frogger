@@ -8,8 +8,8 @@
 #include "GameObject.h"
 #include "Frog.h"
 #include "Texture.h"
-#include "FontManager.h"
 #include "ObjectManager.h"
+#include "UIManager.h"
 
 using namespace std;
 
@@ -34,7 +34,7 @@ class GameLogic {
 
 	vector<Pool> pools;
 	ObjectManager objectManager;
-	FontManager fontManager;
+	UIManager uiManager;
 
 	vector<Rectangle> getPoolHitBoxes();
 
@@ -44,6 +44,7 @@ class GameLogic {
 	ObjectInfo checkForInsectCollision();
 	ObjectInfo evaluateCollisions(vector<GameObject*> objs, Frog* frog);
 
+	void init();
 	void setupObjects();
 	void setupLabels();
 	void createPools();
@@ -55,6 +56,7 @@ class GameLogic {
 	void updateGameRules(Frog* activeFrog, GLfloat dt);
 	void updateLevelDifficulty();
 	void generateOpponents();
+	void setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment);
 
 	int randomNumber(int min, int max);
 	bool random(int probability);
