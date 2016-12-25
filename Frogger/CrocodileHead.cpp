@@ -1,7 +1,7 @@
 #include "CrocodileHead.h"
 
 const map<Direction, Rectangle> CrocodileHead::textureSet = {
-	{ Direction::RIGHT,{ Vec2(5, 7), Vec2(1, 1) } }
+	{ Direction::RIGHT,{ Vec2(7, 6), Vec2(1, 1) } }
 };
 
 CrocodileHead::CrocodileHead(Vec2 position) : Opponent(position, textureSet.at(Direction::RIGHT), textureSet, {}) {

@@ -147,6 +147,7 @@
     <ClCompile Include="FemaleFrog.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frog.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Opponent.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="FemaleFrog.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frog.h" />
+    <ClInclude Include="LevelManager.h" />
     <ClInclude Include="Opponent.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="StateMachine.h" />

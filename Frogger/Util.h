@@ -260,5 +260,7 @@ const ObjectInfo EMPTY_OBJECT_INFO = { Rectangle(), Rectangle(), Vec2(),{ Event:
 const vector<TransitionElement> emptyTransitionSet = {};
 
 bool intersects(Rectangle rect1, Rectangle rect2);
+int randomNumber(int min, int max);
+bool random(int probability);
 
 #endif UTIL

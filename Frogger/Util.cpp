@@ -13,3 +13,11 @@ bool intersects(Rectangle rect1, Rectangle rect2) {
 
 	return true;
 }
+
+int randomNumber(int min, int max) {
+	return rand() % (max - min + 1) + min;
+}
+
+bool random(int probability) {
+	return randomNumber(0, 100) < probability;
+}

@@ -98,10 +98,7 @@ void GameLogic::init() {
 	opponentCreationCounter = 0;
 	insectCounter = 0;
 
-	appearingObjectProbabilities[Objects::CROCODILE] = 0;
-	appearingObjectProbabilities[Objects::INSECT] = 0;
-	appearingObjectProbabilities[Objects::SNAKE] = 0;
-	appearingObjectProbabilities[Objects::FEMALE_FROG] = 0;
+	levelManager.reset();
 }
 
 void GameLogic::setupObjects() {
@@ -351,10 +348,7 @@ void GameLogic::reset(bool resetAll) {
 		remainingTries = 3;
 		overAllScore = 0;
 		currentLevel = 1;
-		appearingObjectProbabilities[Objects::CROCODILE] = 0;
-		appearingObjectProbabilities[Objects::INSECT] = 0;
-		appearingObjectProbabilities[Objects::SNAKE] = 0;
-		appearingObjectProbabilities[Objects::FEMALE_FROG] = 0;
+		levelManager.reset();
 	}
 	
 	time = 60;
@@ -376,97 +370,33 @@ void GameLogic::gameOver(Frog* activeFrog) {
 }
 
 void GameLogic::updateLevelDifficulty() {
-	switch (++currentLevel) {
-		case 2: {
-			setObjectProbability(Objects::FEMALE_FROG, 5);
-			setObjectProbability(Objects::INSECT, 5);
-
-			int randomStreet = randomNumber(2, 6);
-			objectManager.increaseSpeedInRow(randomStreet);
-			int randomRiver = randomNumber(8, 12);
-			objectManager.increaseSpeedInRow(randomRiver);
-		}; break;
-		case 3: {
-			setObjectProbability(Objects::FEMALE_FROG, 8);
-			setObjectProbability(Objects::INSECT, 8);
-			setObjectProbability(Objects::SNAKE, 5);
-
-			int randomStreet = randomNumber(2, 6);
-			objectManager.increaseSpeedInRow(randomStreet);
-			int randomRiver = randomNumber(8, 12);
-			objectManager.increaseSpeedInRow(randomRiver);
-		}; break;
-		case 4: {
-			setObjectProbability(Objects::FEMALE_FROG, 12);
-			setObjectProbability(Objects::INSECT, 12);
-			setObjectProbability(Objects::SNAKE, 10);
-			setObjectProbability(Objects::CROCODILE, 5);
-
-			int randomStreet = randomNumber(2, 6);
-			objectManager.increaseSpeedInRow(randomStreet);
-			int randomRiver = randomNumber(8, 12);
-			objectManager.increaseSpeedInRow(randomRiver);
-		}; break;
-		case 5: {
-			setObjectProbability(Objects::FEMALE_FROG, 20);
-			setObjectProbability(Objects::INSECT, 15);
-			setObjectProbability(Objects::SNAKE, 20);
-			setObjectProbability(Objects::CROCODILE, 10);
-
-			int randomStreet = randomNumber(2, 6);
-			objectManager.increaseSpeedInRow(randomStreet);
-			int randomRiver = randomNumber(8, 12);
-			objectManager.increaseSpeedInRow(randomRiver);
-		}; break;
+	vector<int> rows = levelManager.setLevel(currentLevel);
+	for (int i = 0; i < rows.size(); i++) {
+		objectManager.increaseSpeedInRow(rows.at(i));
 	}
 }
 
 void GameLogic::generateOpponents() {
-	map<Objects, int>::iterator it;
-	for (it = appearingObjectProbabilities.begin(); it != appearingObjectProbabilities.end(); it++) {
+	bool ocupiedPools[5];
+	for (int i = 0; i < POOLS_COUNT; i++) {
+		ocupiedPools[i] = pools.at(i).ocupied;
+	}
+
+	levelManager.initData(ocupiedPools, insectHitBox.position.x);
+	map<Objects, int> objects = levelManager.getObjects();
+
+
+	for (map<Objects, int>::iterator it = objects.begin(); it != objects.end(); it++) {
 		Objects type = it->first;
-		int probability = it->second;
+		int row = it->second;
 
-		if (!random(probability))
+		if (type == Objects::INSECT) {
+			insectHitBox.position = pools.at(row).objInfo.hitBox.position;
 			continue;
-
-		int randomRow;
-
-		switch (type) {
-			case Objects::FEMALE_FROG: randomRow = randomNumber(8, 12); break;
-			case Objects::CROCODILE: randomRow = 12; break;
-			case Objects::INSECT: {
-				if (insectHitBox.position.x > 0) 
-					continue;
-
-				randomRow = randomNumber(0, 4);
-				while (pools.at(randomRow).ocupied) {
-					randomRow = randomNumber(0, 4);
-				}
-				insectHitBox.position = pools.at(randomRow).objInfo.hitBox.position;
-			}; continue;
-			case Objects::SNAKE: {
-				randomRow = randomNumber(8, 12);
-				while (randomRow == 11) {
-					randomRow = randomNumber(8, 12);
-				}
-			}; break;
 		}
 
-		objectManager.createOpponent({ type, randomRow });
+		objectManager.createOpponent({ type, row });
 	}
-}
-
-int GameLogic::randomNumber(int min, int max) {
-	return rand() % (max - min + 1) + min;
-}
-
-bool GameLogic::random(int probability) {
-	return randomNumber(0, 100) < probability;
-}
-
-void GameLogic::setObjectProbability(Objects key, int value) {
-	appearingObjectProbabilities[key] = value;
 }
 
 void GameLogic::setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment) {
