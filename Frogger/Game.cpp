@@ -9,7 +9,7 @@ void GameLogic::create() {
 	createPools();
 	setupLabels();
 	
-	insectHitBox.position = pools.at(0).objInfo.hitBox.position;
+	insectHitBox.position = Vec2(-X_TILE_SIZE, pools.at(0).objInfo.hitBox.position.y);
 }
 
 map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
@@ -60,7 +60,7 @@ void GameLogic::gameLoop(const GLfloat dt) {
 
 	if (insectHitBox.position.x > 0) {
 		insectCounter += dt;
-		if (insectCounter > 50.f) {
+		if (insectCounter > 5.f) {
 			insectHitBox.position.x = -X_TILE_SIZE;
 			insectCounter = 0;
 		}

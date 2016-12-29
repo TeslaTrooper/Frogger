@@ -34,10 +34,10 @@ map<Objects, int> LevelManager::getObjects() {
 }
 
 void LevelManager::reset() {
-	objectProbabilities[Objects::CROCODILE] = 20;
-	objectProbabilities[Objects::INSECT] = 10;
-	objectProbabilities[Objects::SNAKE] = 20;
-	objectProbabilities[Objects::FEMALE_FROG] = 50;
+	objectProbabilities[Objects::CROCODILE] = 0;
+	objectProbabilities[Objects::INSECT] = 0;
+	objectProbabilities[Objects::SNAKE] = 0;
+	objectProbabilities[Objects::FEMALE_FROG] = 0;
 
 	dataIsUpToDate = false;
 }
@@ -85,28 +85,28 @@ int LevelManager::calculateRow(Objects type) {
 	int randomRow;
 
 	switch (type) {
-	case Objects::FEMALE_FROG: randomRow = randomNumber(8, 12); break;
-	case Objects::CROCODILE: randomRow = 12; break;
-	case Objects::INSECT: {
-		randomRow = randomNumber(0, 4);
-
-		while (ocupiedPools[randomRow]) {
+		case Objects::FEMALE_FROG: randomRow = randomNumber(8, 12); break;
+		case Objects::CROCODILE: randomRow = 12; break;
+		case Objects::INSECT: {
 			randomRow = randomNumber(0, 4);
-		}
-	}; break;
-	case Objects::SNAKE: {
-		randomRow = randomNumber(8, 12);
-		while (randomRow == 11) {
+
+			while (ocupiedPools[randomRow]) {
+				randomRow = randomNumber(0, 4);
+			}
+		}; break;
+		case Objects::SNAKE: {
 			randomRow = randomNumber(8, 12);
-		}
-	}; break;
+			while (randomRow == 11) {
+				randomRow = randomNumber(8, 12);
+			}
+		}; break;
 	}
 
 	return randomRow;
 }
 
 vector<int> LevelManager::increaseSpeed() {
-	vector<int> rows = vector<int>(2);
+	vector<int> rows;
 
 	rows.push_back(randomNumber(2, 6));
 	rows.push_back(randomNumber(8, 12));
