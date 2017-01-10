@@ -17,6 +17,7 @@ class Texture {
 	bool configured = false;
 
 	void load(char* rawData);
+	void loadAdvanced(unsigned char* rawData, long fsize);
 	void configure();
 
 public:
