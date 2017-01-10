@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "OpenGLWindow.h"
 
 int main(void) {
 	glfwInit();
@@ -7,7 +7,7 @@ int main(void) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	Window window = Window();
+	OpenGLWindow window = OpenGLWindow();
 	window.render();
 
 	glfwTerminate();

@@ -144,6 +144,7 @@
     <ClCompile Include="ControllerImpl.cpp" />
     <ClCompile Include="CrocodileBody.cpp" />
     <ClCompile Include="CrocodileHead.cpp" />
+    <ClCompile Include="Direct3DRenderer.cpp" />
     <ClCompile Include="FemaleFrog.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Frog.cpp" />
@@ -155,11 +156,11 @@
     <ClCompile Include="GameObjectImpl.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="Mat3.cpp" />
     <ClCompile Include="Mat4.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
-    <ClCompile Include="ObjectRenderer.cpp" />
+    <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="ShaderImpl.cpp" />
     <ClCompile Include="ShaderProgramCreator.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="CrocodileBody.h" />
     <ClInclude Include="CrocodileHead.h" />
+    <ClInclude Include="Direct3DRenderer.h" />
     <ClInclude Include="FemaleFrog.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frog.h" />
@@ -186,16 +188,15 @@
     <ClInclude Include="Mat3.h" />
     <ClInclude Include="Mat4.h" />
     <ClInclude Include="ObjectManager.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="OpenGLRenderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgramService.h" />
-    <ClInclude Include="Test.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vec2.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="OpenGLWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

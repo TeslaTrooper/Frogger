@@ -12,7 +12,7 @@
 #include "OpenGLRenderer.h"
 #include "Util.h"
 
-class Window {
+class OpenGLWindow {
 	int width, height;
 
 	Controller* controller;
@@ -24,8 +24,8 @@ class Window {
 	void initViewport();
 	void initProjectionMatrix();
 public:
-	Window();
-	~Window();
+	OpenGLWindow();
+	~OpenGLWindow();
 
 	int isWindowClosing();
 	void render();

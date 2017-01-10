@@ -1,6 +1,6 @@
-#include "Window.h"
+#include "OpenGLWindow.h"
 
-Window::Window() {
+OpenGLWindow::OpenGLWindow() {
 	this->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Frogger", nullptr, nullptr);
 	glfwSetWindowPos(this->window, 500, 100);
 	glfwMakeContextCurrent(window);
@@ -29,7 +29,7 @@ Window::Window() {
 	glfwSetKeyCallback(window, Controller::key_callback);
 }
 
-void Window::render() {
+void OpenGLWindow::render() {
 	GLfloat start = 0;
 	GLfloat dt = 0;
 
@@ -61,11 +61,11 @@ void Window::render() {
 	}
 }
 
-int Window::isWindowClosing() {
+int OpenGLWindow::isWindowClosing() {
 	return glfwWindowShouldClose(window);
 }
 
-void Window::initViewport() {
+void OpenGLWindow::initViewport() {
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 
@@ -75,14 +75,14 @@ void Window::initViewport() {
 	glViewport(0, 0, width, height);
 }
 
-void Window::initProjectionMatrix() {
+void OpenGLWindow::initProjectionMatrix() {
 	Mat4 projection = Mat4::ortho(0.0f, static_cast<GLfloat>(this->width), static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
 
 	renderer->getShader()->use();
 	renderer->getShader()->setUniformMatrix4("projection", projection);
 }
 
-Window::~Window() {
+OpenGLWindow::~OpenGLWindow() {
 	delete controller;
 	delete renderer;
 }
