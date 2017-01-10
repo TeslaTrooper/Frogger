@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class Renderer {
+class OpenGLRenderer {
 	Shader* shader;
 	GLuint vbo, vao, ebo;
 
@@ -26,8 +26,8 @@ class Renderer {
 	Mat3 getTextureRegion(const Rectangle* region);
 
 public:
-	Renderer();
-	~Renderer();
+	OpenGLRenderer();
+	~OpenGLRenderer();
 	
 	Shader* getShader();
 

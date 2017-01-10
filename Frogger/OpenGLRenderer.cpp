@@ -1,23 +1,23 @@
-#include "Renderer.h"
+#include "OpenGLRenderer.h"
 
-Renderer::Renderer() {
+OpenGLRenderer::OpenGLRenderer() {
 	GLuint shaderProgram;
 
 	this->init(&shaderProgram);
 	this->shader = new Shader(shaderProgram);
 }
 
-Renderer::~Renderer() {
+OpenGLRenderer::~OpenGLRenderer() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 	glDeleteBuffers(1, &ebo);
 }
 
-Shader* Renderer::getShader() {
+Shader* OpenGLRenderer::getShader() {
 	return this->shader;
 }
 
-void Renderer::draw(Texture* texture, const Rectangle rectangle) {
+void OpenGLRenderer::draw(Texture* texture, const Rectangle rectangle) {
 	Mat4 transform = getTransformation(rectangle);
 	Mat3 textureTransform = getTextureRegion(nullptr);
 
@@ -27,11 +27,11 @@ void Renderer::draw(Texture* texture, const Rectangle rectangle) {
 	glDraw(texture);
 }
 
-void Renderer::draw(const Drawable drawable) {
+void OpenGLRenderer::draw(const Drawable drawable) {
 	draw(tileset, drawable);
 } 
 
-void Renderer::draw(Texture* texture, const Drawable drawable) {
+void OpenGLRenderer::draw(Texture* texture, const Drawable drawable) {
 	Mat4 transform = getTransformation({ drawable.position, drawable.size });
 	Mat3 textureTransform = getTextureRegion(&drawable.textureRegion);
 
@@ -41,7 +41,7 @@ void Renderer::draw(Texture* texture, const Drawable drawable) {
 	glDraw(texture);
 }
 
-Mat4 Renderer::getTransformation(const Rectangle transformation) {
+Mat4 OpenGLRenderer::getTransformation(const Rectangle transformation) {
 	Mat4 transform;
 
 	transform.translate(transformation.position);
@@ -50,7 +50,7 @@ Mat4 Renderer::getTransformation(const Rectangle transformation) {
 	return transform;
 }
 
-Mat3 Renderer::getTextureRegion(const Rectangle* region) {
+Mat3 OpenGLRenderer::getTextureRegion(const Rectangle* region) {
 	Mat3 textureTransform;
 
 	if (region == nullptr) {
@@ -66,14 +66,14 @@ Mat3 Renderer::getTextureRegion(const Rectangle* region) {
 	return textureTransform;
 }
 
-void Renderer::glDraw(Texture* texture) {
+void OpenGLRenderer::glDraw(Texture* texture) {
 	texture->bind();
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
-void Renderer::init(GLuint* shaderProgram) {
+void OpenGLRenderer::init(GLuint* shaderProgram) {
 	ShaderProgramService shaderProgramService = ShaderProgramService();
 	*shaderProgram = shaderProgramService.createShaderProgram();
 
