@@ -98,6 +98,7 @@ void GameLogic::init() {
 	opponentCreationCounter = 0;
 	insectCounter = 0;
 
+
 	levelManager.reset();
 }
 
@@ -106,7 +107,7 @@ void GameLogic::setupObjects() {
 
 	objectManager.createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
 	objectManager.createObject(3, Objects::CAR_ORANGE, 3, 150, 50);
-	objectManager.createObject(4, Objects::CAR_RED, 3, 200, 275);
+	objectManager.createObject(4, Objects::CAR_RED, 3, 175, 125);
 	objectManager.createObject(5, Objects::CAR_WHITE, 3, 200, 75);
 	objectManager.createObject(6, Objects::TRUCK, 3, 300, 280);
 
@@ -124,7 +125,7 @@ void GameLogic::setupLabels() {
 	setupUIElement("timeLabel", "TIME", true, .5f, UIManager::Alignment::RIGHT_DOWN);
 	uiManager.getFontManager().alignDescriptionLeft("timeLabel", false);
 
-	setupUIElement("remainingTimeLabel", "TIMES", true, .5f, UIManager::Alignment::CENTER);
+	setupUIElement("remainingTimeLabel", "TIME LEFT", true, .5f, UIManager::Alignment::CENTER);
 	uiManager.getFontManager().hideAfter("remainingTimeLabel", 2.f);
 	uiManager.getFontManager().hideLabel("remainingTimeLabel");
 

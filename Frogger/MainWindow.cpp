@@ -10,11 +10,15 @@ Window::Window() {
 
 	initViewport();
 
+	Texture* tileset = new Texture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
 	this->background = new Texture("../textures/bg.raw", Vec2(560, 540));
+	
+	
 
 	this->renderer = new Renderer();
 
-	Texture* tileset = new Texture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
+	//Texture* tileset = new Texture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
+	
 	renderer->setTileset(tileset);
 
 	initProjectionMatrix();
@@ -23,17 +27,6 @@ Window::Window() {
 	controller->getLogic()->create();
 
 	glfwSetKeyCallback(window, Controller::key_callback);
-
-	vector<int> a = vector<int>();
-	a.push_back(1);
-	a.push_back(2);
-	a.push_back(3);
-	a.push_back(4);
-
-	std::cout << a.front() << endl;
-	vector<int>::iterator b = std::find(a.begin(), a.end(), 3);
-	a.erase(b);
-	a.clear();
 }
 
 void Window::render() {

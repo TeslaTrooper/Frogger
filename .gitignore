@@ -7,3 +7,5 @@ Frogger/Debug
 Frogger/x64
 Frogger.opensdf
 textures/*.raw
+textures/*
+!/textures/*.png

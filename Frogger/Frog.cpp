@@ -57,7 +57,7 @@ void Frog::doLogic(GLfloat dt) {
 			move(dt);
 
 			if (isOutsideOfBorders()) {
-				die(dt);
+				registerInteraction({ Rectangle(), Rectangle(), Vec2(),{ Event::COLL_LETHAL_OBJECTS, 0 } });
 			}
 		}; break;
 		case State::TRANSPORT: {
@@ -65,7 +65,7 @@ void Frog::doLogic(GLfloat dt) {
 			move(dt);
 
 			if (isOutsideOfBorders()) {
-				die(dt);
+				doTransition(Event::COLL_LETHAL_OBJECTS);
 			}
 		}; break;
 		case State::ALIGNING: {

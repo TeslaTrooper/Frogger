@@ -189,6 +189,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgramService.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Util.h" />
