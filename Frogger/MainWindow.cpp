@@ -15,7 +15,7 @@ Window::Window() {
 	
 	
 
-	this->renderer = new Renderer();
+	this->renderer = new OpenGLRenderer();
 
 	//Texture* tileset = new Texture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
 	

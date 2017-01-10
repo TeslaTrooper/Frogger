@@ -9,14 +9,14 @@
 #include "Controller.h"
 #include "Vec2.h"
 #include "Mat4.h"
-#include "Renderer.h"
+#include "OpenGLRenderer.h"
 #include "Util.h"
 
 class Window {
 	int width, height;
 
 	Controller* controller;
-	Renderer* renderer;
+	OpenGLRenderer* renderer;
 	GLFWwindow* window;
 	GLuint shaderProgram, vbo, vao, ebo;
 	Texture* background;

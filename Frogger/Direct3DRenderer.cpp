@@ -1,5 +1,7 @@
-#include "Renderer.h"
+#include "Direct3DRenderer.h"
 
-Renderer::Renderer() {
+Direct3DRenderer::Direct3DRenderer() {
 
 }
+
+Direct3DRenderer::~Direct3DRenderer() {}
