@@ -1,6 +1,8 @@
 #include "OpenGLWindow.h"
 
 OpenGLWindow::OpenGLWindow() {
+	initOpenGL();
+
 	this->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Frogger", nullptr, nullptr);
 	glfwSetWindowPos(this->window, 500, 100);
 	glfwMakeContextCurrent(window);
@@ -59,6 +61,8 @@ void OpenGLWindow::render() {
 
 		dt = (GLfloat)glfwGetTime() - start;
 	}
+
+	glfwTerminate();
 }
 
 int OpenGLWindow::isWindowClosing() {
@@ -80,6 +84,14 @@ void OpenGLWindow::initProjectionMatrix() {
 
 	renderer->getShader()->use();
 	renderer->getShader()->setUniformMatrix4("projection", projection);
+}
+
+void OpenGLWindow::initOpenGL() {
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 }
 
 OpenGLWindow::~OpenGLWindow() {

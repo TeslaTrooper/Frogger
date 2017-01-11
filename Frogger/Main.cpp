@@ -1,15 +1,12 @@
 #include "OpenGLWindow.h"
+#include "Direct3DWindow.h"
 
-int main(void) {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+//int main(void) {
+	//OpenGLWindow window = OpenGLWindow();
+	//window.render();
 
-	OpenGLWindow window = OpenGLWindow();
-	window.render();
+	//Direct3DWindow window = Direct3DWindow();
 
-	glfwTerminate();
-	return 0;
-}
+
+	//return 0;
+//}

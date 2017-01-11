@@ -23,6 +23,7 @@ class OpenGLWindow {
 
 	void initViewport();
 	void initProjectionMatrix();
+	void initOpenGL();
 public:
 	OpenGLWindow();
 	~OpenGLWindow();
