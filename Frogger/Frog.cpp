@@ -40,7 +40,7 @@ void Frog::moveTo(Direction direction) {
 	this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
 }
 
-void Frog::doLogic(GLfloat dt) {
+void Frog::doLogic(float dt) {
 	doTransition(getCurrentInteraction().collisionInfo.effect);
 	
 	switch (getState()) {
@@ -100,7 +100,7 @@ void Frog::reset() {
 	this->textureOffset = 0;
 }
 
-void Frog::die(GLfloat dt) {
+void Frog::die(float dt) {
 	resetMovement();
 	this->setTextureRegion({ Vec2(9, 3), Vec2(1, 1) });
 
@@ -110,7 +110,7 @@ void Frog::die(GLfloat dt) {
 	}
 }
 
-bool Frog::targetPositionReached(GLfloat dt) {
+bool Frog::targetPositionReached(float dt) {
 	if (getState() == State::TRANSPORT) {
 		return false;
 	}

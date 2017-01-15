@@ -1,9 +1,9 @@
 #include "Label.h"
 
-std::map<char, Rectangle>* Label::charCollection;
+std::map<char, util::Rectangle>* Label::charCollection;
 
-std::map<char, Rectangle>* Label::initTextures() {
-	std::map<char, Rectangle>* nums = new std::map<char, Rectangle>();
+std::map<char, util::Rectangle>* Label::initTextures() {
+	std::map<char, util::Rectangle>* nums = new std::map<char, util::Rectangle>();
 
 	for (int i = 0; i < 10; i++) {
 		char current = *std::to_string(i).c_str();
@@ -32,7 +32,7 @@ Label::Label(string text, bool useAsDescription) {
 		charCollection = initTextures();
 	}
 
-	chars = new vector<Rectangle>();
+	chars = new vector<util::Rectangle>();
 	charPositions = new vector<Vec2>();
 
 	setScale(1.0f);

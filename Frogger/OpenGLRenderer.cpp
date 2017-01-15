@@ -17,7 +17,7 @@ Shader* OpenGLRenderer::getShader() {
 	return this->shader;
 }
 
-void OpenGLRenderer::draw(Texture* texture, const Rectangle rectangle) {
+void OpenGLRenderer::draw(OpenGLTexture* texture, const Rectangle rectangle) {
 	Mat4 transform = getTransformation(rectangle);
 	Mat3 textureTransform = getTextureRegion(nullptr);
 
@@ -31,7 +31,7 @@ void OpenGLRenderer::draw(const Drawable drawable) {
 	draw(tileset, drawable);
 } 
 
-void OpenGLRenderer::draw(Texture* texture, const Drawable drawable) {
+void OpenGLRenderer::draw(OpenGLTexture* texture, const Drawable drawable) {
 	Mat4 transform = getTransformation({ drawable.position, drawable.size });
 	Mat3 textureTransform = getTextureRegion(&drawable.textureRegion);
 
@@ -66,7 +66,7 @@ Mat3 OpenGLRenderer::getTextureRegion(const Rectangle* region) {
 	return textureTransform;
 }
 
-void OpenGLRenderer::glDraw(Texture* texture) {
+void OpenGLRenderer::glDraw(OpenGLTexture* texture) {
 	texture->bind();
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

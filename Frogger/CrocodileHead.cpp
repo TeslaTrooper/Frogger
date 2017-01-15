@@ -10,7 +10,7 @@ CrocodileHead::CrocodileHead(Vec2 position) : Opponent(position, textureSet.at(D
 	this->setCollisionInfo({ Event::COLL_LETHAL_OBJECTS, 10 });
 }
 
-void CrocodileHead::doLogic(GLfloat dt) {
+void CrocodileHead::doLogic(float dt) {
 	move(dt);
 	setExpired(false);
 }

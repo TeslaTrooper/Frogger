@@ -7,7 +7,7 @@
 #include "Util.h"
 
 class Opponent : public GameObject {
-	GLfloat livingTime;
+	float livingTime;
 	Vec2 homePosition;
 	Direction currentDirection;
 
@@ -24,8 +24,8 @@ public:
 	void setExpired(bool value) { this->expired = value; };
 	bool isExpired() { return expired; };
 	
-	void increaseLivingTime(GLfloat dt) { this->livingTime += dt; };
-	GLfloat getLivingTime() { return livingTime; };
+	void increaseLivingTime(float dt) { this->livingTime += dt; };
+	float getLivingTime() { return livingTime; };
 
 	void setDirection(Direction direction) { this->currentDirection = direction; };
 	Direction getDirection() { return currentDirection; };
@@ -34,7 +34,7 @@ public:
 	Vec2 getHomePosition() { return homePosition; };
 
 	// @Override
-	virtual void doLogic(GLfloat dt);
+	virtual void doLogic(float dt);
 
 	// @Override
 	virtual Rectangle getCriticalHitBox();

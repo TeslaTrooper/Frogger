@@ -1,4 +1,6 @@
 #include <Windows.h>
+
+#include "Constants.h"
 #include "Direct3DRenderer.h"
 
 Direct3DRenderer renderer;
@@ -33,8 +35,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		WS_OVERLAPPEDWINDOW,    // window style
 		500,    // x-position of the window
 		100,    // y-position of the window
-		560,    // width of the window
-		540,    // height of the window
+		WINDOW_WIDTH,    // width of the window
+		WINDOW_HEIGHT,    // height of the window
 		NULL,    // we have no parent window, NULL
 		NULL,    // we aren't using menus, NULL
 		hInstance,    // application handle

@@ -5,6 +5,7 @@
 #include "Util.h"
 
 using namespace std;
+using namespace util;
 
 /*
 	Die Klasse StateMachine hat einen aktuellen Zustand, eine Definition eines Zustandswechels 

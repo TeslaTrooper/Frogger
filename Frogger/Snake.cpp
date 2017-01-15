@@ -10,7 +10,7 @@ Snake::Snake(Vec2 position) : Opponent(position, textureSet.at(Direction::LEFT),
 	this->setCollisionInfo({ Event::COLL_LETHAL_OBJECTS, 10 });
 }
 
-void Snake::doLogic(GLfloat dt) {
+void Snake::doLogic(float dt) {
 	doTransition(getCurrentInteraction().collisionInfo.effect);
 
 	switch (getState()) {

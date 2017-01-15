@@ -26,7 +26,7 @@ map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
 	return drawables;
 }
 
-void GameLogic::gameLoop(const GLfloat dt) {
+void GameLogic::gameLoop(const float dt) {
 	vector<GameObject*> objs = objectManager.getAll();
 	Frog* activeFrog = objectManager.getActiveFrog();
 
@@ -302,7 +302,7 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 	}
 }
 
-void GameLogic::updateGameRules(Frog* activeFrog, GLfloat dt) {
+void GameLogic::updateGameRules(Frog* activeFrog, float dt) {
 	if (isGameOver) return;
 
 	time -= dt;

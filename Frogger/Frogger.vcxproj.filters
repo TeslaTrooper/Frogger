@@ -57,9 +57,6 @@
     <ClCompile Include="ShaderImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjectImpl.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
@@ -126,6 +123,12 @@
     <ClCompile Include="Direct3DWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGLTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct3DTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h">
@@ -145,9 +148,6 @@
     </ClInclude>
     <ClInclude Include="Frog.h">
       <Filter>Header Files\Objects\Derived</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Label.h">
       <Filter>Header Files\Fonts</Filter>
@@ -209,7 +209,10 @@
     <ClInclude Include="OpenGLWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Direct3DWindow.h">
+    <ClInclude Include="OpenGLTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Direct3DTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

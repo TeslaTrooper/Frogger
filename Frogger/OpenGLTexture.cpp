@@ -1,8 +1,8 @@
-#include "Texture.h"
+#include "OpenGLTexture.h"
 
-Texture::~Texture() {}
+OpenGLTexture::~OpenGLTexture() {}
 
-Texture::Texture(char* file, Vec2 dimension) {
+OpenGLTexture::OpenGLTexture(char* file, Vec2 dimension) {
 	this->width = dimension.x;
 	this->height = dimension.y;
 
@@ -33,7 +33,7 @@ Texture::Texture(char* file, Vec2 dimension) {
 	load(a);
 }
 
-void Texture::load(char* rawData) {
+void OpenGLTexture::load(char* rawData) {
 	int pixelCount = getWidth() * getHeight();
 	int bands = 3;
 
@@ -92,7 +92,7 @@ void Texture::load(char* rawData) {
 	data -= pixelCount * bands;
 }
 
-void Texture::loadAdvanced(unsigned char* rawData, long fsize) {
+void OpenGLTexture::loadAdvanced(unsigned char* rawData, long fsize) {
 	data = new unsigned char[549919];
 	int ctr = 0;
 	vector<char> octal;
@@ -168,7 +168,7 @@ void Texture::loadAdvanced(unsigned char* rawData, long fsize) {
 	}
 }
 
-void Texture::configure() {
+void OpenGLTexture::configure() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glGenTextures(1, &textureId);
@@ -182,7 +182,7 @@ void Texture::configure() {
 	configured = true;
 }
 
-void Texture::bind() {
+void OpenGLTexture::bind() {
 	if (!configured) {
 		configure();
 	}

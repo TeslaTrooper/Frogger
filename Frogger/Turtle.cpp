@@ -27,7 +27,7 @@ Turtle::Turtle(Objects type, Vec2 position, Rectangle textureRegion, bool animat
 	this->animating = animating;
 }
 
-void Turtle::doLogic(GLfloat dt) {
+void Turtle::doLogic(float dt) {
 	if (type == Objects::THREE_ELEMENT_CHAIN || !animating) {
 		move(dt);
 		return;

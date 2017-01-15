@@ -9,8 +9,8 @@
 using namespace std;
 
 class FemaleFrog : public Opponent {
-	GLfloat movingDuration;
-	GLfloat idleTimer;
+	float movingDuration;
+	float idleTimer;
 	Vec2 targetPosition;
 
 	const vector<TransitionElement> transitionSet = {
@@ -23,16 +23,16 @@ class FemaleFrog : public Opponent {
 
 	static const map<Direction, Rectangle> textureSet;
 
-	void idle(GLfloat dt);
+	void idle(float dt);
 protected:
 	// @Override
-	bool targetPositionReached(GLfloat dt);
+	bool targetPositionReached(float dt);
 
 public:
 	FemaleFrog(Vec2 position);
 
 	// @Override
-	virtual void doLogic(GLfloat dt);
+	virtual void doLogic(float dt);
 };
 
 #endif _FEMALE_FROG

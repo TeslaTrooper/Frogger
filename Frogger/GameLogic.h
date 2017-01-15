@@ -7,12 +7,12 @@
 
 #include "GameObject.h"
 #include "Frog.h"
-#include "Texture.h"
 #include "ObjectManager.h"
 #include "UIManager.h"
 #include "LevelManager.h"
 
 using namespace std;
+using namespace util;
 
 class GameLogic {
 	int overAllScore;
@@ -53,7 +53,7 @@ class GameLogic {
 	void increaseCollectedScoreBy(Event ev);
 	void reset(bool resetAll);
 	void gameOver(Frog* activeFrog);
-	void updateGameRules(Frog* activeFrog, GLfloat dt);
+	void updateGameRules(Frog* activeFrog, float dt);
 	void updateLevelDifficulty();
 	void generateOpponents();
 	void setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment);
@@ -80,7 +80,7 @@ public:
 		Berechnungen im Model stattfinden.
 		@param dt ist die Zeit, die seit dem letzten Aufruf vergangen ist.
 	*/
-	void gameLoop(const GLfloat dt);
+	void gameLoop(const float dt);
 
 
 	/*

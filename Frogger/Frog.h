@@ -8,15 +8,15 @@
 
 class Frog : public GameObject {
 
-	GLfloat movingDuration;
-	GLfloat decaeseTimer;
+	float movingDuration;
+	float decaeseTimer;
 
 	Vec2 targetPosition;
 	Vec2 homePosition;
 
 	int textureOffset;
 
-	void die(GLfloat dt);
+	void die(float dt);
 
 	bool validMovement(Vec2 movement);
 
@@ -46,7 +46,7 @@ class Frog : public GameObject {
 
 protected:
 	// @Override
-	bool targetPositionReached(GLfloat dt);
+	bool targetPositionReached(float dt);
 
 public:
 	Frog(Vec2 position);
@@ -58,7 +58,7 @@ public:
 	void reset();
 
 	// @Override
-	void doLogic(GLfloat dt);
+	void doLogic(float dt);
 };
 
 #endif FROG

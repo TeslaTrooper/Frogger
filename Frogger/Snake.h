@@ -16,7 +16,7 @@ public:
 	~Snake() {};
 
 	// @Override
-	virtual void doLogic(GLfloat dt);
+	virtual void doLogic(float dt);
 
 };
 

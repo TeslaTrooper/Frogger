@@ -19,7 +19,7 @@ class OpenGLWindow {
 	OpenGLRenderer* renderer;
 	GLFWwindow* window;
 	GLuint shaderProgram, vbo, vao, ebo;
-	Texture* background;
+	OpenGLTexture* background;
 
 	void initViewport();
 	void initProjectionMatrix();

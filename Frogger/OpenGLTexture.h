@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class Texture {
+class OpenGLTexture {
 	unsigned char* data;
 
 	int width, height;
@@ -21,9 +21,9 @@ class Texture {
 	void configure();
 
 public:
-	Texture(char* file, Vec2 dimension);
+	OpenGLTexture(char* file, Vec2 dimension);
 
-	~Texture();
+	~OpenGLTexture();
 
 	int getWidth() const { return this->width; };
 	int getHeight() const { return this->height; };

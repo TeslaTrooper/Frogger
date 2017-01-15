@@ -8,19 +8,20 @@
 #include "Shader.h"
 #include "ShaderProgramService.h"
 #include "Util.h"
-#include "Texture.h"
+#include "OpenGLTexture.h"
 
 using namespace std;
+using namespace util;
 
 class OpenGLRenderer {
 	Shader* shader;
 	GLuint vbo, vao, ebo;
 
-	Texture* tileset;
+	OpenGLTexture* tileset;
 
 	void init(GLuint* shaderProgram);
-	void draw(Texture* texture, const Drawable drawable);
-	void glDraw(Texture* texture);
+	void draw(OpenGLTexture* texture, const Drawable drawable);
+	void glDraw(OpenGLTexture* texture);
 
 	Mat4 getTransformation(const Rectangle transformation);
 	Mat3 getTextureRegion(const Rectangle* region);
@@ -31,9 +32,9 @@ public:
 	
 	Shader* getShader();
 
-	void setTileset(Texture* tileset) { this->tileset = tileset; };
+	void setTileset(OpenGLTexture* tileset) { this->tileset = tileset; };
 
-	void draw(Texture* texture, const Rectangle rectangle);
+	void draw(OpenGLTexture* texture, const Rectangle rectangle);
 
 	void draw(const Drawable drawable);
 };

@@ -24,7 +24,7 @@ public:
 	bool isAnimating() { return this->animating; };
 
 	// @Override
-	virtual void doLogic(GLfloat dt);
+	virtual void doLogic(float dt);
 };
 
 #endif TURTLE

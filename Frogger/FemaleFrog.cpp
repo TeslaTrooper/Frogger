@@ -14,7 +14,7 @@ FemaleFrog::FemaleFrog(Vec2 position) : Opponent(position, textureSet.at(Directi
 	this->setCollisionInfo({ Event::COLLECTING, 6 });
 }
 
-void FemaleFrog::doLogic(GLfloat dt) {
+void FemaleFrog::doLogic(float dt) {
 	doTransition(getCurrentInteraction().collisionInfo.effect);
 
 	switch (getState()) {
@@ -33,7 +33,7 @@ void FemaleFrog::doLogic(GLfloat dt) {
 	setExpired(Opponent::isOutsideOfBorders());
 }
 
-void FemaleFrog::idle(GLfloat dt) {
+void FemaleFrog::idle(float dt) {
 	idleTimer += dt;
 
 	setTextureRegion(getTextureRegionFor(Direction::UP));
@@ -63,7 +63,7 @@ void FemaleFrog::idle(GLfloat dt) {
 	move(dt);
 }
 
-bool FemaleFrog::targetPositionReached(GLfloat dt) {
+bool FemaleFrog::targetPositionReached(float dt) {
 	if (getState() == State::TRANSPORT) {
 		return false;
 	}

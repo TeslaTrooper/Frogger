@@ -5,6 +5,7 @@
 #include "StateMachine.h"
 
 using namespace std;
+using namespace util;
 
 /*
 	Das GameObject repräsentiert ein beliebiges Objekt des Spieles. Es wird 
@@ -23,7 +24,7 @@ class GameObject {
 	StateMachine stateMachine;
 
 	// Gibt den Bereich an, aus dem die Textur innerhlb des tilesets stammt
-	Rectangle textureRegion;
+	util::Rectangle textureRegion;
 
 	// Die Geschwindigkeit, mit der sich das Objekt bewegen kann
 	float speed;
@@ -36,16 +37,16 @@ class GameObject {
 	// Ist die Zustandsübergangsmenge
 	const vector<TransitionElement> transitionSet;
 
-	map<Direction, Rectangle> textureSet;
+	map<Direction, util::Rectangle> textureSet;
 
 protected:
 	// Aus den 2 Vektoren wird der resultierende Vektor gebildet
 	Vec2 vectors[2];
 
-	virtual bool targetPositionReached(GLfloat dt);
+	virtual bool targetPositionReached(float dt);
 
-	Rectangle getTextureRegionFor(Direction direction) { return this->textureSet.at(direction); };
-	void setTextureRegion(Rectangle textureRegion) { this->textureRegion = textureRegion; };
+	util::Rectangle getTextureRegionFor(Direction direction) { return this->textureSet.at(direction); };
+	void setTextureRegion(util::Rectangle textureRegion) { this->textureRegion = textureRegion; };
 
 public:
 
@@ -63,7 +64,7 @@ public:
 		@param textureRegion gibt die Position und Größe der Textur an.
 		@param transitionSet ist die Zustandsübergangsmenge.
 	*/
-	//GameObject(Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
+	//GameObject(util::Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
 
 
 	/*
@@ -73,7 +74,7 @@ public:
 		@param textureRegion gibt die Position und Größe der Textur an.
 		@param transitionSet ist die Zustandsübergangsmenge.
 	*/
-	GameObject(Vec2 position, Rectangle textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet);
+	GameObject(Vec2 position, util::Rectangle textureRegion, map<Direction, util::Rectangle> textureSet, const vector<TransitionElement>& transitionSet);
 
 	GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& transitionSet);
 
@@ -147,7 +148,7 @@ public:
 	void setSize(Vec2 size) { this->size = size; };
 	void setCollisionInfo(CollisionInfo info) { this->objectInfo.collisionInfo = info; };
 
-	Rectangle getTextureRegion() { return this->textureRegion; };
+	util::Rectangle getTextureRegion() { return this->textureRegion; };
 	
 
 	ObjectInfo getCurrentInteraction() { return interactingObjectInfo; };
@@ -156,7 +157,7 @@ public:
 
 	void setMovement(Vec2 movement);
 	void resetMovement();
-	void move(GLfloat dt);
+	void move(float dt);
 
 	/*
 		Registriert ein neues Event.
@@ -167,7 +168,7 @@ public:
 	/*
 		@returns Gibt das Rechteck des Objektes zurück.
 	*/
-	virtual Rectangle getCriticalHitBox();
+	virtual util::Rectangle getCriticalHitBox();
 
 
 	/*
@@ -175,7 +176,7 @@ public:
 		Objektes gesteuert.
 		@param dt ist die Zeit, die seit dem letzten game loop vergangen ist.
 	*/
-	virtual void doLogic(GLfloat dt);
+	virtual void doLogic(float dt);
 };
 
 #endif GAME_OBJECT

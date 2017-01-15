@@ -3,7 +3,7 @@
 OpenGLWindow::OpenGLWindow() {
 	initOpenGL();
 
-	this->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Frogger", nullptr, nullptr);
+	this->window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Frogger | OpenGL", nullptr, nullptr);
 	glfwSetWindowPos(this->window, 500, 100);
 	glfwMakeContextCurrent(window);
 
@@ -12,8 +12,8 @@ OpenGLWindow::OpenGLWindow() {
 
 	initViewport();
 
-	Texture* tileset = new Texture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
-	this->background = new Texture("../textures/bg.raw", Vec2(560, 540));
+	OpenGLTexture* tileset = new OpenGLTexture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
+	this->background = new OpenGLTexture("../textures/bg.raw", Vec2(560, 540));
 	
 	
 
@@ -34,10 +34,17 @@ OpenGLWindow::OpenGLWindow() {
 void OpenGLWindow::render() {
 	GLfloat start = 0;
 	GLfloat dt = 0;
+	GLfloat lastLoop = 0;
 
 	while(!this->isWindowClosing()) {
 		start = (GLfloat)glfwGetTime();
+
 		glfwPollEvents();
+
+		if (dt < (GLfloat) (1000.f/FRAME_RATE)/1000.f && dt > 0) {
+			dt += (GLfloat)glfwGetTime() - start;
+			continue;
+		}
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);

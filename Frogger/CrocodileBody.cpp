@@ -10,7 +10,7 @@ CrocodileBody::CrocodileBody(Vec2 position) : Opponent(position, textureSet.at(D
 	this->setCollisionInfo({ Event::COLL_TREE_TURTLE, 5 });
 }
 
-void CrocodileBody::doLogic(GLfloat dt) {
+void CrocodileBody::doLogic(float dt) {
 	move(dt);
 	setExpired(false);
 }

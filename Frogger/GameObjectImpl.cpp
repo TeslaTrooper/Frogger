@@ -32,7 +32,7 @@ GameObject::GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& t
 
 GameObject::~GameObject() {}
 
-void GameObject::move(GLfloat dt) {
+void GameObject::move(float dt) {
 	if (targetPositionReached(dt)) {
 		return;
 	}
@@ -47,7 +47,7 @@ Drawable GameObject::getDrawable() {
 Rectangle GameObject::getCriticalHitBox() {
 	return { this->getPosition(), this->getSize() };
 }
-void GameObject::doLogic(GLfloat dt) {
+void GameObject::doLogic(float dt) {
 	if (getState() == State::MOVING) {
 		move(dt);
 	}
@@ -76,6 +76,6 @@ void GameObject::registerInteraction(ObjectInfo objectInfo) {
 	this->interactingObjectInfo = objectInfo;
 }
 
-bool GameObject::targetPositionReached(GLfloat dt) {
+bool GameObject::targetPositionReached(float dt) {
 	return false;
 }

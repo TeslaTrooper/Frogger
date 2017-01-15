@@ -29,5 +29,6 @@ const float SPEED_SMALL_TREE = 40.0f;
 const float SPEED_TWO_ELEMENT_CHAIN = -50.0f;
 const float SPEED_THREE_ELEMENT_CHAIN = -50.0f;
 const float SPEED_SNAKE = 20.0f;
+const int FRAME_RATE = 60;
 
 #endif CONSTANTS 

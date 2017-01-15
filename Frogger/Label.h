@@ -4,11 +4,12 @@
 #include "Util.h"
 
 using namespace std;
+using namespace util;
 
 class Label {
-	static map<char, Rectangle>* charCollection;
+	static map<char, util::Rectangle>* charCollection;
 
-	vector<Rectangle>* chars;
+	vector<util::Rectangle>* chars;
 	vector<Vec2>* charPositions;
 
 	string descriptionText;
@@ -46,7 +47,7 @@ public:
 
 	void update(float dt);
 
-	static map<char, Rectangle>* initTextures();
+	static map<char, util::Rectangle>* initTextures();
 };
 
 #endif LABEL

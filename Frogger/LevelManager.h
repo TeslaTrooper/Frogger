@@ -7,6 +7,7 @@
 #include "Util.h"
 
 using namespace std;
+using namespace util;
 
 class LevelManager {
 	int currentLevel;

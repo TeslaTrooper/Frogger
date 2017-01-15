@@ -1,6 +1,6 @@
 #include "Util.h"
 
-bool intersects(Rectangle rect1, Rectangle rect2) {
+bool intersects(util::Rectangle rect1, util::Rectangle rect2) {
 	if ((int)rect1.position.x >= (int)(rect2.position.x + rect2.size.x) || 
 		(int)rect2.position.x >= (int)(rect1.position.x + rect1.size.x)) {
 		return false;
