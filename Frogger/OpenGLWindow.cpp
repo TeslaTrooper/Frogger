@@ -12,8 +12,8 @@ OpenGLWindow::OpenGLWindow() {
 
 	initViewport();
 
-	OpenGLTexture* tileset = new OpenGLTexture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
-	this->background = new OpenGLTexture("../textures/bg.raw", Vec2(560, 540));
+	OpenGLTexture* tileset = new OpenGLTexture("../textures/tileset.bmp", Vec2(400, 400));
+	this->background = new OpenGLTexture("../textures/bg.bmp", Vec2(560, 540));
 	
 	
 

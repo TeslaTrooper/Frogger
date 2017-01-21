@@ -10,14 +10,14 @@
 using namespace std;
 
 class OpenGLTexture {
-	unsigned char* data;
+	unsigned char* imageData;
 
 	int width, height;
 	GLuint textureId;
 	bool configured = false;
 
 	void load(char* rawData);
-	void loadAdvanced(unsigned char* rawData, long fsize);
+	void loadAdvanced(unsigned char* rawData, unsigned short transR, unsigned short transG, unsigned short transB);
 	void configure();
 
 public:

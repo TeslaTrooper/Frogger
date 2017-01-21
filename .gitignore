@@ -9,3 +9,4 @@ Frogger.opensdf
 textures/*.raw
 textures/*
 !/textures/*.png
+!/textures/*.bmp
