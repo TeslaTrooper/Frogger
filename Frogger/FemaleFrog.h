@@ -21,7 +21,7 @@ class FemaleFrog : public Opponent {
 		{ State::MOVE_TRANSPORT, Event::COLLECTING, State::COLLECTED }
 	};
 
-	static const map<Direction, Rectangle> textureSet;
+	static const map<Direction, util::Rectangle> textureSet;
 
 	void idle(float dt);
 protected:

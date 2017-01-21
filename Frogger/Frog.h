@@ -42,7 +42,7 @@ class Frog : public GameObject {
 		{ State::MOVE_TRANSPORT, Event::COLLECTING, State::COLLECTED }
 	};
 
-	static const map<Direction, Rectangle> textureSet;
+	static const map<Direction, util::Rectangle> textureSet;
 
 protected:
 	// @Override

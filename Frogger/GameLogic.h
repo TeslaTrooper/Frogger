@@ -28,15 +28,15 @@ class GameLogic {
 	float opponentCreationCounter;
 	float insectCounter;
 
-	const Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
-	Rectangle insectHitBox = { Vec2(0.0f, 0.0f), Vec2(X_TILE_SIZE, Y_TILE_SIZE) };
+	const util::Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
+	util::Rectangle insectHitBox = { Vec2(0.0f, 0.0f), Vec2(X_TILE_SIZE, Y_TILE_SIZE) };
 
 	vector<Pool> pools;
 	ObjectManager objectManager;
 	UIManager uiManager;
 	LevelManager levelManager;
 
-	vector<Rectangle> getPoolHitBoxes();
+	vector<util::Rectangle> getPoolHitBoxes();
 
 	ObjectInfo checkForCollision(Frog* frog, GameObject* obj);
 	ObjectInfo checkForRiverCollision();

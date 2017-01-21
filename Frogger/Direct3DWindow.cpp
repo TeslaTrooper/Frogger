@@ -1,7 +1,9 @@
 #include <Windows.h>
+#include <chrono>
 
 #include "Constants.h"
 #include "Direct3DRenderer.h"
+#include "GameLogic.h"
 
 Direct3DRenderer renderer;
 
@@ -51,6 +53,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// this struct holds Windows event messages
 	MSG msg;
 
+	GameLogic* logic = new GameLogic();
+	logic->create();
+
+	std::chrono::time_point<std::chrono::steady_clock> start, finish;
+	long dt = 0;
+
 	while (true) {
 		// wait for the next message in the queue, store the result in 'msg'
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
@@ -65,7 +73,34 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			return FALSE;
 		}
 
-		renderer.render();
+		start = std::chrono::high_resolution_clock::now();
+		//if (dt < (float)(1000.f / FRAME_RATE) / 1000.f && dt > 0) {
+
+
+		logic->gameLoop(dt / 1e9);
+
+		renderer.beginRendering();
+
+		const Drawable d = {
+			Vec2(0, 0),
+			Vec2(560, 540),
+			{Vec2(0,0), Vec2(TILES_X, 13.5)}
+		};
+		renderer.renderBg(d);
+
+		map<DrawableType, std::vector<Drawable>> drawables = logic->getDrawables();
+		for (int i = 0; i < drawables.at(DrawableType::OBJECT).size(); i++) {
+			renderer.render(drawables.at(DrawableType::OBJECT).at(i));
+		}
+		for (int i = 0; i < drawables.at(DrawableType::FONT).size(); i++) {
+			renderer.render(drawables.at(DrawableType::FONT).at(i));
+		}
+
+		renderer.endRenderering();
+
+		finish = std::chrono::high_resolution_clock::now();
+
+		dt = std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count();
 	}
 
 	renderer.clean();

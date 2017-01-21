@@ -18,7 +18,7 @@ protected:
 	void setValidMovement(float leftThreshold, float rightThreshold);
 
 public:
-	Opponent(Vec2 position, const Rectangle& textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet);
+	Opponent(Vec2 position, const util::Rectangle& textureRegion, map<Direction, util::Rectangle> textureSet, const vector<TransitionElement>& transitionSet);
 	~Opponent() {};
 
 	void setExpired(bool value) { this->expired = value; };
@@ -37,7 +37,7 @@ public:
 	virtual void doLogic(float dt);
 
 	// @Override
-	virtual Rectangle getCriticalHitBox();
+	virtual util::Rectangle getCriticalHitBox();
 };
 
 #endif OPPONENT

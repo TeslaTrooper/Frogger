@@ -4,7 +4,7 @@
 #include "Opponent.h"
 
 class CrocodileBody : public Opponent {
-	static const map<Direction, Rectangle> textureSet;
+	static const map<Direction, util::Rectangle> textureSet;
 
 public:
 	CrocodileBody(Vec2 position);

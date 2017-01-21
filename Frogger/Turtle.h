@@ -4,7 +4,7 @@
 #include "Opponent.h"
 
 class Turtle : public Opponent {
-	map<Direction, Rectangle> textureSet;
+	map<Direction, util::Rectangle> textureSet;
 
 	const vector<TransitionElement> transitionSet = {
 		{ State::MOVING, Event::START_DIVING, State::DESCENDING },
@@ -18,7 +18,7 @@ class Turtle : public Opponent {
 	Objects type;
 	bool animating;
 public:
-	Turtle(Objects type, Vec2 position, Rectangle textureRegion, bool animating);
+	Turtle(Objects type, Vec2 position, util::Rectangle textureRegion, bool animating);
 	~Turtle() {}
 
 	bool isAnimating() { return this->animating; };

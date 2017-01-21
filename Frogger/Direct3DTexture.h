@@ -11,15 +11,13 @@ class Direct3DTexture {
 	int width, height;
 
 public:
-	Direct3DTexture(char* fileName, LPDIRECT3DDEVICE9* d3dDevice, int width, int height);
+	Direct3DTexture(char* fileName, LPDIRECT3DDEVICE9* d3dDevice);
 	~Direct3DTexture();
-
-	D3DXIMAGE_INFO getImageInfo();
 
 	IDirect3DTexture9* getData();
 
-	int getWidth() { return this->width; };
-	int getHeight() { return this->height; };
+	int getWidth() { return (int) this->srcInfo.Width; };
+	int getHeight() { return (int) this->srcInfo.Height;};
 };
 
 #endif DIRECT3D_TEXTURE

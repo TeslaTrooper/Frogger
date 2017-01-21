@@ -94,12 +94,13 @@ void GameLogic::init() {
 	isGameOver = false;
 	remainingTimeLabelDuration = 0;
 	currentLevelLabelDuration = 0;
-	currentLevel = 1;
+	currentLevel = 4;
 	opponentCreationCounter = 0;
 	insectCounter = 0;
 
 
 	levelManager.reset();
+	levelManager.setLevel(currentLevel);
 }
 
 void GameLogic::setupObjects() {
