@@ -146,6 +146,7 @@
     <ClCompile Include="ControllerImpl.cpp" />
     <ClCompile Include="CrocodileBody.cpp" />
     <ClCompile Include="CrocodileHead.cpp" />
+    <ClCompile Include="Direct3DMain.cpp" />
     <ClCompile Include="Direct3DRenderer.cpp" />
     <ClCompile Include="Direct3DTexture.cpp" />
     <ClCompile Include="Direct3DWindow.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="CrocodileHead.h" />
     <ClInclude Include="Direct3DRenderer.h" />
     <ClInclude Include="Direct3DTexture.h" />
+    <ClInclude Include="Direct3DWindow.h" />
     <ClInclude Include="FemaleFrog.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frog.h" />

@@ -19,22 +19,23 @@ class Direct3DRenderer {
 	Direct3DTexture* bg;
 	Direct3DTexture* tileset;
 
-	const DWORD D3DFVF_TLVERTEX = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
+	float screenWidth;
+	float screenHeight;
+
+	const DWORD D3DFVF_TLVERTEX = D3DFVF_XYZ | D3DFVF_DIFFUSE;
 
 	struct TLVERTEX {
 		float x;
 		float y;
 		float z;
 		D3DCOLOR colour;
-		float u;
-		float v;
 	};
 
 	//void setupQuad(const Drawable& d, Vec2 texSize);
 	void setupQuad();
 	void renderTexture(Direct3DTexture* texture, const Drawable& drawable);
 
-	void initRendering(int width, int height);
+	void initRendering(float width, float height);
 
 public:
 	Direct3DRenderer();
@@ -45,7 +46,7 @@ public:
 	void endRenderering();
 	void init(HWND hwnd);
 	void render(const Drawable& drawable);
-	void renderBg(const Drawable& drawable);
+	void renderBg();
 	void clean();
 };
 
