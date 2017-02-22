@@ -61,14 +61,6 @@ public:
 
 	/*
 		Erzeugt ein neues Objekt mit den gegebenen Parametern.
-		@param textureRegion gibt die Position und Größe der Textur an.
-		@param transitionSet ist die Zustandsübergangsmenge.
-	*/
-	//GameObject(util::Rectangle textureRegion, const vector<TransitionElement>& transitionSet);
-
-
-	/*
-		Erzeugt ein neues Objekt mit den gegebenen Parametern.
 		@param position gibt die initiale Position des Objektes an.
 		@param size ist die Größe des Objektes.
 		@param textureRegion gibt die Position und Größe der Textur an.
@@ -76,6 +68,12 @@ public:
 	*/
 	GameObject(Vec2 position, util::Rectangle textureRegion, map<Direction, util::Rectangle> textureSet, const vector<TransitionElement>& transitionSet);
 
+
+	/*
+		Erzeugt ein neues Objekt mit den gegebenen Parametern.
+		@param objectInfo enthält vordefinierte Werte, die dieses GameObject annimmt.
+		@param transitionSet ist die Zustandsübergangsmenge.
+	*/
 	GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& transitionSet);
 
 
@@ -116,15 +114,6 @@ public:
 
 
 	/*
-		Diese Methode liefert Informationen darüber, welchen
-		Auswirkungen bei einer Kollision das andere Objekt, mit 
-		dem Dieses kollidiert, ausgesetzt ist.
-		@returns Gibt ein struct zurück, welches die entsprechenden
-				 Informationen liefert.
-	*/
-
-
-	/*
 		Löst einen Zustandsübergang aus.
 		@param ev ist das Event, mit dem der Zustandsübergang durchgeführt
 				  werden soll.
@@ -132,6 +121,10 @@ public:
 	*/
 	bool doTransition(Event ev);
 
+
+	/*
+		Versetzt den Zustandsautomaten dieses Objektes in den vorherigen Zustand.
+	*/
 	void gotoPreviousState();
 
 
@@ -142,25 +135,89 @@ public:
 	*/
 	Drawable getDrawable();
 
+
+	/*
+		Setzt die Position des Objektes.
+		@param position ist die neue Position.
+	*/
 	void setPosition(Vec2 position) { this->position = position; };
+
+
+	/*
+		Setzt die Geschwindigkeit des Objektes.
+		@param speed ist die neue Geschwindigkeit.
+	*/
 	void setSpeed(float speed) { this->speed = speed; };
+
+
+	/*
+		Setzt den intialen Zustand des Objektes.
+		@param state ist der initiale Zustand, der für den Zustandsautomaten verwenden werden soll.
+	*/
 	void setState(State state) { stateMachine.setInitialState(state); };
+
+
+	/*
+		Setzt die Größe des Objektes.
+		@param size ist die neue Größe des Objektes.
+	*/
 	void setSize(Vec2 size) { this->size = size; };
+
+
+	/*
+		Setzt die Information für eine Kollision.
+		@param info ist das Collisioninfo Struct, das das andere Objekt, mit dem dieses kolliedert ist, beschreibt.
+	*/
 	void setCollisionInfo(CollisionInfo info) { this->objectInfo.collisionInfo = info; };
 
+
+	/*
+		@return gibt die Texturkoordinaten zurück.
+	*/
 	util::Rectangle getTextureRegion() { return this->textureRegion; };
 	
 
+	/*
+		@return gibt das ObjectInfo Struct des Objektes zurück, mit dem dieses aktuell kollidiert.
+	*/
 	ObjectInfo getCurrentInteraction() { return interactingObjectInfo; };
+
+
+	/*
+		Erzeugt aus den aktuellen Informationen dieses Objektes ein ObjectInfo Struct.
+		@return gibt das ObjectInfo Struct zurück.
+	*/
 	ObjectInfo getObjectInfo() { return { textureRegion, getCriticalHitBox(), getCurrentMovement(), objectInfo.collisionInfo }; };
+
+
+	/*
+		Erzeugt aus den aktuellen Informationen dieses Objektes ein CollisionInfo Struct.
+		@return gibt das CollisionInfo Struct zurück.
+	*/
 	CollisionInfo getCollisionInfo() { return objectInfo.collisionInfo; };
 
+
+	/*
+		@param ist der neue Bewegungsvektor.
+	*/
 	void setMovement(Vec2 movement);
+
+
+	/*
+		Stopt die Bewegung des Objektes.
+	*/
 	void resetMovement();
+
+
+	/*
+		Lässt das Objekt in abhängigkeit der Zeit bewegen.
+		@param dt ist die Zeit, die vergangen ist.
+	*/
 	void move(float dt);
 
 	/*
 		Registriert ein neues Event.
+		@param info ist die Information des anderen Objektes, für das ein Event registriert wird.
 	*/
 	void registerInteraction(ObjectInfo info);
 	

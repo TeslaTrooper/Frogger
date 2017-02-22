@@ -4,16 +4,16 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "GameLogic.h"
+#include "Game.h"
 
 class Controller {
-	static GameLogic* gameLogic;
+	static Game* gameLogic;
 
 public:
 	Controller();
 	~Controller();
 
-	GameLogic* getLogic();
+	Game* getLogic();
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 };
 

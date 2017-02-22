@@ -24,12 +24,14 @@ public:
 	Shader(GLuint shaderProgram);
 	~Shader();
 
+
 	/*
 		Setzt zum gegebenen uniform die gegebene Matrix.
 		@param uniform ist der Name des uniforms, der im Shader verwendet wird.
 		@param value ist die Matrix, die diesem uniform zugeordnet werden soll.
 	*/
 	void setUniformMatrix4(const GLchar* uniform, Mat4 value);
+
 
 	/*
 		Setzt zum gegebenen uniform den gegebenen Integer.
@@ -38,6 +40,7 @@ public:
 	*/
 	void setInteger(const GLchar* uniform, GLint value);
 
+
 	/*
 		Setzt zum gegebenen uniform den gegebene Vektor.
 		@param uniform ist der Name des uniforms, der im Shader verwendet wird.
@@ -45,8 +48,18 @@ public:
 	*/
 	void setVector2(const GLchar* uniform, Vec2 value);
 
+
+	/*
+		Setzt zum gegebenen uniform die gegebene Matrix.
+		@param uniform ist der Name des uniforms, der im Shader verwendet wird.
+		@param value ist die Matrix, die diesem uniform zugeordnet werden soll.
+	*/
 	void setUniformMatrix3(const GLchar* uniform, Mat3 value);
 
+
+	/*
+		Verwendet das Program.
+	*/
 	void use();
 };
 

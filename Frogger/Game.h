@@ -14,7 +14,7 @@
 using namespace std;
 using namespace util;
 
-class GameLogic {
+class Game {
 	int overAllScore;
 	int collectedScore;
 	int lastRow;
@@ -59,9 +59,12 @@ class GameLogic {
 	void setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment);
 
 public:
-	GameLogic();
-	~GameLogic();
+	Game();
+	~Game();
 
+	/*
+		Initialisiert die Logik.
+	*/
 	void create();
 
 
@@ -91,6 +94,9 @@ public:
 	void moveFrog(const Direction direction);
 
 
+	/*
+		Setzt alle Felder zurück und startet das Spiel neu.
+	*/
 	void restart();
 };
 

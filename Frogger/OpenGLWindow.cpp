@@ -12,14 +12,10 @@ OpenGLWindow::OpenGLWindow() {
 
 	initViewport();
 
-	OpenGLTexture* tileset = new OpenGLTexture("../textures/tileset.bmp", Vec2(400, 400));
-	this->background = new OpenGLTexture("../textures/bg.bmp", Vec2(560, 540));
-	
-	
+	OpenGLTexture* tileset = new OpenGLTexture("../textures/tileset.bmp");
+	this->background = new OpenGLTexture("../textures/bg.bmp");
 
 	this->renderer = new OpenGLRenderer();
-
-	//Texture* tileset = new Texture("../textures/tilesetNoAlpha.raw", Vec2(400, 400));
 	
 	renderer->setTileset(tileset);
 
@@ -49,7 +45,7 @@ void OpenGLWindow::render() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		GameLogic* logic = controller->getLogic();
+		Game* logic = controller->getLogic();
 
 		logic->gameLoop(dt);
 

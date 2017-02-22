@@ -2,13 +2,9 @@
 
 OpenGLTexture::~OpenGLTexture() {}
 
-OpenGLTexture::OpenGLTexture(char* file, Vec2 dimension) {
-	//this->width = dimension.x;
-	//this->height = dimension.y;
-
+OpenGLTexture::OpenGLTexture(char* file) {
 	FILE *f = fopen(file, "rb");
 
-	// obtain file size:
 	fseek(f, 0, SEEK_END);
 	auto lSize = ftell(f);
 	rewind(f);
@@ -17,19 +13,16 @@ OpenGLTexture::OpenGLTexture(char* file, Vec2 dimension) {
 	fread(data, lSize, 1, f);
 	fclose(f);
 
-	
-	/*if (file == "../textures/tilesetp.raw") {
-		loadAdvanced(string, fsize);
-	}
-	else {
-		char* a = (char*)string;
-		load(a);
-	}*/
-
-	//char* a = (char*)string;
+	// ### Old version of texture loading ###
+	//this->width = dimension.x;
+	//this->height = dimension.y;
+	//char* a = (char*)data;
 	//load(a);
+	// #######################################
 
+	// ### New version of texture loading ###
 	loadAdvanced(data, 174, 54, 158);
+	// ######################################
 }
 
 void OpenGLTexture::load(char* rawData) {
@@ -127,79 +120,6 @@ void OpenGLTexture::loadAdvanced(unsigned char* rawData, unsigned short transR, 
 
 	delete[] rawData;
 	imageData = ret;
-	/*data = new unsigned char[549919];
-	int ctr = 0;
-	vector<char> octal;
-
-	for (int i = 0; i < fsize; i++) {
-		if (i == 638338) {
-			int a = 0;
-			a += 1;
-		}
-
-		unsigned char prevChar;
-		if (i > 0) {
-			prevChar = *(rawData - 1);
-		}
-		unsigned char currentChar = *(rawData++);
-
-
-		if (currentChar == ' ') {
-			continue;
-		}
-
-		if (currentChar == '\"') {
-			continue;
-		}
-
-		if (currentChar == '\r') {
-			continue;
-		}
-
-		if (currentChar == '\n') {
-			continue;
-		}
-
-		if ((int)currentChar < 48 || (int)currentChar > 55 && !((int)currentChar == 92)) {
-			continue;
-		}
-			
-
-		if (currentChar == '\\') {
-			if (octal.size() == 0)
-				continue;
-
-			//if ((int)prevChar >= 48 || (int)prevChar <= 55) {
-				string res;
-				for (int j = 0; j < octal.size(); j++) {
-					res += octal.at(j);
-				}
-
-				int octalNumber = stoi(res);
-
-				int decimalNumber = 0, a = 0, rem;
-				while (octalNumber != 0)
-				{
-					rem = octalNumber % 10;
-					octalNumber /= 10;
-					decimalNumber += rem * pow(8, a);
-					++a;
-				}
-
-				unsigned char abc = static_cast<unsigned char>(decimalNumber);
-
-				*(data + ctr) = abc;
-				ctr++;
-
-				octal.clear();
-			//}
-
-			continue;
-		}
-
-		if(((int)prevChar >= 48 || (int)prevChar <= 55) && octal.size() < 3)
-			octal.push_back(currentChar);
-	}*/
 }
 
 void OpenGLTexture::configure() {

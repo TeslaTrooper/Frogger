@@ -11,12 +11,31 @@ class Direct3DTexture {
 	int width, height;
 
 public:
+
+	/*
+		Erzeugt eine neue Direct3DTexture.
+		@param ist der Pfad zur textur.
+		@param d3device ist das Gerät, mit dem die Textur geladen wird.
+	*/
 	Direct3DTexture(char* fileName, LPDIRECT3DDEVICE9* d3dDevice);
 	~Direct3DTexture();
 
+
+	/*
+		@return gibt den Pointer für die Texturdaten zurück.
+	*/
 	IDirect3DTexture9* getData();
 
+
+	/*
+		@return gibt die Breite der Textur zurück.
+	*/
 	int getWidth() { return (int) this->srcInfo.Width; };
+
+
+	/*
+		@return gibt die Höhe der Textur zurück.
+	*/
 	int getHeight() { return (int) this->srcInfo.Height;};
 };
 

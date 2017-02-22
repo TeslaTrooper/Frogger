@@ -10,7 +10,7 @@
 #include "Constants.h"
 #include "Util.h"
 #include "Direct3DTexture.h"
-#include "GameLogic.h"
+#include "Game.h"
 
 using namespace util;
 
@@ -19,17 +19,55 @@ public:
 	Direct3DWindow(HINSTANCE hInstance);
 	virtual ~Direct3DWindow(void);
 
+
+	/*
+		Führt die Hauptschleife aus.
+	*/
 	int Run();
+
+
+	/*
+		Initialisiert alle für Direct3D benötigten Parametern.
+	*/
 	bool initDirect3D();
+
+
+	/*
+		Lädt die Texturen.
+	*/
 	void initTextures();
 	
+
+	/*
+		Stellt die Haupt-Initialisierung dar. Das Fester, sowie alle für Direct3D benötigten Parametern werden gesetzt.
+	*/
 	virtual bool Init();
-	virtual void Update(float dt) = 0;
+
+
+	/*
+		Rendert ein Drawable mit gegebener Textur.
+		@param d das Drawable, das gerendert werden soll.
+		@param textur ist die Textur, die zum Rendern verwendet werden soll.
+	*/
 	virtual void Render(Drawable& d, Direct3DTexture* texture) = 0;
+
+
+	/*
+		Rendert den Hintergrund.
+	*/
 	virtual void RenderBackground() = 0;
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+
+	/*
+		Muss vor jedem Rendern aufgerufen werden.
+	*/
 	virtual void Begin() = 0;
+
+
+	/*
+		Muss nach jedem Rendern aufgerufen werden.
+	*/
 	virtual void End() = 0;
 
 	IDirect3D9* d3d;
@@ -39,20 +77,19 @@ public:
 	Direct3DTexture* background;
 	Direct3DTexture* tileset;
 
-	GameLogic* logic;
+	Game* logic;
 
 protected:
-	//Members
 
-	HWND m_hAppWindow;				//HANDLE to application window
-	HINSTANCE m_hAppInstance;			//HANDLE to application instance
-	UINT m_ClientWidth;			//Requested client width
-	UINT m_ClientHeight;			//Requested client height
-	std::string	m_AppTitle;				//Application title (window title bar)
-	DWORD m_WindowStyle;			//Window style (e.g. WS_OVERLAPPEDWINDOW)
-	bool m_Paused;				//True if application pause, false otherwise
-	bool m_EnableFullscreen;		//True to enable fullscreen, false otherwise
-	float m_FPS;					//Frames per second of our application
+	HWND m_hAppWindow;
+	HINSTANCE m_hAppInstance;
+	UINT m_ClientWidth;
+	UINT m_ClientHeight;
+	std::string	m_AppTitle;
+	DWORD m_WindowStyle;
+	bool m_Paused;
+	bool m_EnableFullscreen;
+	float m_FPS;
 
 protected:
 

@@ -1,6 +1,6 @@
 #include "Controller.h"
 
-GameLogic* Controller::gameLogic = new GameLogic();
+Game* Controller::gameLogic = new Game();
 
 Controller::Controller() {}
 
@@ -17,7 +17,7 @@ void Controller::key_callback(GLFWwindow* window, int key, int scancode, int act
 	}
 };
 
-GameLogic* Controller::getLogic() {
+Game* Controller::getLogic() {
 	return Controller::gameLogic;
 }
 

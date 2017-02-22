@@ -18,6 +18,9 @@ data += 4; \
 }
 
 namespace util {
+	/*
+		Enthält alle Events, die im Program unterschieden werden müssen.
+	*/
 	enum Event {
 		ARROW_KEYS,
 		TIME_OUT,
@@ -37,6 +40,10 @@ namespace util {
 		TURNING_UP_FINISHED
 	};
 
+
+	/*
+		Stellt eine Menge von möglichen Richtungen dar, die ein Objekt haben kann.
+	*/
 	enum Direction {
 		LEFT,
 		UP,
@@ -45,6 +52,10 @@ namespace util {
 		NONE
 	};
 
+
+	/*
+		Enthält alle Objekttypen, die die Logik unterscheiden muss.
+	*/
 	enum Objects {
 		CAR_YELLOW,
 		CAR_WHITE,
@@ -66,6 +77,10 @@ namespace util {
 		INSECT
 	};
 
+
+	/*
+		Enthält alle Zustände, in denen ein Objekt sein kann.
+	*/
 	enum State {
 		IDLE,
 		MOVING,
@@ -85,11 +100,19 @@ namespace util {
 		TURNING_UP
 	};
 
+
+	/*
+		Kategorisiert die Menge an Drawables.
+	*/
 	enum DrawableType {
 		OBJECT,
 		FONT
 	};
 
+
+	/*
+		Stellt ein Rechteck mit Position und Größe dar.
+	*/
 	struct Rectangle {
 		Vec2 position;
 		Vec2 size;
@@ -99,12 +122,13 @@ namespace util {
 		}
 	};
 
+
 	/*
-	Definiert Auswirkungen bei einer Kollision zweier Objekte.
-	effect gibt an, was bei einer Kollision hinsichtlich der Spielogik
-	passieren soll.
-	movement gibt in Abhängigkeit von effect an, in wie weit die Kollision
-	Auswirkungen auf den aktuellen Bewegungsvektor hat.
+		Definiert Auswirkungen bei einer Kollision zweier Objekte.
+		effect gibt an, was bei einer Kollision hinsichtlich der Spielogik
+		passieren soll.
+		movement gibt in Abhängigkeit von effect an, in wie weit die Kollision
+		Auswirkungen auf den aktuellen Bewegungsvektor hat.
 	*/
 	struct CollisionInfo {
 		Event effect;
@@ -116,8 +140,9 @@ namespace util {
 		}
 	};
 
+
 	/*
-	Abstrahiert die für die Objektinteraktion relevanten Daten.
+		Abstrahiert die für die Objektinteraktion relevanten Daten.
 	*/
 	struct ObjectInfo {
 		Rectangle textureRegion;
@@ -133,28 +158,48 @@ namespace util {
 		}
 	};
 
+
+	/*
+		Enthält zu einer ObjectInfo noch die Reihe, in der sich das Objekt befindet.
+	*/
 	struct OpponentInfo {
 		Objects objectType;
 		int row;
 	};
 
+
+	/*
+		Stellt ein Konstrukt dar, mit dem die View alle Infos zum Rendern eines Objektes hat.
+	*/
 	struct Drawable {
 		Vec2 position;
 		Vec2 size;
 		Rectangle textureRegion;
 	};
 
+
+	/*
+		Enthält zu einer ObjectInfo noch die Info, ob der Pool bereits besetzt ist.
+	*/
 	struct Pool {
 		ObjectInfo objInfo;
 		bool ocupied;
 	};
 
+
+	/*
+		Stellt einen Übergang im Zustandsautomaten dar.
+	*/
 	struct TransitionElement {
 		State currentState;
 		Event transitionUnit;
 		State newState;
 	};
 
+
+	/*
+		Weist jeder Richtung aus Direction einen Vektor zu.
+	*/
 	const map<Direction, Vec2> directions = {
 		{ Direction::LEFT, Vec2(-1.0f, 0.0f) },
 		{ Direction::UP, Vec2(0.0f, -1.0f) },
@@ -163,6 +208,10 @@ namespace util {
 		{ Direction::NONE, Vec2(0.0f, 0.0f) }
 	};
 
+
+	/*
+		Texturkoordinaten der Zahlen im Tileset.
+	*/
 	const map<char, Rectangle> numbers = {
 		{ '0',{ Vec2(0, 0), Vec2(1,1) } },
 		{ '1',{ Vec2(1, 0), Vec2(1,1) } },
@@ -176,6 +225,10 @@ namespace util {
 		{ '9',{ Vec2(8, 0), Vec2(1,1) } },
 	};
 
+
+	/*
+		Texturkoordinaten aller Buchstaben im Tileset.
+	*/
 	const map<char, Rectangle> characters = {
 		{ 'A',{ Vec2(9, 0), Vec2(1,1) } },
 		{ 'B',{ Vec2(0, 1), Vec2(1,1) } },
@@ -206,6 +259,10 @@ namespace util {
 		{ ' ',{ Vec2(9, 9), Vec2(1,1) } },
 	};
 
+
+	/*
+		Texturkoordinaten aller Grafiken im Tileset.
+	*/
 	const map<Objects, Rectangle> objectTextureRegions = {
 		{ CAR_ORANGE,{ Vec2(5, 3), Vec2(1,1) } },
 		{ CAR_RED,{ Vec2(6, 3), Vec2(1,1) } },
@@ -223,6 +280,10 @@ namespace util {
 		{ FROG_CARRIYING,{ Vec2(9, 6), Vec2(1, 1) } }
 	};
 
+
+	/*
+		Enthält eine Menge an vordefinierten Initialisierungen für unterschiedliche Objekttypen.
+	*/
 	const map<Objects, ObjectInfo> objectInitializer = {
 		{ CAR_ORANGE,{
 			objectTextureRegions.at(CAR_ORANGE), Rectangle(), Vec2(SPEED_CAR_ORANGE, 0.0f),{ Event::COLL_LETHAL_OBJECTS, 10 }

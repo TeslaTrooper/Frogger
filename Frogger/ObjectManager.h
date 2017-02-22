@@ -25,8 +25,6 @@ protected:
 	vector<Frog*> frogs;
 	vector<OpponentInfo> waitingOpponents;
 
-	FemaleFrog* femaleFrog;
-
 	OpponentInfo createWaitingOpponent(const ObjectInfo& objInfo);
 
 	int fromYToRow(float y);
@@ -50,17 +48,37 @@ public:
 	*/
 	void createObject(int row, Objects objType, int count, int space, int startX);
 
+
 	/*
 		Erzeugt einen neuen Frosch.
 	*/
 	void createFrog();
 
+
+	/*
+		Erzeugt einen neuen Opponent.
+		@param opponentInfo enthält alle benötigten Werte.
+	*/
 	void createOpponent(OpponentInfo opponentInfo);
 
+
+	/*
+		Erzeug eine neue Schildkröte.
+		@param row, gibt die Reihe an, in der die Schildkröte platziert werden soll.
+		@param objType gibt an, ob es sich um eine 2er, oder 3er Kette handelt.
+		@param count gibt an, wie viele Instanzen in dieser Reihe erzeugt werden sollen.
+		@param gibt den Zwischenabstand der Instanzen an.
+		@param startX gibt den Startwert der Positionierung an.
+	*/
 	void createTurtle(int row, Objects objType, int count, int space, int startX);
 
-	//void registerEventOnFemaleFrog(CollisionStruct collision);
+	
+	/*
+		Regisiert eine neue Interaktion auf dem FemaleFrog Objekt.
+		@param objInfo stellt die Interkation dar.
+	*/
 	void registerInteractionOnFemaleFrog(const ObjectInfo& objInfo);
+
 
 	/*
 		Diese Funktion liefert die Koordinaten für eine bestimmte Zeile zurück.
@@ -68,6 +86,7 @@ public:
 		@return Gibt einen Vektor zurück, der die Koordinaten enthält.
 	*/
 	Vec2 alignInRow(int row, bool centered);
+
 
 	/*
 		Über diese Funktion kann die Geschwindigkeit, mit der sich ein Objekt bewegt, 
@@ -77,10 +96,12 @@ public:
 	*/
 	void increaseSpeedInRow(int row);
 
+
 	/*
 		Löscht alle existierenden Frösche.
 	*/
 	void clearFrogs();
+
 
 	/*
 		Platziert ein Objekt wieder an den Anfang der Zeile, sofern es sich aus
@@ -88,27 +109,35 @@ public:
 	*/
 	void repeatObject(GameObject* obj);
 
+
 	/*
 		Gibt alle Objekt-Referenzen zurück.
 		@return Gibt in einem Vektor alle Objekt-Referenzen zurück.
 	*/
 	vector<GameObject*> getAll();
 
+
 	/*
 		@return Gibt von allen existenten Objekten das zugehörige Drawable als Liste zurück.
 	*/
 	vector<Drawable> getDrawables();
+
 
 	/*
 		@return Gibt den vom Spieler aktuell steuerbaren Frosch zurück.
 	*/
 	Frog* getActiveFrog();
 
+
 	/*
 		@return Gibt die Anzahl an Froschobjekten zurück.
 	*/
 	int getFrogsCount();
 
+
+	/*
+		@return Gibt die Reihe eines Objektes zurück.
+	*/
 	int getCurrentRowOf(GameObject* obj);
 };
 

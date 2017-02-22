@@ -21,12 +21,30 @@ class OpenGLTexture {
 	void configure();
 
 public:
-	OpenGLTexture(char* file, Vec2 dimension);
+	/*
+		Erzeugt eine neue OpenGLTexture.
+		@param file ist der Dateipfad
+	*/
+	OpenGLTexture(char* file);
 
 	~OpenGLTexture();
 
+
+	/*
+		@return gibt die Breite der Textur zurück.
+	*/
 	int getWidth() const { return this->width; };
+
+
+	/*
+		Gibt die Höhe der Textur zurück.
+	*/
 	int getHeight() const { return this->height; };
+
+
+	/*
+		Die Textur wird von OpenGL verwendet.
+	*/
 	void bind();
 };
 

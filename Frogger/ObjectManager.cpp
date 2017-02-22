@@ -6,8 +6,6 @@ ObjectManager::ObjectManager() {
 	for (int i = 1; i <= TILES_Y; i++) {
 		(*rowObjMap)[i] = new vector<GameObject*>();
 	}
-
-	femaleFrog = nullptr;
 }
 
 ObjectManager::~ObjectManager() {
@@ -53,12 +51,6 @@ vector<GameObject*> ObjectManager::getAll() {
 		}
 	}
 
-	if (femaleFrog != nullptr && femaleFrog->isExpired()) {
-		femaleFrog = nullptr;
-	} else if (femaleFrog != nullptr) {
-		objs.push_back(femaleFrog);
-	}
-
 	return objs;
 }
 
@@ -86,10 +78,6 @@ vector<Drawable> ObjectManager::getDrawables() {
 
 	for (int i = 0; i < frogs.size(); i++) {
 		drawables.push_back(frogs.at(i)->getDrawable());
-	}
-
-	if (femaleFrog != nullptr) {
-		drawables.push_back(femaleFrog->getDrawable());
 	}
 
 	return drawables;

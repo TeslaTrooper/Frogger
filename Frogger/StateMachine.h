@@ -40,8 +40,17 @@ public:
 	*/
 	State getState();
 
+
+	/*
+		Der Automat nimmt den vorherigen Zustand ein.
+	*/
 	void gotoPreviousState();
 
+
+	/*
+		Setzt den intialen Zustand.
+		@param state ist der intiale Zustand.
+	*/
 	void setInitialState(State state);
 
 };

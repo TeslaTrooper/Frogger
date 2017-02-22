@@ -1,9 +1,9 @@
-#include "GameLogic.h"
+#include "Game.h"
 
 
-GameLogic::GameLogic() {}
+Game::Game() {}
 
-void GameLogic::create() {
+void Game::create() {
 	init();
 	setupObjects();
 	createPools();
@@ -12,7 +12,7 @@ void GameLogic::create() {
 	insectHitBox.position = Vec2(-X_TILE_SIZE, pools.at(0).objInfo.hitBox.position.y);
 }
 
-map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
+map<DrawableType, vector<Drawable>> Game::getDrawables() {
 	map<DrawableType, vector<Drawable>> drawables = map<DrawableType, vector<Drawable>>();
 
 	vector<Drawable> objDrawables = this->objectManager.getDrawables();
@@ -26,7 +26,7 @@ map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
 	return drawables;
 }
 
-void GameLogic::gameLoop(const float dt) {
+void Game::gameLoop(const float dt) {
 	vector<GameObject*> objs = objectManager.getAll();
 	Frog* activeFrog = objectManager.getActiveFrog();
 
@@ -70,13 +70,13 @@ void GameLogic::gameLoop(const float dt) {
 	updateUIElements(dt);
 }
 
-void GameLogic::moveFrog(const Direction direction) {
+void Game::moveFrog(const Direction direction) {
 	if (isGameOver) return;
 
 	objectManager.getActiveFrog()->moveTo(direction);
 }
 
-void GameLogic::restart() {
+void Game::restart() {
 	if (!isGameOver) return;
 
 	reset(true);
@@ -85,7 +85,7 @@ void GameLogic::restart() {
 
 // ------ private methods ------------
 
-void GameLogic::init() {
+void Game::init() {
 	overAllScore = 0;
 	collectedScore = 0;
 	lastRow = 1;
@@ -103,7 +103,7 @@ void GameLogic::init() {
 	levelManager.setLevel(currentLevel);
 }
 
-void GameLogic::setupObjects() {
+void Game::setupObjects() {
 	objectManager.createFrog();
 
 	objectManager.createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
@@ -120,7 +120,7 @@ void GameLogic::setupObjects() {
 	objectManager.createTurtle(8, Objects::THREE_ELEMENT_CHAIN, 4, 40, 0);
 }
 
-void GameLogic::setupLabels() {
+void Game::setupLabels() {
 	setupUIElement("scoreLabel", "SCORE", true, .5f, UIManager::Alignment::LEFT_DOWN);
 	setupUIElement("remainingTriesLabel", "FROGS", true, .5f, UIManager::Alignment::LEFT_DOWN);
 	setupUIElement("timeLabel", "TIME", true, .5f, UIManager::Alignment::RIGHT_DOWN);
@@ -144,7 +144,7 @@ void GameLogic::setupLabels() {
 	uiManager.getFontManager().setText("collectedScore", std::to_string(collectedScore));
 }
 
-ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
+ObjectInfo Game::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
 	ObjectInfo objInfo;
 
 	int lastPriority = 0;
@@ -182,7 +182,7 @@ ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
 	return EMPTY_OBJECT_INFO;
 }
 
-ObjectInfo GameLogic::checkForCollision(Frog* frog, GameObject* obj) {
+ObjectInfo Game::checkForCollision(Frog* frog, GameObject* obj) {
 	Rectangle frogHitbox = frog->getCriticalHitBox();
 	Rectangle objHitbox = obj->getCriticalHitBox();
 
@@ -193,7 +193,7 @@ ObjectInfo GameLogic::checkForCollision(Frog* frog, GameObject* obj) {
 	return EMPTY_OBJECT_INFO;
 }
 
-ObjectInfo GameLogic::checkForRiverCollision() {
+ObjectInfo Game::checkForRiverCollision() {
 	Rectangle frogHitbox = objectManager.getActiveFrog()->getCriticalHitBox();
 
 	if (intersects(frogHitbox, riverHitBox)) {
@@ -203,7 +203,7 @@ ObjectInfo GameLogic::checkForRiverCollision() {
 	return EMPTY_OBJECT_INFO;
 }
 
-ObjectInfo GameLogic::checkForPoolCollision() {
+ObjectInfo Game::checkForPoolCollision() {
 	Frog* activeFrog = objectManager.getActiveFrog();
 
 	for (int i = 0; i < pools.size(); i++) {
@@ -228,7 +228,7 @@ ObjectInfo GameLogic::checkForPoolCollision() {
 	return EMPTY_OBJECT_INFO;
 }
 
-ObjectInfo GameLogic::checkForInsectCollision() {
+ObjectInfo Game::checkForInsectCollision() {
 	Frog* activeFrog = objectManager.getActiveFrog();
 
 	if (intersects(activeFrog->getCriticalHitBox(), insectHitBox)) {
@@ -238,7 +238,7 @@ ObjectInfo GameLogic::checkForInsectCollision() {
 	return EMPTY_OBJECT_INFO;
 }
 
-vector<Rectangle> GameLogic::getPoolHitBoxes() {
+vector<Rectangle> Game::getPoolHitBoxes() {
 	vector<Rectangle> hitBoxes = vector<Rectangle>(POOLS_COUNT);
 
 	for (int i = 0; i < POOLS_COUNT; i++) {
@@ -251,7 +251,7 @@ vector<Rectangle> GameLogic::getPoolHitBoxes() {
 	return hitBoxes;
 }
 
-void GameLogic::createPools() {
+void Game::createPools() {
 	vector<Rectangle> poolHitBoxes = getPoolHitBoxes();
 
 	for (int i = 0; i < POOLS_COUNT; i++) {
@@ -262,7 +262,7 @@ void GameLogic::createPools() {
 	}
 }
 
-void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
+void Game::manageFrogs(Frog* activeFrog, float dt) {
 	FontManager fontManager = uiManager.getFontManager();
 
 	activeFrog->doLogic(dt);
@@ -303,7 +303,7 @@ void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 	}
 }
 
-void GameLogic::updateGameRules(Frog* activeFrog, float dt) {
+void Game::updateGameRules(Frog* activeFrog, float dt) {
 	if (isGameOver) return;
 
 	time -= dt;
@@ -321,7 +321,7 @@ void GameLogic::updateGameRules(Frog* activeFrog, float dt) {
 	gameOver(activeFrog);
 }
 
-void GameLogic::updateUIElements(float dt) {
+void Game::updateUIElements(float dt) {
 	FontManager fontManager = uiManager.getFontManager();
 
 	time = time < 0 ? 0 : time;
@@ -334,7 +334,7 @@ void GameLogic::updateUIElements(float dt) {
 	fontManager.update(dt);
 }
 
-void GameLogic::increaseCollectedScoreBy(Event ev) {
+void Game::increaseCollectedScoreBy(Event ev) {
 	switch (ev) {
 		case Event::COLLECTING: 
 			collectedScore += 200; break;
@@ -343,7 +343,7 @@ void GameLogic::increaseCollectedScoreBy(Event ev) {
 	}
 }
 
-void GameLogic::reset(bool resetAll) {
+void Game::reset(bool resetAll) {
 	if (resetAll) {
 		isGameOver = false;
 		uiManager.getFontManager().hideLabel("gameOver");
@@ -358,7 +358,7 @@ void GameLogic::reset(bool resetAll) {
 	lastRow = 1;
 }
 
-void GameLogic::gameOver(Frog* activeFrog) {
+void Game::gameOver(Frog* activeFrog) {
 	if (remainingTries < 0) {
 		isGameOver = true;
 		uiManager.getFontManager().showLabel("gameOver");
@@ -371,14 +371,14 @@ void GameLogic::gameOver(Frog* activeFrog) {
 	}
 }
 
-void GameLogic::updateLevelDifficulty() {
+void Game::updateLevelDifficulty() {
 	vector<int> rows = levelManager.setLevel(currentLevel);
 	for (int i = 0; i < rows.size(); i++) {
 		objectManager.increaseSpeedInRow(rows.at(i));
 	}
 }
 
-void GameLogic::generateOpponents() {
+void Game::generateOpponents() {
 	bool ocupiedPools[5];
 	for (int i = 0; i < POOLS_COUNT; i++) {
 		ocupiedPools[i] = pools.at(i).ocupied;
@@ -401,10 +401,10 @@ void GameLogic::generateOpponents() {
 	}
 }
 
-void GameLogic::setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment) {
+void Game::setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment) {
 	uiManager.createUIElement(identifier, text);
 	uiManager.configureUIElement(identifier, withlabel, scale);
 	uiManager.align(identifier, alignment);
 }
 
-GameLogic::~GameLogic() {}
+Game::~Game() {}

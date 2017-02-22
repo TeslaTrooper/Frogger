@@ -28,7 +28,17 @@ public:
 	OpenGLWindow();
 	~OpenGLWindow();
 
+
+	/*
+		@return gibt einen Wert zurück, der Angibt, ob das Fenster sich schließen soll.
+				Ein Wert != 0 bedeuted, dass das Fenster sich schließen soll.
+	*/
 	int isWindowClosing();
+
+
+	/*
+		Führt die Hauptschleife aus.
+	*/
 	void render();
 };
 
