@@ -100,7 +100,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>C:\OpenGL\lib;C:\OpenGL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\OpenGL\lib;C:\Users\Stefan\Documents\Visual Studio 2015\Projects\CodeBase\CodeBase;C:\OpenGL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -132,7 +132,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>C:\OpenGL\lib;C:\OpenGL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\OpenGL\lib;C:\Users\Stefan\Documents\Visual Studio 2015\Projects\CodeBase\CodeBase;C:\OpenGL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -161,17 +161,13 @@
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
-    <ClCompile Include="Mat3.cpp" />
-    <ClCompile Include="Mat4.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
-    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgramService.cpp" />
     <ClCompile Include="OpenGLTexture.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Util.cpp" />
-    <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -190,18 +186,23 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Label.h" />
-    <ClInclude Include="Mat3.h" />
-    <ClInclude Include="Mat4.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="OpenGLRenderer.h" />
-    <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgramService.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="OpenGLTexture.h" />
-    <ClInclude Include="Vec2.h" />
     <ClInclude Include="OpenGLWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeBase\CodeBase\CodeBase.vcxproj">
+      <Project>{b3cafa8b-865d-4c02-b62b-0fa85df046fa}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader.frag" />
+    <None Include="shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

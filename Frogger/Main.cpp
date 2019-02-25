@@ -2,9 +2,8 @@
 #include "Direct3DWindow.h"
 
 int main(void) {
-	OpenGLWindow window = OpenGLWindow();
-	window.render();
-
+	BaseOpenGLWindow* window = new OpenGLWindow();
+	window->run();
 
 	return 0;
 }

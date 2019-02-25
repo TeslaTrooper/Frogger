@@ -9,32 +9,38 @@
 #include "ShaderProgramService.h"
 #include "Util.h"
 #include "OpenGLTexture.h"
+#include "BaseOpenGLRenderer.h"
+#include "Game.h"
+#include "ShaderProgram.h"
 
 using namespace std;
 using namespace util;
 
-class OpenGLRenderer {
+class OpenGLRenderer : public BaseOpenGLRenderer {
+
+	static const float vertices[];
+	static const int indices[];
+	static const int sizes[];
+
 	Shader* shader;
-	GLuint vbo, vao, ebo;
 
 	OpenGLTexture* tileset;
+	OpenGLTexture* background;
 
-	void init(GLuint* shaderProgram);
-	void draw(OpenGLTexture* texture, const Drawable drawable);
-	void glDraw(OpenGLTexture* texture);
+	Game* logic;
+	RenderData data;
 
-	Mat4 getTransformation(const util::Rectangle transformation);
-	Mat3 getTextureRegion(const util::Rectangle* region);
+	Bindable init();
+
+	Mat3 getTextureRegion(const util::Rectangle* region) const;
+	void prepareShaders(const Drawable& drawable, bool useRegion) const;
+	void initProjection() const;
+
+	void render() const override;
 
 public:
-	OpenGLRenderer();
+	OpenGLRenderer(Game* logic);
 	~OpenGLRenderer();
-	
-
-	/*
-		@return gibt die den Shader des Renderes zurück.
-	*/
-	Shader* getShader();
 
 
 	/*
@@ -42,20 +48,6 @@ public:
 		@param tileset ist das zu verwendende Tileset.
 	*/
 	void setTileset(OpenGLTexture* tileset) { this->tileset = tileset; };
-
-
-	/*
-		Zeichnet eine Textur mit gegebener Position und Größe.
-		@param rectangle beinhaltet die Position, sowie Größe.
-	*/
-	void draw(OpenGLTexture* texture, const util::Rectangle rectangle);
-
-
-	/*
-		Zeichnet ein Drawable.
-		@param drawable das gezeichnet werden soll.
-	*/
-	void draw(const Drawable drawable);
 };
 
 #endif RENDERER

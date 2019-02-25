@@ -11,35 +11,23 @@
 #include "Mat4.h"
 #include "OpenGLRenderer.h"
 #include "Util.h"
+#include "BaseOpenGLWindow.h"
+#include "BaseOpenGLRenderer.h"
 
-class OpenGLWindow {
-	int width, height;
+class OpenGLWindow : public BaseOpenGLWindow {
+	BaseOpenGLRenderer* renderer;
 
 	Controller* controller;
-	OpenGLRenderer* renderer;
-	GLFWwindow* window;
 	GLuint shaderProgram, vbo, vao, ebo;
 	OpenGLTexture* background;
 
-	void initViewport();
-	void initProjectionMatrix();
-	void initOpenGL();
 public:
+
 	OpenGLWindow();
 	~OpenGLWindow();
 
+	void loop(float dt) override;
 
-	/*
-		@return gibt einen Wert zurück, der Angibt, ob das Fenster sich schließen soll.
-				Ein Wert != 0 bedeuted, dass das Fenster sich schließen soll.
-	*/
-	int isWindowClosing();
-
-
-	/*
-		Führt die Hauptschleife aus.
-	*/
-	void render();
 };
 
 #endif WINDOW

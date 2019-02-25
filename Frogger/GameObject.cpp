@@ -1,12 +1,12 @@
 #include "GameObject.h"
 
-GameObject::GameObject(Vec2 position, const vector<TransitionElement>& transitionSet) 
+GameObject::GameObject(Vec2 position, const vector<TransitionElement>& transitionSet)
 	: position(position), stateMachine(transitionSet) {
 
 	this->setState(State::MOVING);
 }
 
-/*GameObject::GameObject(Rectangle textureRegion, const vector<TransitionElement>& transitionSet) 
+/*GameObject::GameObject(Rectangle textureRegion, const vector<TransitionElement>& transitionSet)
 	: GameObject(Vec2(0.0f, 0.0f), transitionSet) {
 
 	this->textureRegion = textureRegion;
@@ -60,7 +60,7 @@ void GameObject::setMovement(Vec2 movement) {
 
 void GameObject::resetMovement() {
 	for (int i = 0; i < sizeof(vectors) / sizeof(Vec2); i++) {
-		vectors[i].clear();
+		vectors[i] = Vec2();
 	}
 }
 

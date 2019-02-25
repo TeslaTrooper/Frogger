@@ -8,15 +8,15 @@ void Game::create() {
 	setupObjects();
 	createPools();
 	setupLabels();
-	
-	insectHitBox.position = Vec2(-X_TILE_SIZE, pools.at(0).objInfo.hitBox.position.y);
+
+	insectHitBox.position = Vec2((float) -X_TILE_SIZE, pools.at(0).objInfo.hitBox.position.y);
 }
 
 map<DrawableType, vector<Drawable>> Game::getDrawables() {
 	map<DrawableType, vector<Drawable>> drawables = map<DrawableType, vector<Drawable>>();
 
 	vector<Drawable> objDrawables = this->objectManager.getDrawables();
-	objDrawables.push_back({insectHitBox.position, insectHitBox.size, { Vec2(2, 4), Vec2(1, 1) } });
+	objDrawables.push_back({ insectHitBox.position, insectHitBox.size, { Vec2(2, 4), Vec2(1, 1) } });
 
 	vector<Drawable> fontDrawables = this->uiManager.getFontManager().getDrawables();
 
@@ -65,7 +65,7 @@ void Game::gameLoop(const float dt) {
 			insectCounter = 0;
 		}
 	}
-	
+
 
 	updateUIElements(dt);
 }
@@ -269,7 +269,7 @@ void Game::manageFrogs(Frog* activeFrog, float dt) {
 
 	if (activeFrog->getState() == State::INACTIVE) {
 		overAllScore += collectedScore;
-		overAllScore += (int)time * 10;
+		overAllScore += (int) time * 10;
 
 		if (collectedScore > 0) {
 			fontManager.setText("collectedScore", std::to_string(collectedScore));
@@ -278,8 +278,8 @@ void Game::manageFrogs(Frog* activeFrog, float dt) {
 		}
 
 		fontManager.showLabel("remainingTimeLabel");
-		fontManager.setText("remainingTimeLabel", std::to_string((int)time));
-		
+		fontManager.setText("remainingTimeLabel", std::to_string((int) time));
+
 
 		reset(false);
 
@@ -295,7 +295,7 @@ void Game::manageFrogs(Frog* activeFrog, float dt) {
 			overAllScore += 1000;
 			updateLevelDifficulty();
 
-			fontManager.setText("currentLevelLabel", std::to_string((int)currentLevel));
+			fontManager.setText("currentLevelLabel", std::to_string((int) currentLevel));
 			fontManager.showLabel("currentLevelLabel");
 		}
 
@@ -328,7 +328,7 @@ void Game::updateUIElements(float dt) {
 	remainingTries = remainingTries < 0 ? 0 : remainingTries;
 
 	fontManager.setText("scoreLabel", std::to_string(overAllScore));
-	fontManager.setText("timeLabel", std::to_string((int)time));
+	fontManager.setText("timeLabel", std::to_string((int) time));
 	fontManager.setText("remainingTriesLabel", std::to_string(remainingTries));
 
 	fontManager.update(dt);
@@ -336,9 +336,9 @@ void Game::updateUIElements(float dt) {
 
 void Game::increaseCollectedScoreBy(Event ev) {
 	switch (ev) {
-		case Event::COLLECTING: 
+		case Event::COLLECTING:
 			collectedScore += 200; break;
-		case Event::COLL_INSECT: 
+		case Event::COLL_INSECT:
 			collectedScore += 200; break;
 	}
 }
@@ -352,7 +352,7 @@ void Game::reset(bool resetAll) {
 		currentLevel = 1;
 		levelManager.reset();
 	}
-	
+
 	time = 60;
 	collectedScore = 0;
 	lastRow = 1;

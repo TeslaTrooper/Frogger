@@ -1,56 +1,77 @@
 #include "OpenGLRenderer.h"
 
-OpenGLRenderer::OpenGLRenderer() {
-	GLuint shaderProgram;
+const int OpenGLRenderer::indices[] = {
+	0, 1, 3,
+	1, 2, 3
+};
 
-	this->init(&shaderProgram);
+const float OpenGLRenderer::vertices[] = {
+	// pos			texture
+	1.0f, 1.0f,		1.0f, 1.0f, // top right
+	1.0f, 0.0f,		1.0f, 0.0f, // bottom right
+	0.0f, 0.0f,		0.0f, 0.0f, // bottom left
+	0.0f, 1.0f,		0.0f, 1.0f  // top left
+};
+
+const int OpenGLRenderer::sizes[] = {
+	2, 2
+};
+
+OpenGLRenderer::OpenGLRenderer(Game* logic) : logic(logic) {
+	tileset = new OpenGLTexture("../textures/tileset.bmp");
+	background = new OpenGLTexture("../textures/bg.bmp");
+
+	ShaderProgram standardShaderProgramm;
+	GLuint shaderProgram = standardShaderProgramm.createShaderProgram("shader.vert", "shader.frag");
 	this->shader = new Shader(shaderProgram);
+
+	initProjection();
+	data = configure(init(), GL_TRIANGLES);
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1, &ebo);
+	glDeleteVertexArrays(1, &data.vao);
+	glDeleteBuffers(1, &data.vbo);
+	glDeleteBuffers(1, &data.ebo);
 }
 
-Shader* OpenGLRenderer::getShader() {
-	return this->shader;
+void OpenGLRenderer::initProjection() const {
+	shader->use();
+	shader->setUniformMatrix4("projection", Projection::getOrthographicProjection(WINDOW_WIDTH, WINDOW_HEIGHT));
 }
 
-void OpenGLRenderer::draw(OpenGLTexture* texture, const Rectangle rectangle) {
-	Mat4 transform = getTransformation(rectangle);
-	Mat3 textureTransform = getTextureRegion(nullptr);
+void OpenGLRenderer::render() const {
+	Drawable bgDrawable = { Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f), {Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f)} };
+	prepareShaders(bgDrawable, false);
+	background->bind();
+	BaseOpenGLRenderer::draw(data);
+
+	tileset->bind();
+	map<DrawableType, std::vector<Drawable>> drawables = logic->getDrawables();
+	for (int i = 0; i < drawables.at(DrawableType::OBJECT).size(); i++) {
+		Drawable d = drawables.at(DrawableType::OBJECT).at(i);
+		prepareShaders(d, true);
+		BaseOpenGLRenderer::draw(data);
+	}
+	for (int i = 0; i < drawables.at(DrawableType::FONT).size(); i++) {
+		Drawable d = drawables.at(DrawableType::FONT).at(i);
+		prepareShaders(d, true);
+		BaseOpenGLRenderer::draw(data);
+	}
+}
+
+void OpenGLRenderer::prepareShaders(const Drawable& drawable, bool useRegion) const {
+	Mat4 transform = Mat4::getTransformation(drawable.position, drawable.size);
+
+	Mat3 textureTransform;
+	if (useRegion)
+		textureTransform = getTextureRegion(&drawable.textureRegion);
 
 	this->shader->setUniformMatrix3("textureTranslation", textureTransform);
 	this->shader->setUniformMatrix4("transform", transform);
-
-	glDraw(texture);
 }
 
-void OpenGLRenderer::draw(const Drawable drawable) {
-	draw(tileset, drawable);
-} 
-
-void OpenGLRenderer::draw(OpenGLTexture* texture, const Drawable drawable) {
-	Mat4 transform = getTransformation({ drawable.position, drawable.size });
-	Mat3 textureTransform = getTextureRegion(&drawable.textureRegion);
-
-	this->shader->setUniformMatrix3("textureTranslation", textureTransform);
-	this->shader->setUniformMatrix4("transform", transform);
-
-	glDraw(texture);
-}
-
-Mat4 OpenGLRenderer::getTransformation(const Rectangle transformation) {
-	Mat4 transform;
-
-	transform.translate(transformation.position);
-	transform.scale(transformation.size);
-
-	return transform;
-}
-
-Mat3 OpenGLRenderer::getTextureRegion(const Rectangle* region) {
+Mat3 OpenGLRenderer::getTextureRegion(const Rectangle* region) const {
 	Mat3 textureTransform;
 
 	if (region == nullptr) {
@@ -66,48 +87,10 @@ Mat3 OpenGLRenderer::getTextureRegion(const Rectangle* region) {
 	return textureTransform;
 }
 
-void OpenGLRenderer::glDraw(OpenGLTexture* texture) {
-	texture->bind();
-	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-}
+Bindable OpenGLRenderer::init() {
+	VertexData vd = { vertices, 4, 4 };
+	IndexData id = { indices, 6 };
+	AttributeData ad = { sizes, 2 };
 
-void OpenGLRenderer::init(GLuint* shaderProgram) {
-	ShaderProgramService shaderProgramService = ShaderProgramService();
-	*shaderProgram = shaderProgramService.createShaderProgram();
-
-	GLfloat vertices[] = {
-		// pos			texture
-		1.0f, 1.0f,		1.0f, 1.0f, // top right
-		1.0f, 0.0f,		1.0f, 0.0f, // bottom right
-		0.0f, 0.0f,		0.0f, 0.0f, // bottom left
-		0.0f, 1.0f,		0.0f, 1.0f  // top left
-	};
-
-	GLuint indices[] = {
-		0, 1, 3,
-		1, 2, 3
-	};
-
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
-
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	return { vd, id, ad };
 }
