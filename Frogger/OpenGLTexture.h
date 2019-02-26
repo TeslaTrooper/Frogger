@@ -1,51 +1,45 @@
-#ifndef TEXTURE
-#define TEXTURE
+#ifndef OPENGL_TEXTURE
+#define OPENGL_TEXTURE
 
 #include <SOIL.h>
 #include <GL/glew.h>
 #include <string>
 
 #include "Util.h"
+#include "Texture.h"
+
+#define TRANS_R 174
+#define TRANS_G 54
+#define TRANS_B 158
 
 using namespace std;
 
-class OpenGLTexture {
-	unsigned char* imageData;
-
-	int width, height;
-	GLuint textureId;
-	bool configured = false;
+class OpenGLTexture : public Texture {
 
 	void load(char* rawData);
-	void loadAdvanced(unsigned char* rawData, unsigned short transR, unsigned short transG, unsigned short transB);
-	void configure();
 
 public:
 	/*
 		Erzeugt eine neue OpenGLTexture.
 		@param file ist der Dateipfad
 	*/
-	OpenGLTexture(char* file);
-
-	~OpenGLTexture();
+	OpenGLTexture(char* file) : Texture(file, PixelDataType::RGBA) {
+		prepare();
+	};
 
 
 	/*
 		@return gibt die Breite der Textur zurück.
 	*/
-	int getWidth() const { return this->width; };
+	int getWidth() const { return Texture::getWidth(); };
 
 
 	/*
 		Gibt die Höhe der Textur zurück.
 	*/
-	int getHeight() const { return this->height; };
+	int getHeight() const { return Texture::getHeight(); };
 
-
-	/*
-		Die Textur wird von OpenGL verwendet.
-	*/
-	void bind();
+	TextureInfo readTexture(const unsigned char* rawImageData) const override;
 };
 
-#endif TEXTURE
+#endif OPENGL_TEXTURE
