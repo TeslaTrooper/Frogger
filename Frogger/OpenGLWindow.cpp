@@ -7,6 +7,8 @@ OpenGLWindow::OpenGLWindow() : BaseOpenGLWindow(500, 100, WINDOW_WIDTH, WINDOW_H
 	controller->getLogic()->create();
 
 	this->renderer = new OpenGLRenderer(controller->getLogic());
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void OpenGLWindow::loop(float dt) {

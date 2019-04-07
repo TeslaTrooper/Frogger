@@ -10,8 +10,7 @@ public:
 	CrocodileHead(Vec2 position);
 	~CrocodileHead() {}
 
-	// @Override
-	virtual void doLogic(float dt);
+	virtual void doLogic(float dt) override;
 };
 
 #endif _CROCODILE_HEAD

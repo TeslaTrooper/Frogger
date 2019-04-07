@@ -16,28 +16,11 @@ using namespace std;
 
 class OpenGLTexture : public Texture {
 
-	void load(char* rawData);
-
 public:
-	/*
-		Erzeugt eine neue OpenGLTexture.
-		@param file ist der Dateipfad
-	*/
+
 	OpenGLTexture(char* file) : Texture(file, PixelDataType::RGBA) {
 		prepare();
 	};
-
-
-	/*
-		@return gibt die Breite der Textur zurück.
-	*/
-	int getWidth() const { return Texture::getWidth(); };
-
-
-	/*
-		Gibt die Höhe der Textur zurück.
-	*/
-	int getHeight() const { return Texture::getHeight(); };
 
 	TextureInfo readTexture(const unsigned char* rawImageData) const override;
 };

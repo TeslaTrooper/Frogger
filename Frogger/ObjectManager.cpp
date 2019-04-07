@@ -26,10 +26,12 @@ ObjectManager::~ObjectManager() {
 
 Vec2 ObjectManager::alignInRow(int row, bool centered) {
 	if (!centered) {
+		//return Vec2(1.0f, (OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE) + 1);
 		return Vec2(0.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
 	}
 
-	return Vec2(320.0f, OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE);
+	//return Vec2(322.0f, (OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE) + 2);
+	return Vec2(320.0f, (OFFSET_Y + (TILES_Y - row) * Y_TILE_SIZE) + 0);
 }
 
 int ObjectManager::fromYToRow(float y) {
@@ -54,12 +56,32 @@ vector<GameObject*> ObjectManager::getAll() {
 	return objs;
 }
 
+vector<Entity*> ObjectManager::getAllAsEntities() {
+	vector<Entity*> objs = vector<Entity*>();
+
+	for (it_type iterator = rowObjMap->begin(); iterator != rowObjMap->end(); iterator++) {
+		vector<GameObject*>* objsInRow = iterator->second;
+
+		for (int i = 0; i < objsInRow->size(); i++) {
+			if (Opponent* opp = dynamic_cast<Opponent*>(objsInRow->at(i))) {
+				if (opp->isExpired()) continue;
+			}
+
+			objs.push_back((Entity*) objsInRow->at(i));
+		}
+	}
+
+	objs.push_back((Entity*) getActiveFrog());
+
+	return objs;
+}
+
 void ObjectManager::increaseSpeedInRow(int row) {
 	vector<GameObject*>* objsInRow = this->rowObjMap->at(row);
 
 	for (int i = 0; i < objsInRow->size(); i++) {
 		GameObject* obj = objsInRow->at(i);
-		obj->setMovement(Vec2(obj->getCurrentMovement().x * 1.1f, 0.0f));
+		obj->setMovement(Vec2(obj->getMovement().x * 1.1f, 0.0f));
 	}
 }
 
@@ -99,6 +121,27 @@ void ObjectManager::createObject(int row, Objects objType, int count, int space,
 	(*rowObjMap)[row] = objsInRow;
 }
 
+void ObjectManager::createStaticObject(int row, Objects objType, int count, int space, int startX) {
+	vector<GameObject*>* objsInRow = rowObjMap->at(row);
+
+	Vec2 pos = alignInRow(row, false);
+	ObjectInfo objectInfo = objectInitializer.at(objType);
+
+	for (int i = 0; i < count; i++) {
+		Vec2 objSize = objectInfo.textureRegion.size.mul(X_TILE_SIZE);
+		objectInfo.hitBox = { Vec2(startX + (i * (objSize.x + space)), pos.y), objSize };
+
+		GameObject* obj = new GameObject(objectInfo, emptyTransitionSet);
+		obj->setAcceleration(1);
+		obj->setVMax(objectInfo.movement.length());
+		obj->setDirection(objectInfo.movement.norm());
+
+		objsInRow->push_back(obj);
+	}
+
+	(*rowObjMap)[row] = objsInRow;
+}
+
 void ObjectManager::createFrog() {
 	frogs.push_back(new Frog(alignInRow(FROG_START_ROW, true)));
 }
@@ -115,7 +158,7 @@ void ObjectManager::createTurtle(int row, Objects objType, int count, int space,
 	objSize = objSize.mul(X_TILE_SIZE);
 
 	for (int i = 0; i < count; i++) {
-		Vec2 position = Vec2(startX + (i * (objSize.x + space)), pos.y); 
+		Vec2 position = Vec2((startX + 0) + (i * (objSize.x + space)), (pos.y + 0));
 		objsInRow->push_back(new Turtle(objType, position, objectTextureRegions.at(objType), i == 0 ? true : false));
 	}
 }
@@ -180,7 +223,7 @@ void ObjectManager::repeatObject(GameObject* obj) {
 
 		ObjectInfo objInfo = obj->getObjectInfo();
 		if (getNextOpponentInfo(obj->getObjectInfo()).objectType == Objects::CROCODILE) {
-			obj->resetMovement();
+			obj->setMovement(Vec2());
 		}
 
 		if (crocodile) {
@@ -190,7 +233,7 @@ void ObjectManager::repeatObject(GameObject* obj) {
 			createObject(row, objType, 1, 0, obj->getPosition().x);
 			objInfo = rowObjMap->at(row)->back()->getObjectInfo();
 
-			obj->resetMovement();
+			obj->setMovement(Vec2());
 		}
 
 		createWaitingOpponent(objInfo);
@@ -204,15 +247,18 @@ OpponentInfo ObjectManager::createWaitingOpponent(const ObjectInfo& objInfo) {
 	Vec2 pos = alignInRow(opponentInfo.row, false);
 
 	switch (opponentInfo.objectType) {
-		case Objects::SNAKE: {
+		case Objects::SNAKE:
+		{
 			rowObjMap->at(opponentInfo.row)->push_back(initOpponentWithObjectInfo(new Snake(pos), objInfo));
 		}; break;
-		case Objects::FEMALE_FROG: {
+		case Objects::FEMALE_FROG:
+		{
 			rowObjMap->at(opponentInfo.row)->push_back(initOpponentWithObjectInfo(new FemaleFrog(pos), objInfo));
 		}; break;
-		case Objects::CROCODILE: {
+		case Objects::CROCODILE:
+		{
 			rowObjMap->at(opponentInfo.row)->push_back(initOpponent(new CrocodileHead(pos), -X_TILE_SIZE));
-			rowObjMap->at(opponentInfo.row)->push_back(initOpponent(new CrocodileBody(pos), -4*X_TILE_SIZE));
+			rowObjMap->at(opponentInfo.row)->push_back(initOpponent(new CrocodileBody(pos), -4 * X_TILE_SIZE));
 		}; break;
 	}
 

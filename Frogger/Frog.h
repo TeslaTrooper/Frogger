@@ -45,8 +45,8 @@ class Frog : public GameObject {
 	static const map<Direction, util::Rectangle> textureSet;
 
 protected:
-	// @Override
-	bool targetPositionReached(float dt);
+
+	bool targetPositionReached(float dt) override;
 
 public:
 	Frog(Vec2 position);
@@ -57,8 +57,7 @@ public:
 	void moveTo(Direction direction);
 	void reset();
 
-	// @Override
-	void doLogic(float dt);
+	void doLogic(float dt) override;
 };
 
 #endif FROG

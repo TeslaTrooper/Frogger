@@ -25,7 +25,7 @@ public:
 		@param textureSet ist eine Menge von Texturkoordinaten, die bei einer Animation verwendet werden.
 		@param transitionSet ist die Zustandsübergangsmenge.
 	*/
-	Opponent(Vec2 position, const util::Rectangle& textureRegion, map<Direction, util::Rectangle> textureSet, const vector<TransitionElement>& transitionSet);
+	Opponent(Vec2 position, float speed, const util::Rectangle& textureRegion, map<Direction, util::Rectangle> textureSet, const vector<TransitionElement>& transitionSet);
 	~Opponent() {};
 
 
@@ -39,7 +39,7 @@ public:
 		@return gibt true zurück, wenn die Lebensdauer des Objektes abgelaufen ist.
 	*/
 	bool isExpired() { return expired; };
-	
+
 
 	/*
 		Lässt das Objekt altern.
@@ -77,9 +77,6 @@ public:
 		@return gibt die aktuelle Heimatposition zurück.
 	*/
 	Vec2 getHomePosition() { return homePosition; };
-
-	// @Override
-	virtual void doLogic(float dt);
 
 	// @Override
 	virtual util::Rectangle getCriticalHitBox();

@@ -1,21 +1,22 @@
 #include "Turtle.h"
 
-Turtle::Turtle(Objects type, Vec2 position, Rectangle textureRegion, bool animating) 
-	: Opponent(position, textureRegion, {}, transitionSet) {
+Turtle::Turtle(Objects type, Vec2 position, Rectangle textureRegion, bool animating)
+	: Opponent(position, abs(SPEED_TURTLE), textureRegion, {}, transitionSet) {
 
 	if (type == Objects::TWO_ELEMENT_CHAIN) {
-		this->setSpeed(SPEED_TWO_ELEMENT_CHAIN);
 		textureSet = {
 			{ Direction::LEFT,{ Vec2(8, 4), Vec2(2,1) } }
 		};
-	} else if(type == Objects::THREE_ELEMENT_CHAIN) {
-		this->setSpeed(SPEED_THREE_ELEMENT_CHAIN);
+	} else if (type == Objects::THREE_ELEMENT_CHAIN) {
 		textureSet = {
 			{ Direction::LEFT,{ Vec2(7, 5), Vec2(3,1) } }
 		};
 	}
-	
-	this->setMovement(Vec2(getSpeed(), 0.0f));
+
+	this->setVMax(abs(SPEED_TURTLE));
+	this->setAcceleration(1);
+	this->setMovement(Vec2(SPEED_TURTLE, 0.0f));
+	Entity::setDirection(getMovement().norm());
 	this->setCollisionInfo({ Event::COLL_TREE_TURTLE, 5 });
 
 	movingTimer = 0;
@@ -25,23 +26,29 @@ Turtle::Turtle(Objects type, Vec2 position, Rectangle textureRegion, bool animat
 	this->type = type;
 	this->setState(State::MOVING);
 	this->animating = animating;
+
+	updateTransformation();
 }
 
 void Turtle::doLogic(float dt) {
+	GameObject::doLogic(dt);
+
 	if (type == Objects::THREE_ELEMENT_CHAIN || !animating) {
-		move(dt);
+		//move(dt);
 		return;
 	}
 
 	switch (getState()) {
-		case State::MOVING: {
+		case State::MOVING:
+		{
 			movingTimer += dt;
 			if (movingTimer > 2.f) {
 				movingTimer = 0;
 				doTransition(Event::START_DIVING);
 			}
 		}; break;
-		case State::DESCENDING: {
+		case State::DESCENDING:
+		{
 			if (animationTimer < 0.2f) {
 				setTextureRegion({ Vec2(2, 7), Vec2(2, 1) });
 			} else if (animationTimer >= 0.2f && animationTimer < 0.4f) {
@@ -58,7 +65,8 @@ void Turtle::doLogic(float dt) {
 				animationTimer = 0;
 			}
 		}; break;
-		case State::DIVING: {
+		case State::DIVING:
+		{
 			this->setCollisionInfo({ Event::COLL_LETHAL_OBJECTS, 10 });
 
 			divingTimer += dt;
@@ -67,7 +75,8 @@ void Turtle::doLogic(float dt) {
 				doTransition(Event::START_MOVING);
 			}
 		}; break;
-		case State::TURNING_UP: {
+		case State::TURNING_UP:
+		{
 			this->setCollisionInfo({ Event::COLL_TREE_TURTLE, 5 });
 
 			if (animationTimer < 0.2f) {
@@ -87,5 +96,5 @@ void Turtle::doLogic(float dt) {
 		}; break;
 	}
 
-	move(dt);
+	//move(dt);
 }

@@ -10,7 +10,7 @@ const int Y_TILE_SIZE = 40;
 const int POOLS_COUNT = 5;
 const float POOL_VALID_INTERSECTION = 0.5;
 
-const int POOL_SPACE = (int) ((1.0f/(POOLS_COUNT - 1))*(((TILES_X * X_TILE_SIZE) - (2 * OFFSET_X)) - (POOLS_COUNT * X_TILE_SIZE)));
+const int POOL_SPACE = (int) ((1.0f / (POOLS_COUNT - 1))*(((TILES_X * X_TILE_SIZE) - (2 * OFFSET_X)) - (POOLS_COUNT * X_TILE_SIZE)));
 
 const float FROG_SPEED = 180.0f;
 const int FROG_START_ROW = 1;
@@ -26,8 +26,7 @@ const float SPEED_CAR_ORANGE = 50.0f;
 const float SPEED_LARGE_TREE = 90.0f;
 const float SPEED_MEDIUM_TREE = 60.0f;
 const float SPEED_SMALL_TREE = 40.0f;
-const float SPEED_TWO_ELEMENT_CHAIN = -50.0f;
-const float SPEED_THREE_ELEMENT_CHAIN = -50.0f;
+const float SPEED_TURTLE = -50.f;
 const float SPEED_SNAKE = 20.0f;
 const int FRAME_RATE = 60;
 

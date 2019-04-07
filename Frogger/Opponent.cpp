@@ -1,8 +1,9 @@
 #include "Opponent.h"
 
-Opponent::Opponent(Vec2 position, const Rectangle& textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet)
-	: GameObject(position, textureRegion, textureSet, transitionSet) {
+Opponent::Opponent(Vec2 position, float speed, const Rectangle& textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet)
+	: GameObject(position, speed, textureRegion, textureSet, transitionSet) {
 
+	this->setAcceleration(1);
 	this->setState(State::IDLE);
 	this->homePosition = position;
 	this->expired = false;
@@ -37,10 +38,6 @@ void Opponent::setValidMovement(float leftThreshold, float rightThreshold) {
 			setDirection(Direction::RIGHT);
 		}
 	}
-}
-
-void Opponent::doLogic(float dt) {
-	GameObject::doLogic(dt);
 }
 
 Rectangle Opponent::getCriticalHitBox() {

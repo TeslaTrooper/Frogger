@@ -7,6 +7,8 @@
 
 #include "Vec2.h"
 #include "Constants.h"
+#include "Mat4.h"
+#include "Mat3.h"
 
 using namespace std;
 
@@ -122,6 +124,11 @@ namespace util {
 		}
 	};
 
+	struct Drawable {
+		Mat4 transformation;
+		Rectangle textureRegion;
+	};
+
 
 	/*
 		Definiert Auswirkungen bei einer Kollision zweier Objekte.
@@ -165,16 +172,6 @@ namespace util {
 	struct OpponentInfo {
 		Objects objectType;
 		int row;
-	};
-
-
-	/*
-		Stellt ein Konstrukt dar, mit dem die View alle Infos zum Rendern eines Objektes hat.
-	*/
-	struct Drawable {
-		Vec2 position;
-		Vec2 size;
-		Rectangle textureRegion;
 	};
 
 
@@ -304,7 +301,7 @@ namespace util {
 			objectTextureRegions.at(LARGE_TREE), Rectangle(), Vec2(SPEED_LARGE_TREE, 0.0f),{ Event::COLL_TREE_TURTLE, 5 }
 		} },
 		{ TWO_ELEMENT_CHAIN,{
-			objectTextureRegions.at(TWO_ELEMENT_CHAIN), Rectangle(), Vec2(SPEED_TWO_ELEMENT_CHAIN, 0.0f),{ Event::COLL_TREE_TURTLE, 5 }
+			objectTextureRegions.at(TWO_ELEMENT_CHAIN), Rectangle(), Vec2(SPEED_TURTLE, 0.0f),{ Event::COLL_TREE_TURTLE, 5 }
 		} },
 		{ MEDIUM_TREE,{
 			objectTextureRegions.at(MEDIUM_TREE), Rectangle(), Vec2(SPEED_MEDIUM_TREE, 0.0f),{ Event::COLL_TREE_TURTLE, 5 }
@@ -313,13 +310,34 @@ namespace util {
 			objectTextureRegions.at(SMALL_TREE), Rectangle(), Vec2(SPEED_SMALL_TREE, 0.0f),{ Event::COLL_TREE_TURTLE, 5 }
 		} },
 		{ THREE_ELEMENT_CHAIN,{
-			objectTextureRegions.at(THREE_ELEMENT_CHAIN), Rectangle(), Vec2(SPEED_THREE_ELEMENT_CHAIN, 0.0f),{ Event::COLL_TREE_TURTLE, 5 }
+			objectTextureRegions.at(THREE_ELEMENT_CHAIN), Rectangle(), Vec2(SPEED_TURTLE, 0.0f),{ Event::COLL_TREE_TURTLE, 5 }
 		} }
 	};
 
 	const ObjectInfo EMPTY_OBJECT_INFO = { Rectangle(), Rectangle(), Vec2(),{ Event::COLL_NONE, 0 } };
 	const vector<TransitionElement> emptyTransitionSet = {};
 };
+
+namespace ModelData {
+
+	const int indices[] = {
+		0, 1, 3,
+		1, 2, 3
+	};
+
+	const float vertices[] = {
+		// pos			texture
+		1.0f, 1.0f,		1.0f, 1.0f, // top right
+		1.0f, 0.0f,		1.0f, 0.0f, // bottom right
+		0.0f, 0.0f,		0.0f, 0.0f, // bottom left
+		0.0f, 1.0f,		0.0f, 1.0f  // top left
+	};
+
+	const int sizes[] = {
+		2, 2
+	};
+
+}
 
 bool intersects(util::Rectangle rect1, util::Rectangle rect2);
 int randomNumber(int min, int max);

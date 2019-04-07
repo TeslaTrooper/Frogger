@@ -23,8 +23,7 @@ public:
 
 	bool isAnimating() { return this->animating; };
 
-	// @Override
-	virtual void doLogic(float dt);
+	virtual void doLogic(float dt) override;
 };
 
 #endif TURTLE

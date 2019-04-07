@@ -10,8 +10,7 @@ public:
 	CrocodileBody(Vec2 position);
 	~CrocodileBody() {}
 
-	// @Override
-	virtual void doLogic(float dt);
+	virtual void doLogic(float dt) override;
 };
 
 #endif _CROCODILE_BODY

@@ -1,13 +1,14 @@
 #include "Util.h"
 
 bool intersects(util::Rectangle rect1, util::Rectangle rect2) {
-	if ((int)rect1.position.x >= (int)(rect2.position.x + rect2.size.x) || 
-		(int)rect2.position.x >= (int)(rect1.position.x + rect1.size.x)) {
+	int delta = 20;
+	if ((int) rect1.position.x + delta >= (int) (rect2.position.x + delta + rect2.size.x - delta) ||
+		(int) rect2.position.x + delta >= (int) (rect1.position.x + delta + rect1.size.x - delta)) {
 		return false;
 	}
 
-	if ((int)rect1.position.y >= (int)(rect2.position.y + rect2.size.y) || 
-		(int)rect2.position.y >= (int)(rect1.position.y + rect1.size.y)) {
+	if ((int) rect1.position.y + delta >= (int) (rect2.position.y + delta + rect2.size.y - delta) ||
+		(int) rect2.position.y + delta >= (int) (rect1.position.y + delta + rect1.size.y - delta)) {
 		return false;
 	}
 

@@ -96,9 +96,9 @@ vector<Drawable> Label::getDrawables() {
 
 	for (int i = 0; i < chars->size(); i++) {
 		if (visible)
-			drawables.push_back({ charPositions->at(i), getSize(i), chars->at(i) });
+			drawables.push_back({ Mat4::getTransformation(charPositions->at(i), getSize(i)), chars->at(i) });
 		else
-			drawables.push_back({ charPositions->at(i).sub(Vec2(0.0f, 1000.f)), getSize(i), chars->at(i) });
+			drawables.push_back({ Mat4::getTransformation(charPositions->at(i).sub(Vec2(0.0f, 1000.f)), getSize(i)), chars->at(i) });
 	}
 
 	return drawables;

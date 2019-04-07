@@ -31,8 +31,7 @@ protected:
 public:
 	FemaleFrog(Vec2 position);
 
-	// @Override
-	virtual void doLogic(float dt);
+	virtual void doLogic(float dt) override;
 };
 
 #endif _FEMALE_FROG

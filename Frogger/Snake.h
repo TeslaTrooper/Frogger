@@ -15,8 +15,7 @@ public:
 	Snake(Vec2 position);
 	~Snake() {};
 
-	// @Override
-	virtual void doLogic(float dt);
+	virtual void doLogic(float dt) override;
 
 };
 

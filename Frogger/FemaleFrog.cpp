@@ -7,24 +7,26 @@ const map<Direction, Rectangle> FemaleFrog::textureSet = {
 	{ Direction::LEFT,{ Vec2(3, 6), Vec2(1, 1) } }
 };
 
-FemaleFrog::FemaleFrog(Vec2 position) : Opponent(position, textureSet.at(Direction::UP), textureSet, transitionSet) {
+FemaleFrog::FemaleFrog(Vec2 position) : Opponent(position, FROG_SPEED, textureSet.at(Direction::UP), textureSet, transitionSet) {
 	this->movingDuration = 0.0f;
 	this->idleTimer = 0;
-	this->setSpeed(FROG_SPEED);
 	this->setCollisionInfo({ Event::COLLECTING, 6 });
 }
 
 void FemaleFrog::doLogic(float dt) {
-	doTransition(getCurrentInteraction().collisionInfo.effect);
+	GameObject::doLogic(dt);
 
 	switch (getState()) {
-		case State::TRANSPORT: {
+		case State::TRANSPORT:
+		{
 			idle(dt);
 		}; break;
-		case State::MOVE_TRANSPORT: {
-			move(dt);
+		case State::MOVE_TRANSPORT:
+		{
+			targetPositionReached(dt);
 		}; break;
-		case State::COLLECTED: {
+		case State::COLLECTED:
+		{
 			setExpired(true);
 		}; return;
 	}
@@ -36,44 +38,43 @@ void FemaleFrog::doLogic(float dt) {
 void FemaleFrog::idle(float dt) {
 	idleTimer += dt;
 
+	//setDirection(Direction::UP);
 	setTextureRegion(getTextureRegionFor(Direction::UP));
+	// Übernehme v von interacting object (tree)
 	setMovement(getCurrentInteraction().movement);
 
 	if (idleTimer > 0.5f) {
 		doTransition(Event::START_MOVING);
 		idleTimer = 0;
 
-		Vec2 currentMovement = directions.at(getDirection());
-
-		Vec2 tmpTargetPosition = getPosition().add(currentMovement.mul(getSize().x));
-		tmpTargetPosition = tmpTargetPosition.add({ getSize().x / 2, 0.0f });
+		Vec2 currentMovement = directions.at(getDirection()) * getVMax();
+		Vec2 tmpTargetPosition = getPosition().add(Vec2(X_TILE_SIZE, 0));
 
 		setValidMovement(tmpTargetPosition.x, tmpTargetPosition.x);
 
 		Vec2 movement = directions.at(getDirection());
-		movement = movement.mul(getSpeed());
+		movement = movement.mul(getVMax());
 
 		setTextureRegion(getTextureRegionFor(getDirection()));
 		setMovement(movement.add(getCurrentInteraction().movement));
-		this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
+		this->targetPosition = getPosition().add((getMovement().mul(X_TILE_SIZE / getVMax())));
 
 		return;
 	}
 
-	move(dt);
+	//move(dt);
 }
 
 bool FemaleFrog::targetPositionReached(float dt) {
-	if (getState() == State::TRANSPORT) {
+	if (getState() == State::TRANSPORT)
 		return false;
-	}
 
 	this->movingDuration += dt;
 
-	if (movingDuration > this->getSize().x / getSpeed()) {
+	if (movingDuration > X_TILE_SIZE / getVMax()) {
 		this->movingDuration = 0.0f;
 		this->setPosition(targetPosition);
-		this->resetMovement();
+		this->setMovement(Vec2());
 		doTransition(Event::TARGET_POSITION_REACHED);
 
 		return true;

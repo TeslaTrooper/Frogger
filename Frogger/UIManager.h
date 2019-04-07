@@ -2,16 +2,16 @@
 #define UI_MANAGER
 
 #include "FontManager.h"
+#include "GameStats.h"
 
 using namespace std;
 
 class UIManager {
 
-	FontManager fontManager;
-
 public:
+
 	/*
-		Stellt die Ausrichtung dar, die ein Label haben kann.
+	Stellt die Ausrichtung dar, die ein Label haben kann.
 	*/
 	enum Alignment {
 		LEFT,
@@ -25,36 +25,46 @@ public:
 		CENTER
 	};
 
-	map<Alignment, vector<float>> scalesOnAlignment;
+private:
 
-	UIManager();
-	~UIManager() {};
+	FontManager fontManager;
 
-	
 	/*
-		Erzeugt ein neues UIElement.
-		@param identifier ist der Name des Elementes.
-		@param text ist der Text, der für das Element verwendet werden soll.
+	Erzeugt ein neues UIElement.
+	@param identifier ist der Name des Elementes.
+	@param text ist der Text, der für das Element verwendet werden soll.
 	*/
 	void createUIElement(string identifier, string text);
 
 
 	/*
-		Bietet konfigurationsmöglichkeiten an.
-		@param identifier ist das Label, das konfiguriert werden soll.
-		@param withLabel gibt an, ob es einen beschreibenden Text gibt.
-		@param gibt die Schriftgröße an.
+	Bietet konfigurationsmöglichkeiten an.
+	@param identifier ist das Label, das konfiguriert werden soll.
+	@param withLabel gibt an, ob es einen beschreibenden Text gibt.
+	@param gibt die Schriftgröße an.
 	*/
 	void configureUIElement(string identifier, bool withLabel, float fontSize);
 
 
 	/*
-		Richtet ein Label neu aus.
-		@param identifier ist das Label, das ausgerichtet werden soll.
-		@param alignment gibt die Ausrichtung an.
+	Richtet ein Label neu aus.
+	@param identifier ist das Label, das ausgerichtet werden soll.
+	@param alignment gibt die Ausrichtung an.
 	*/
 	void align(string identifier, Alignment alignment);
 
+public:
+
+	map<Alignment, vector<float>> scalesOnAlignment;
+
+	UIManager();
+	~UIManager() {};
+
+	void createInitialUIElements(GameStats stats);
+
+	void setupUIElement(string identifier, string text, bool withlabel, float scale, Alignment alignment);
+
+	void showLabelsForCurrentState(GameStats stats, Vec2 position);
 
 	/*
 		@return gibt den FontManager zurück.

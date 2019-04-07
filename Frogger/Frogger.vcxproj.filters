@@ -9,187 +9,202 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\ShaderUtil">
-      <UniqueIdentifier>{298b6f9d-ff04-4594-a75b-bff520f359da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Objects">
-      <UniqueIdentifier>{e3b74c72-a4aa-4872-b6ae-d52f9891e761}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Objects\Derived">
-      <UniqueIdentifier>{3b6ad542-1405-4729-97fe-36714d6e7350}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects">
-      <UniqueIdentifier>{9a458fa9-acd4-4da7-8f87-8c0ca18ed03c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\Derived">
-      <UniqueIdentifier>{43d19e57-335b-4ca1-b7f9-83b154967266}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Fonts">
-      <UniqueIdentifier>{44040fd6-b7de-4942-8bea-bec5ff390e0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Fonts">
-      <UniqueIdentifier>{6e319dd0-e307-4929-9d8e-9a169b50b4ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Geometry">
-      <UniqueIdentifier>{38370d5d-3a73-436d-8535-36dba10e19ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Geometry">
-      <UniqueIdentifier>{574a885c-1bb3-40dc-b117-fe52b1d920d8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{d3ba714c-fdfb-4bae-88e4-ad9a2c0abfb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\logic">
+      <UniqueIdentifier>{9a3a93ca-6605-4440-82a6-6cc08ad8b54e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui\view">
+      <UniqueIdentifier>{974e4e3d-34f7-4cc2-8e8b-c2d15ad84822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\logic\api">
+      <UniqueIdentifier>{eb112263-b4ae-49be-b6fe-986f5e6b43a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\logic\fonts">
+      <UniqueIdentifier>{6e319dd0-e307-4929-9d8e-9a169b50b4ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\logic\objects">
+      <UniqueIdentifier>{9a458fa9-acd4-4da7-8f87-8c0ca18ed03c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\logic\objects\Derived">
+      <UniqueIdentifier>{43d19e57-335b-4ca1-b7f9-83b154967266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\logic">
+      <UniqueIdentifier>{c18b82de-a925-4dab-a665-d69a9b46e413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{c1dcc5b3-568c-4dd3-bf52-a54377412176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\logic\api">
+      <UniqueIdentifier>{5e0ebcae-9bf0-47f0-b6b4-270cdc6cced8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\logic\fonts">
+      <UniqueIdentifier>{44040fd6-b7de-4942-8bea-bec5ff390e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\logic\objects">
+      <UniqueIdentifier>{e3b74c72-a4aa-4872-b6ae-d52f9891e761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\logic\objects\Derived">
+      <UniqueIdentifier>{3b6ad542-1405-4729-97fe-36714d6e7350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui\view">
+      <UniqueIdentifier>{fae68291-22fa-402f-b5b5-b53898068f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\logic\entities">
+      <UniqueIdentifier>{b15e611e-d905-4a53-bc64-9d6933e746fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\logic\entities">
+      <UniqueIdentifier>{127ba1cb-0378-476e-8e2b-28d16609fc63}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Frog.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
+      <Filter>Source Files\logic\objects\Derived</Filter>
     </ClCompile>
     <ClCompile Include="FontManager.cpp">
-      <Filter>Source Files\Fonts</Filter>
+      <Filter>Source Files\logic\fonts</Filter>
     </ClCompile>
     <ClCompile Include="Label.cpp">
-      <Filter>Source Files\Fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StateMachine.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\logic\fonts</Filter>
     </ClCompile>
     <ClCompile Include="FemaleFrog.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
+      <Filter>Source Files\logic\objects\Derived</Filter>
     </ClCompile>
     <ClCompile Include="Opponent.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
+      <Filter>Source Files\logic\objects\Derived</Filter>
     </ClCompile>
     <ClCompile Include="Snake.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
+      <Filter>Source Files\logic\objects\Derived</Filter>
     </ClCompile>
     <ClCompile Include="CrocodileHead.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
+      <Filter>Source Files\logic\objects\Derived</Filter>
     </ClCompile>
     <ClCompile Include="CrocodileBody.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
+      <Filter>Source Files\logic\objects\Derived</Filter>
     </ClCompile>
     <ClCompile Include="Turtle.cpp">
-      <Filter>Source Files\Objects\Derived</Filter>
-    </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Direct3DWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Direct3DTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Direct3DRenderer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\logic\objects\Derived</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\Objects</Filter>
+      <Filter>Source Files\logic\objects</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderProgramService.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="OpenGLWindow.cpp">
+      <Filter>Source Files\ui\view</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLRenderer.cpp">
+      <Filter>Source Files\ui\view</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLTexture.cpp">
+      <Filter>Source Files\ui\view</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelManager.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>Source Files\logic\api</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Source Files\logic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEntity.cpp">
+      <Filter>Source Files\logic\entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderProgramService.h">
-      <Filter>Header Files\ShaderUtil</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Objects</Filter>
+      <Filter>Header Files\logic\objects</Filter>
     </ClInclude>
     <ClInclude Include="Frog.h">
-      <Filter>Header Files\Objects\Derived</Filter>
+      <Filter>Header Files\logic\objects\Derived</Filter>
     </ClInclude>
     <ClInclude Include="Label.h">
-      <Filter>Header Files\Fonts</Filter>
+      <Filter>Header Files\logic\fonts</Filter>
     </ClInclude>
     <ClInclude Include="FontManager.h">
-      <Filter>Header Files\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StateMachine.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\logic\fonts</Filter>
     </ClInclude>
     <ClInclude Include="FemaleFrog.h">
-      <Filter>Header Files\Objects\Derived</Filter>
+      <Filter>Header Files\logic\objects\Derived</Filter>
     </ClInclude>
     <ClInclude Include="Snake.h">
-      <Filter>Header Files\Objects\Derived</Filter>
+      <Filter>Header Files\logic\objects\Derived</Filter>
     </ClInclude>
     <ClInclude Include="Opponent.h">
-      <Filter>Header Files\Objects\Derived</Filter>
+      <Filter>Header Files\logic\objects\Derived</Filter>
     </ClInclude>
     <ClInclude Include="CrocodileHead.h">
-      <Filter>Header Files\Objects\Derived</Filter>
+      <Filter>Header Files\logic\objects\Derived</Filter>
     </ClInclude>
     <ClInclude Include="CrocodileBody.h">
-      <Filter>Header Files\Objects\Derived</Filter>
+      <Filter>Header Files\logic\objects\Derived</Filter>
     </ClInclude>
     <ClInclude Include="Turtle.h">
-      <Filter>Header Files\Objects\Derived</Filter>
-    </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Direct3DTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Direct3DWindow.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\logic\objects\Derived</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelManager.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files\logic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files\logic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLRenderer.h">
+      <Filter>Header Files\ui\view</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLWindow.h">
+      <Filter>Header Files\ui\view</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLTexture.h">
+      <Filter>Header Files\ui\view</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEntity.h">
+      <Filter>Header Files\logic\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityFactory.h">
+      <Filter>Header Files\logic\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EntitySpawner.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStats.h">
+      <Filter>Header Files\logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

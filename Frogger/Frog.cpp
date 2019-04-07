@@ -7,15 +7,15 @@ const map<Direction, Rectangle> Frog::textureSet = {
 	{ Direction::DOWN,{ Vec2(2, 8), Vec2(1,1) } }
 };
 
-Frog::Frog(Vec2 position) 
-	: GameObject(position, textureSet.at(Direction::UP), textureSet, transitionSet) {
+Frog::Frog(Vec2 position)
+	: GameObject(position, FROG_SPEED, textureSet.at(Direction::UP), textureSet, transitionSet) {
 
 	this->setState(State::IDLE);
-	this->setSpeed(FROG_SPEED);
 	this->homePosition = position;
 	this->movingDuration = 0.0f;
 	this->decaeseTimer = 0;
-	this->setCollisionInfo({ Event::COLLECTING, 6});
+	this->setCollisionInfo({ Event::COLLECTING, 6 });
+	this->setSize(Vec2(X_TILE_SIZE - 1, Y_TILE_SIZE - 1));
 	textureOffset = 0;
 }
 
@@ -24,67 +24,101 @@ Frog::Frog(Vec2 position, State initialState) : Frog(position) {
 }
 
 void Frog::moveTo(Direction direction) {
-	Vec2 movement = directions.at(direction);
-	movement = movement.mul(getSpeed());
+	Vec2 dir = directions.at(direction);
+	Vec2 movement = dir * getVMax();
 
-	if (!validMovement(movement) || !doTransition(Event::ARROW_KEYS)) {
+	setDirection(dir);
+
+	//Vec2 movement = directions.at(direction);
+	//movement = movement.mul(getSpeed());
+
+	if (!validMovement(movement) || !doTransition(Event::ARROW_KEYS))
 		return;
-	}
 
 	Rectangle textureRegion = getTextureRegionFor(direction);
 	textureRegion.position.y += textureOffset;
 
 	this->setTextureRegion(textureRegion);
-	this->setMovement(movement.add(getCurrentInteraction().movement));
+	setMovement(movement + getCurrentInteraction().movement);
 
-	this->targetPosition = getPosition().add((getCurrentMovement().mul(this->getSize().x / getSpeed())));
+	// s0 + v*t <=> t = s/|v|
+	// s0 + v*(s/|v|)
+
+	this->targetPosition = getPosition().add((getMovement().mul(X_TILE_SIZE / getVMax())));
 }
 
 void Frog::doLogic(float dt) {
-	doTransition(getCurrentInteraction().collisionInfo.effect);
-	
+	GameObject::doLogic(dt);
+
+	if (getCurrentInteraction().collisionInfo.effect == Event::COLL_LETHAL_OBJECTS) {
+		printf("State: %i\n", getState());
+	}
+
+
+
 	switch (getState()) {
-		case State::DIEING: {
+		case State::IDLE:
+		{
+			setMovement(Vec2());
+		}; break;
+		case State::DIEING:
+		{
 			die(dt);
 		}; break;
-		case State::KILLED: {
+		case State::KILLED:
+		{
 			reset();
 		}; break;
-		case State::MOVING: {
-			move(dt);
+		case State::MOVING:
+		{
+			if (targetPositionReached(dt)) {
+				this->setMovement(Vec2());
+			}
 		}; break;
-		case State::MOVE_TRANSPORT: {
-			move(dt);
+		case State::MOVE_TRANSPORT:
+		{
+			if (targetPositionReached(dt)) {
+				this->setMovement(Vec2());
+			}
 
 			if (isOutsideOfBorders()) {
 				registerInteraction({ Rectangle(), Rectangle(), Vec2(),{ Event::COLL_LETHAL_OBJECTS, 0 } });
 			}
 		}; break;
-		case State::TRANSPORT: {
-			vectors[1] = getCurrentInteraction().movement;
-			move(dt);
-
+		case State::TRANSPORT:
+		{
+			//vectors[1] = getCurrentInteraction().movement;
+			//move(dt);
+			this->setMovement(getCurrentInteraction().movement);
 			if (isOutsideOfBorders()) {
 				doTransition(Event::COLL_LETHAL_OBJECTS);
 			}
 		}; break;
-		case State::ALIGNING: {
-			float length = getCurrentMovement().length();
-			this->resetMovement();
-			vectors[0] = this->getPosition().rotateTo(getCurrentInteraction().hitBox.position, length);
+		case State::ALIGNING:
+		{
+			float length = getMovement().length();
+
+			Vec2 v = getPosition().rotateTo(getCurrentInteraction().hitBox.position, length);
+
+			setMovement(v);
+			//vectors[0] = getPosition().rotateTo(getCurrentInteraction().hitBox.position, length);
 			targetPosition = getCurrentInteraction().hitBox.position;
 		}; break;
-		case State::NAVIGATING: {
-			move(dt);
+		case State::NAVIGATING:
+		{
+			if (targetPositionReached(dt)) {
+				this->setMovement(Vec2());
+			}
 		}; break;
-		case State::COLLECTED: {
+		case State::COLLECTED:
+		{
 			textureOffset = 1;
 			Rectangle textureRegion = getTextureRegion();
 			textureRegion.position.y += textureOffset;
 
 			this->setTextureRegion(textureRegion);
 			gotoPreviousState();
-			move(dt);
+			//move(dt);
 		}; break;
 	}
 }
@@ -94,14 +128,14 @@ void Frog::reset() {
 
 	this->setTextureRegion(objectTextureRegions.at(Objects::PLAYER));
 	this->setPosition(homePosition);
-	this->resetMovement();
+	this->setMovement(Vec2());
 	this->decaeseTimer = 0;
 	this->movingDuration = 0;
 	this->textureOffset = 0;
 }
 
 void Frog::die(float dt) {
-	resetMovement();
+	setMovement(Vec2());
 	this->setTextureRegion({ Vec2(9, 3), Vec2(1, 1) });
 
 	decaeseTimer += dt;
@@ -117,10 +151,10 @@ bool Frog::targetPositionReached(float dt) {
 
 	this->movingDuration += dt;
 
-	if (movingDuration > this->getSize().x / getSpeed()) {
+	if (movingDuration > X_TILE_SIZE / getVMax()) {
 		this->movingDuration = 0.0f;
 		this->setPosition(targetPosition);
-		this->resetMovement();
+		this->setMovement(Vec2());
 		doTransition(Event::TARGET_POSITION_REACHED);
 
 		return true;
@@ -130,8 +164,8 @@ bool Frog::targetPositionReached(float dt) {
 }
 
 bool Frog::validMovement(Vec2 movement) {
-	float dX = movement.x * (this->getSize().x / getSpeed());
-	float dY = movement.y * (this->getSize().y / getSpeed());
+	float dX = movement.x * (this->getSize().x / getVMax());
+	float dY = movement.y * (this->getSize().y / getVMax());
 
 
 	if (this->getPosition().x + this->getSize().x + dX > X_TILE_SIZE * TILES_X) {

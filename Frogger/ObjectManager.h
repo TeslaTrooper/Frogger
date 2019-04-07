@@ -44,9 +44,11 @@ public:
 		@param count gibt die Anzahl der zu erzeugenden Objekten an.
 		@param space gibt den Abstand zwischen den Objekten an.
 		@param startX gibt den x Startwert an, ab dem die Objekte mit dem gegebenen
-			          Abstand und der Anazhl positioniert werden.
+					  Abstand und der Anazhl positioniert werden.
 	*/
 	void createObject(int row, Objects objType, int count, int space, int startX);
+
+	void createStaticObject(int row, Objects objType, int count, int space, int startX);
 
 
 	/*
@@ -72,7 +74,7 @@ public:
 	*/
 	void createTurtle(int row, Objects objType, int count, int space, int startX);
 
-	
+
 	/*
 		Regisiert eine neue Interaktion auf dem FemaleFrog Objekt.
 		@param objInfo stellt die Interkation dar.
@@ -89,7 +91,7 @@ public:
 
 
 	/*
-		Über diese Funktion kann die Geschwindigkeit, mit der sich ein Objekt bewegt, 
+		Über diese Funktion kann die Geschwindigkeit, mit der sich ein Objekt bewegt,
 		in einer Zeile erhöht werden.
 		@param row gibt die Zeile an, in der für alle in dieser Zeile existenten Objekte
 				   die Geschwindigkeit erhöht werden soll.
@@ -115,6 +117,8 @@ public:
 		@return Gibt in einem Vektor alle Objekt-Referenzen zurück.
 	*/
 	vector<GameObject*> getAll();
+
+	vector<Entity*> getAllAsEntities();
 
 
 	/*

@@ -1,9 +1,10 @@
 #include "GameObject.h"
 
 GameObject::GameObject(Vec2 position, const vector<TransitionElement>& transitionSet)
-	: position(position), stateMachine(transitionSet) {
+	: Entity(), stateMachine(transitionSet) {
 
 	this->setState(State::MOVING);
+	setPosition(position);
 }
 
 /*GameObject::GameObject(Rectangle textureRegion, const vector<TransitionElement>& transitionSet)
@@ -15,52 +16,45 @@ GameObject::GameObject(Vec2 position, const vector<TransitionElement>& transitio
 }*/
 
 // Wird von Frog verwendet
-GameObject::GameObject(Vec2 position, Rectangle textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet)
+GameObject::GameObject(Vec2 position, float speed, Rectangle textureRegion, map<Direction, Rectangle> textureSet, const vector<TransitionElement>& transitionSet)
 	: GameObject(position, transitionSet) {
 
-	this->setSize(textureRegion.size.mul(X_TILE_SIZE));
+	setVMax(speed);
+	this->setSize(textureRegion.size.mul(X_TILE_SIZE).sub(Vec2(1, 1)));
 	this->textureRegion = textureRegion;
 	this->textureSet = textureSet;
 }
 
 // Wird vom ObjectMnagaer verwendet
 GameObject::GameObject(ObjectInfo objectInfo, const vector<TransitionElement>& transitionSet)
-	: GameObject(objectInfo.hitBox.position, objectInfo.textureRegion, {}, transitionSet) {
+	: GameObject(objectInfo.hitBox.position, objectInfo.movement.length(), objectInfo.textureRegion, {}, transitionSet) {
 	this->objectInfo = objectInfo;
 	this->setMovement(objectInfo.movement);
+	this->setDirection(objectInfo.movement.norm());
+
+	updateTransformation();
 }
 
 GameObject::~GameObject() {}
 
-void GameObject::move(float dt) {
-	if (targetPositionReached(dt)) {
-		return;
-	}
-
-	setPosition(this->getPosition().add((getCurrentMovement().mul(dt))));
+void GameObject::doLogic(float dt) {
+	updateTransformation();
+	doTransition(getCurrentInteraction().collisionInfo.effect);
 }
 
 Drawable GameObject::getDrawable() {
-	return { getPosition(), getSize(), getTextureRegion() };
+	return { getTransformation(), getTextureRegion() };
 }
 
 Rectangle GameObject::getCriticalHitBox() {
 	return { this->getPosition(), this->getSize() };
 }
-void GameObject::doLogic(float dt) {
-	if (getState() == State::MOVING) {
-		move(dt);
-	}
-}
 
-void GameObject::setMovement(Vec2 movement) {
-	resetMovement();
-	vectors[0] = movement;
-}
-
-void GameObject::resetMovement() {
-	for (int i = 0; i < sizeof(vectors) / sizeof(Vec2); i++) {
-		vectors[i] = Vec2();
+void GameObject::setAcceleration(const float value) {
+	if (value == 0) {
+		Entity::setAcceleration(0);
+	} else {
+		Entity::setAcceleration(getVMax() / value);
 	}
 }
 
@@ -78,4 +72,26 @@ void GameObject::registerInteraction(ObjectInfo objectInfo) {
 
 bool GameObject::targetPositionReached(float dt) {
 	return false;
+}
+
+// TODO Implement
+
+bool GameObject::canCollide() const {
+	return true;
+}
+
+bool GameObject::canCollideWith(const Entity* const e) const {
+	return true;
+}
+
+void GameObject::updateTransformation() {
+	setTransformation(Mat4::getTransformation(getPosition(), size));
+}
+
+VertexData GameObject::getVertexData() const {
+	return VertexData(ModelData::vertices, 4, 4);
+}
+
+IndexData GameObject::getTriangulatedIndexData() const {
+	return IndexData(ModelData::indices, 6);
 }

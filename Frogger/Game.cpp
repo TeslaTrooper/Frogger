@@ -1,22 +1,23 @@
 #include "Game.h"
 
 
-Game::Game() {}
+Game::Game() : physicsEngine(this) {}
 
 void Game::create() {
 	init();
 	setupObjects();
 	createPools();
-	setupLabels();
+	uiManager.createInitialUIElements(stats);
 
 	insectHitBox.position = Vec2((float) -X_TILE_SIZE, pools.at(0).objInfo.hitBox.position.y);
+	currentCollisions = new vector<GameObject*>();
 }
 
 map<DrawableType, vector<Drawable>> Game::getDrawables() {
 	map<DrawableType, vector<Drawable>> drawables = map<DrawableType, vector<Drawable>>();
 
 	vector<Drawable> objDrawables = this->objectManager.getDrawables();
-	objDrawables.push_back({ insectHitBox.position, insectHitBox.size, { Vec2(2, 4), Vec2(1, 1) } });
+	objDrawables.push_back({ Mat4::getTransformation(insectHitBox.position, insectHitBox.size), {Vec2(2, 4), Vec2(1, 1)} });
 
 	vector<Drawable> fontDrawables = this->uiManager.getFontManager().getDrawables();
 
@@ -27,12 +28,22 @@ map<DrawableType, vector<Drawable>> Game::getDrawables() {
 }
 
 void Game::gameLoop(const float dt) {
+	currentCollisions->clear();
+
+	vector<Entity*> entities = objectManager.getAllAsEntities();
+
+	physicsEngine.update(entities, dt);
+
+
+
+
+
 	vector<GameObject*> objs = objectManager.getAll();
 	Frog* activeFrog = objectManager.getActiveFrog();
 
-	ObjectInfo interactingObject = evaluateCollisions(objs, activeFrog);
+	ObjectInfo interactingObject = evaluateCollisions(*currentCollisions, activeFrog);
 
-	if (time <= 0.0f) {
+	if (stats.getTime() <= 0.0f) {
 		interactingObject = { Rectangle(), Rectangle(), Vec2(),{ Event::COLL_LETHAL_OBJECTS, 0 } };
 	}
 
@@ -52,32 +63,27 @@ void Game::gameLoop(const float dt) {
 
 	updateGameRules(activeFrog, dt);
 
-	opponentCreationCounter += dt;
-	if (opponentCreationCounter > 1.0f) {
-		opponentCreationCounter = 0;
+	if (stats.increaseOpponentCounter(dt)) {
 		generateOpponents();
 	}
 
 	if (insectHitBox.position.x > 0) {
-		insectCounter += dt;
-		if (insectCounter > 5.f) {
+		if (stats.increaseInsectCounter(dt)) {
 			insectHitBox.position.x = -X_TILE_SIZE;
-			insectCounter = 0;
 		}
 	}
-
 
 	updateUIElements(dt);
 }
 
 void Game::moveFrog(const Direction direction) {
-	if (isGameOver) return;
+	if (stats.isGameOver()) return;
 
 	objectManager.getActiveFrog()->moveTo(direction);
 }
 
 void Game::restart() {
-	if (!isGameOver) return;
+	if (!stats.isGameOver()) return;
 
 	reset(true);
 }
@@ -86,70 +92,49 @@ void Game::restart() {
 // ------ private methods ------------
 
 void Game::init() {
-	overAllScore = 0;
-	collectedScore = 0;
-	lastRow = 1;
-	time = 60.0f;
-	remainingTries = 3;
-	isGameOver = false;
-	remainingTimeLabelDuration = 0;
-	currentLevelLabelDuration = 0;
-	currentLevel = 4;
-	opponentCreationCounter = 0;
-	insectCounter = 0;
-
-
 	levelManager.reset();
-	levelManager.setLevel(currentLevel);
+	//levelManager.setLevel(stats.getCurrentLevel());
 }
 
 void Game::setupObjects() {
 	objectManager.createFrog();
 
-	objectManager.createObject(2, Objects::CAR_YELLOW, 3, 200, 100);
-	objectManager.createObject(3, Objects::CAR_ORANGE, 3, 150, 50);
-	objectManager.createObject(4, Objects::CAR_RED, 3, 175, 125);
-	objectManager.createObject(5, Objects::CAR_WHITE, 3, 200, 75);
-	objectManager.createObject(6, Objects::TRUCK, 3, 300, 280);
+	//objectManager.createStaticObject(2, Objects::CAR_YELLOW, 3, 200, 100);
+	//objectManager.createStaticObject(3, Objects::CAR_ORANGE, 3, 150, 50);
+	//objectManager.createStaticObject(4, Objects::CAR_RED, 3, 175, 125);
+	//objectManager.createStaticObject(5, Objects::CAR_WHITE, 3, 200, 75);
+	//objectManager.createStaticObject(6, Objects::TRUCK, 3, 150, 0);
 
-	objectManager.createObject(9, Objects::SMALL_TREE, 3, 200, 100);
-	objectManager.createObject(10, Objects::LARGE_TREE, 3, 50, 30);
-	objectManager.createObject(12, Objects::MEDIUM_TREE, 3, 100, 10);
+	objectManager.createStaticObject(9, Objects::SMALL_TREE, 3, 200, 100);
+	objectManager.createStaticObject(10, Objects::LARGE_TREE, 3, 50, 30);
+	objectManager.createStaticObject(12, Objects::MEDIUM_TREE, 3, 100, 10);
 
 	objectManager.createTurtle(11, Objects::TWO_ELEMENT_CHAIN, 4, 80, 0);
 	objectManager.createTurtle(8, Objects::THREE_ELEMENT_CHAIN, 4, 40, 0);
 }
 
-void Game::setupLabels() {
-	setupUIElement("scoreLabel", "SCORE", true, .5f, UIManager::Alignment::LEFT_DOWN);
-	setupUIElement("remainingTriesLabel", "FROGS", true, .5f, UIManager::Alignment::LEFT_DOWN);
-	setupUIElement("timeLabel", "TIME", true, .5f, UIManager::Alignment::RIGHT_DOWN);
-	uiManager.getFontManager().alignDescriptionLeft("timeLabel", false);
+void Game::resolveCollision(Entity* e1, Entity* e2, const Vec2& location) const {
+	// We don't want to insert frog instances as we treat frogs seperatly
+	Frog* e1IsFrog = dynamic_cast<Frog*>(e1);
+	Frog* e2IsFrog = dynamic_cast<Frog*>(e2);
 
-	setupUIElement("remainingTimeLabel", "TIME LEFT", true, .5f, UIManager::Alignment::CENTER);
-	uiManager.getFontManager().hideAfter("remainingTimeLabel", 2.f);
-	uiManager.getFontManager().hideLabel("remainingTimeLabel");
+	if (e1IsFrog == nullptr)
+		currentCollisions->push_back(dynamic_cast<GameObject*>(e1));
 
-	setupUIElement("currentLevelLabel", "LEVEL", true, .5f, UIManager::Alignment::CENTER);
-	uiManager.getFontManager().hideAfter("currentLevelLabel", 4.f);
-	uiManager.getFontManager().hideLabel("currentLevelLabel");
-
-	setupUIElement("gameOver", "GAME OVER SPACE TO RESTART", false, .5f, UIManager::Alignment::CENTER);
-	uiManager.getFontManager().hideLabel("gameOver");
-
-	setupUIElement("collectedScore", to_string(collectedScore), false, .3f, UIManager::Alignment::CENTER);
-	uiManager.getFontManager().hideAfter("collectedScore", 2.f);
-	uiManager.getFontManager().hideLabel("collectedScore");
-
-	uiManager.getFontManager().setText("collectedScore", std::to_string(collectedScore));
+	if (e2IsFrog == nullptr)
+		currentCollisions->push_back(dynamic_cast<GameObject*>(e2));
 }
 
 ObjectInfo Game::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
-	ObjectInfo objInfo;
+	ObjectInfo objInfo = EMPTY_OBJECT_INFO;
 
+	// Iterate over all colliding objects
+	// and retrieve the one with highest priority
 	int lastPriority = 0;
 	for (int i = 0; i < objs.size(); i++) {
-		ObjectInfo currentObjInfo = checkForCollision(frog, objs.at(i));
+		//ObjectInfo currentObjInfo = checkForCollision(frog, objs.at(i));
+		//Event collEffect = currentObjInfo.collisionInfo.effect;
+		ObjectInfo currentObjInfo = objs.at(i)->getObjectInfo();
 		Event collEffect = currentObjInfo.collisionInfo.effect;
 		int priority = currentObjInfo.collisionInfo.priority;
 
@@ -159,15 +144,18 @@ ObjectInfo Game::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
 		}
 	}
 
+	// Check for river, insect and pool collision seperately
 	ObjectInfo riverInfo = checkForRiverCollision();
 	ObjectInfo poolInfo = checkForPoolCollision();
 	ObjectInfo insectInfo = checkForInsectCollision();
 
+	// Increase score, if frog jumps into pool with insect
 	if (insectInfo.collisionInfo.effect == Event::COLL_INSECT && poolInfo.collisionInfo.effect == Event::COLL_POOL) {
 		increaseCollectedScoreBy(insectInfo.collisionInfo.effect);
 		insectHitBox.position = Vec2(-X_TILE_SIZE, 0.0f);
 	}
 
+	// Group priorities together and return object info with highest prio
 	int priorities[3] = { objInfo.collisionInfo.priority, riverInfo.collisionInfo.priority, poolInfo.collisionInfo.priority };
 
 	int last = 0;
@@ -216,7 +204,7 @@ ObjectInfo Game::checkForPoolCollision() {
 			float poolMiddle = pools.at(i).objInfo.hitBox.position.x + pools.at(i).objInfo.hitBox.size.x / 2;
 
 			if (abs(frogMiddle - poolMiddle) <= X_TILE_SIZE * POOL_VALID_INTERSECTION) {
-				currentPoolIndex = i;
+				stats.setCurrentPoolIndex(i);
 
 				return pools.at(i).objInfo;
 			}
@@ -268,22 +256,16 @@ void Game::manageFrogs(Frog* activeFrog, float dt) {
 	activeFrog->doLogic(dt);
 
 	if (activeFrog->getState() == State::INACTIVE) {
-		overAllScore += collectedScore;
-		overAllScore += (int) time * 10;
+		stats.increaseScoreByCollectedScore();
+		stats.increaseScoreByRemainingTime();
+		//stats.overAllScore += stats.collectedScore;
+		//stats.overAllScore += (int) stats.time * 10;
 
-		if (collectedScore > 0) {
-			fontManager.setText("collectedScore", std::to_string(collectedScore));
-			fontManager.setPosition("collectedScore", pools.at(currentPoolIndex).objInfo.hitBox.position.sub(Vec2(0.f, 15.f)));
-			fontManager.showLabel("collectedScore");
-		}
-
-		fontManager.showLabel("remainingTimeLabel");
-		fontManager.setText("remainingTimeLabel", std::to_string((int) time));
-
+		uiManager.showLabelsForCurrentState(stats, pools.at(stats.getCurrentPoolIndex()).objInfo.hitBox.position.sub(Vec2(0.f, 15.f)));
 
 		reset(false);
 
-		pools.at(currentPoolIndex).ocupied = true;
+		pools.at(stats.getCurrentPoolIndex()).ocupied = true;
 
 		if (objectManager.getFrogsCount() > 4) {
 			objectManager.clearFrogs();
@@ -292,10 +274,11 @@ void Game::manageFrogs(Frog* activeFrog, float dt) {
 				pools.at(i).ocupied = false;
 			}
 
-			overAllScore += 1000;
+			stats.increaseScoreByNextLevelBonus();
+			//stats.overAllScore += 1000;
 			updateLevelDifficulty();
 
-			fontManager.setText("currentLevelLabel", std::to_string((int) currentLevel));
+			fontManager.setText("currentLevelLabel", std::to_string((int) stats.getCurrentLevel()));
 			fontManager.showLabel("currentLevelLabel");
 		}
 
@@ -304,32 +287,33 @@ void Game::manageFrogs(Frog* activeFrog, float dt) {
 }
 
 void Game::updateGameRules(Frog* activeFrog, float dt) {
-	if (isGameOver) return;
+	if (stats.isGameOver()) return;
 
-	time -= dt;
+	//stats.time -= dt;
+	stats.decreaseTime(dt);
 
-	if (activeFrog->getState() != State::INACTIVE && objectManager.getCurrentRowOf(activeFrog) > lastRow) {
-		overAllScore += 10;
-		lastRow = objectManager.getCurrentRowOf(activeFrog);
+	if (activeFrog->getState() != State::INACTIVE && objectManager.getCurrentRowOf(activeFrog) > stats.getLastRow()) {
+		stats.increaseScoreByPassedRow();
+		//stats.overAllScore += 10;
+		//stats.lastRow = objectManager.getCurrentRowOf(activeFrog);
+		stats.setLastRow(objectManager.getCurrentRowOf(activeFrog));
 	}
 
 	if (activeFrog->getState() == State::KILLED) {
 		reset(false);
-		remainingTries--;
+		//stats.remainingTries--;
+		gameOver(activeFrog);
+		stats.consumeRemainingTry();
 	}
 
-	gameOver(activeFrog);
 }
 
 void Game::updateUIElements(float dt) {
 	FontManager fontManager = uiManager.getFontManager();
 
-	time = time < 0 ? 0 : time;
-	remainingTries = remainingTries < 0 ? 0 : remainingTries;
-
-	fontManager.setText("scoreLabel", std::to_string(overAllScore));
-	fontManager.setText("timeLabel", std::to_string((int) time));
-	fontManager.setText("remainingTriesLabel", std::to_string(remainingTries));
+	fontManager.setText("scoreLabel", std::to_string(stats.getScore()));
+	fontManager.setText("timeLabel", std::to_string((int) stats.getTime()));
+	fontManager.setText("remainingTriesLabel", std::to_string(stats.getRemainingTries()));
 
 	fontManager.update(dt);
 }
@@ -337,42 +321,44 @@ void Game::updateUIElements(float dt) {
 void Game::increaseCollectedScoreBy(Event ev) {
 	switch (ev) {
 		case Event::COLLECTING:
-			collectedScore += 200; break;
+			stats.increaseCollectedScoreBy(GameStats::CollectionType::FEMALE_FROG);
+			break;
+			//stats.collectedScore += 200; break;
 		case Event::COLL_INSECT:
-			collectedScore += 200; break;
+			stats.increaseCollectedScoreBy(GameStats::CollectionType::INSECT);
+			break;
+			//stats.collectedScore += 200; break;
 	}
 }
 
 void Game::reset(bool resetAll) {
 	if (resetAll) {
-		isGameOver = false;
+		stats = GameStats();
 		uiManager.getFontManager().hideLabel("gameOver");
-		remainingTries = 3;
-		overAllScore = 0;
-		currentLevel = 1;
 		levelManager.reset();
 	}
 
-	time = 60;
-	collectedScore = 0;
-	lastRow = 1;
+	stats.reset();
+	//stats.time = 60;
+	//stats.collectedScore = 0;
+	//stats.lastRow = 1;
 }
 
 void Game::gameOver(Frog* activeFrog) {
-	if (remainingTries < 0) {
-		isGameOver = true;
-		uiManager.getFontManager().showLabel("gameOver");
-		objectManager.clearFrogs();
-		objectManager.createFrog();
+	if (stats.getRemainingTries() > 0)
+		return;
 
-		for (int i = 0; i < pools.size(); i++) {
-			pools.at(i).ocupied = false;
-		}
-	}
+	stats.gameOver();
+	uiManager.getFontManager().showLabel("gameOver");
+	objectManager.clearFrogs();
+	objectManager.createFrog();
+
+	for (int i = 0; i < pools.size(); i++)
+		pools.at(i).ocupied = false;
 }
 
 void Game::updateLevelDifficulty() {
-	vector<int> rows = levelManager.setLevel(currentLevel);
+	vector<int> rows = levelManager.setLevel(stats.getCurrentLevel());
 	for (int i = 0; i < rows.size(); i++) {
 		objectManager.increaseSpeedInRow(rows.at(i));
 	}
@@ -399,12 +385,6 @@ void Game::generateOpponents() {
 
 		objectManager.createOpponent({ type, row });
 	}
-}
-
-void Game::setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment) {
-	uiManager.createUIElement(identifier, text);
-	uiManager.configureUIElement(identifier, withlabel, scale);
-	uiManager.align(identifier, alignment);
 }
 
 Game::~Game() {}

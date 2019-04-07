@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "Shader.h"
-#include "ShaderProgramService.h"
 #include "Util.h"
 #include "OpenGLTexture.h"
 #include "BaseOpenGLRenderer.h"
@@ -24,8 +23,8 @@ class OpenGLRenderer : public BaseOpenGLRenderer {
 
 	Shader* shader;
 
-	OpenGLTexture* tileset;
-	OpenGLTexture* background;
+	Texture* tileset;
+	Texture* background;
 
 	Game* logic;
 	RenderData data;
@@ -33,7 +32,10 @@ class OpenGLRenderer : public BaseOpenGLRenderer {
 	Bindable init();
 
 	Mat3 getTextureRegion(const util::Rectangle* region) const;
-	void prepareShaders(const Drawable& drawable, bool useRegion) const;
+
+	void prepareShaders(const Mat4& transformation) const;
+	void prepareShaders(const Mat4& transformation, const Rectangle* textureRegion) const;
+
 	void initProjection() const;
 
 	void render() const override;

@@ -10,33 +10,28 @@
 #include "ObjectManager.h"
 #include "UIManager.h"
 #include "LevelManager.h"
+#include "PhysicsEngine.h"
+#include "GameStats.h"
 
 using namespace std;
 using namespace util;
 
-class Game {
-	int overAllScore;
-	int collectedScore;
-	int lastRow;
-	int currentPoolIndex;
-	float time;
-	int remainingTries;
-	bool isGameOver;
-	float remainingTimeLabelDuration;
-	float currentLevelLabelDuration;
-	int currentLevel;
-	float opponentCreationCounter;
-	float insectCounter;
+class Game : public CollisionCallback {
 
-	const util::Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE-1) };
+	GameStats stats;
+
+	const util::Rectangle riverHitBox = { Vec2(0.0f, OFFSET_Y), Vec2(TILES_X * X_TILE_SIZE, 6 * Y_TILE_SIZE - 1) };
 	util::Rectangle insectHitBox = { Vec2(0.0f, 0.0f), Vec2(X_TILE_SIZE, Y_TILE_SIZE) };
 
 	vector<Pool> pools;
 	ObjectManager objectManager;
 	UIManager uiManager;
 	LevelManager levelManager;
+	PhysicsEngine physicsEngine;
 
 	vector<util::Rectangle> getPoolHitBoxes();
+
+	vector<GameObject*>* currentCollisions;
 
 	ObjectInfo checkForCollision(Frog* frog, GameObject* obj);
 	ObjectInfo checkForRiverCollision();
@@ -56,7 +51,6 @@ class Game {
 	void updateGameRules(Frog* activeFrog, float dt);
 	void updateLevelDifficulty();
 	void generateOpponents();
-	void setupUIElement(string identifier, string text, bool withlabel, float scale, UIManager::Alignment alignment);
 
 public:
 	Game();
@@ -98,6 +92,8 @@ public:
 		Setzt alle Felder zurück und startet das Spiel neu.
 	*/
 	void restart();
+
+	void resolveCollision(Entity* e1, Entity* e2, const Vec2& location) const override;
 };
 
 #endif GAME_LOGIC
