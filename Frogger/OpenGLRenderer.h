@@ -4,13 +4,17 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <vector>
+#include <ShaderFactory.h>
+#include <BaseOpenGLRenderer.h>
+#include <Texture.h>
 
 #include "Shader.h"
 #include "Util.h"
-#include "OpenGLTexture.h"
-#include "BaseOpenGLRenderer.h"
 #include "Game.h"
-#include "ShaderProgram.h"
+
+#define TRANS_R 174
+#define TRANS_G 54
+#define TRANS_B 158
 
 using namespace std;
 using namespace util;
@@ -26,7 +30,7 @@ class OpenGLRenderer : public BaseOpenGLRenderer {
 	Texture* tileset;
 	Texture* background;
 
-	Game* logic;
+	Game* game;
 	RenderData data;
 
 	Bindable init();
@@ -34,22 +38,17 @@ class OpenGLRenderer : public BaseOpenGLRenderer {
 	Mat3 getTextureRegion(const util::Rectangle* region) const;
 
 	void prepareShaders(const Mat4& transformation) const;
-	void prepareShaders(const Mat4& transformation, const Rectangle* textureRegion) const;
+	void prepareShaders(const Mat4& transformation, const util::Rectangle* textureRegion) const;
 
 	void initProjection() const;
 
 	void render() const override;
 
+	void setup() override;
+
 public:
-	OpenGLRenderer(Game* logic);
+	OpenGLRenderer(Game* game) : game(game) {};
 	~OpenGLRenderer();
-
-
-	/*
-		Setzt das tileset, das der Renderer verwenden soll.
-		@param tileset ist das zu verwendende Tileset.
-	*/
-	void setTileset(OpenGLTexture* tileset) { this->tileset = tileset; };
 };
 
 #endif RENDERER

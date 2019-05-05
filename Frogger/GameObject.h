@@ -174,7 +174,7 @@ public:
 	*/
 	virtual void doLogic(float dt);
 
-	void setAcceleration(float value) override;
+	void setAcceleration(const float value) override;
 
 	bool canCollide() const override;
 	bool canCollideWith(const Entity* const e) const override;

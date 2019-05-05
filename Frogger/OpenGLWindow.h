@@ -6,7 +6,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Controller.h"
 #include "Vec2.h"
 #include "Mat4.h"
 #include "OpenGLRenderer.h"
@@ -15,18 +14,14 @@
 #include "BaseOpenGLRenderer.h"
 
 class OpenGLWindow : public BaseOpenGLWindow {
-	BaseOpenGLRenderer* renderer;
 
-	Controller* controller;
-	GLuint shaderProgram, vbo, vao, ebo;
-	OpenGLTexture* background;
+	Game* const game;
 
 public:
 
-	OpenGLWindow();
-	~OpenGLWindow();
+	OpenGLWindow(BaseOpenGLRenderer* const renderer, Game* const game);
 
-	void loop(float dt) override;
+	void checkInput(float dt) override;
 
 };
 

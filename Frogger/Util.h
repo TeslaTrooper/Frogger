@@ -339,6 +339,17 @@ namespace ModelData {
 
 }
 
+namespace SoundFiles {
+
+	static const char* const extraFrog = "sounds/extraFrog.wav";
+	static const char* const frogCollected = "sounds/femaleFrog.wav";
+	static const char* const hop = "sounds/hop.wav";
+	static const char* const plunk = "sounds/plunk.wav";
+	static const char* const squash = "sounds/squash.wav";
+	static const char* const time = "sounds/time.wav";
+
+}
+
 bool intersects(util::Rectangle rect1, util::Rectangle rect2);
 int randomNumber(int min, int max);
 bool random(int probability);

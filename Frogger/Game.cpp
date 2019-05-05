@@ -1,9 +1,8 @@
 #include "Game.h"
+#include "GameLogic.h"
 
 
-Game::Game() : physicsEngine(this) {}
-
-void Game::create() {
+GameLogic::GameLogic() : physicsEngine(this) {
 	init();
 	setupObjects();
 	createPools();
@@ -13,7 +12,7 @@ void Game::create() {
 	currentCollisions = new vector<GameObject*>();
 }
 
-map<DrawableType, vector<Drawable>> Game::getDrawables() {
+map<DrawableType, vector<Drawable>> GameLogic::getDrawables() {
 	map<DrawableType, vector<Drawable>> drawables = map<DrawableType, vector<Drawable>>();
 
 	vector<Drawable> objDrawables = this->objectManager.getDrawables();
@@ -27,7 +26,7 @@ map<DrawableType, vector<Drawable>> Game::getDrawables() {
 	return drawables;
 }
 
-void Game::gameLoop(const float dt) {
+void GameLogic::update(const float dt) {
 	currentCollisions->clear();
 
 	vector<Entity*> entities = objectManager.getAllAsEntities();
@@ -45,6 +44,7 @@ void Game::gameLoop(const float dt) {
 
 	if (stats.getTime() <= 0.0f) {
 		interactingObject = { Rectangle(), Rectangle(), Vec2(),{ Event::COLL_LETHAL_OBJECTS, 0 } };
+		soundPlayer.playTime();
 	}
 
 	activeFrog->registerInteraction(interactingObject);
@@ -76,13 +76,21 @@ void Game::gameLoop(const float dt) {
 	updateUIElements(dt);
 }
 
-void Game::moveFrog(const Direction direction) {
+void GameLogic::moveFrog(const Direction direction) {
 	if (stats.isGameOver()) return;
 
+	State before = objectManager.getActiveFrog()->getState();
 	objectManager.getActiveFrog()->moveTo(direction);
+	State after = objectManager.getActiveFrog()->getState();
+
+	if (before != State::MOVING && after == State::MOVING)
+		soundPlayer.playHop();
+
+	if (before != State::MOVE_TRANSPORT && after == State::MOVE_TRANSPORT)
+		soundPlayer.playHop();
 }
 
-void Game::restart() {
+void GameLogic::restart() {
 	if (!stats.isGameOver()) return;
 
 	reset(true);
@@ -91,19 +99,19 @@ void Game::restart() {
 
 // ------ private methods ------------
 
-void Game::init() {
+void GameLogic::init() {
 	levelManager.reset();
-	//levelManager.setLevel(stats.getCurrentLevel());
+	levelManager.setLevel(3);
 }
 
-void Game::setupObjects() {
+void GameLogic::setupObjects() {
 	objectManager.createFrog();
 
-	//objectManager.createStaticObject(2, Objects::CAR_YELLOW, 3, 200, 100);
-	//objectManager.createStaticObject(3, Objects::CAR_ORANGE, 3, 150, 50);
-	//objectManager.createStaticObject(4, Objects::CAR_RED, 3, 175, 125);
-	//objectManager.createStaticObject(5, Objects::CAR_WHITE, 3, 200, 75);
-	//objectManager.createStaticObject(6, Objects::TRUCK, 3, 150, 0);
+	objectManager.createStaticObject(2, Objects::CAR_YELLOW, 3, 200, 100);
+	objectManager.createStaticObject(3, Objects::CAR_ORANGE, 3, 150, 50);
+	objectManager.createStaticObject(4, Objects::CAR_RED, 3, 175, 125);
+	objectManager.createStaticObject(5, Objects::CAR_WHITE, 3, 200, 75);
+	objectManager.createStaticObject(6, Objects::TRUCK, 3, 150, 0);
 
 	objectManager.createStaticObject(9, Objects::SMALL_TREE, 3, 200, 100);
 	objectManager.createStaticObject(10, Objects::LARGE_TREE, 3, 50, 30);
@@ -113,7 +121,7 @@ void Game::setupObjects() {
 	objectManager.createTurtle(8, Objects::THREE_ELEMENT_CHAIN, 4, 40, 0);
 }
 
-void Game::resolveCollision(Entity* e1, Entity* e2, const Vec2& location) const {
+void GameLogic::resolveCollision(Entity* e1, Entity* e2, const Vec2& location) const {
 	// We don't want to insert frog instances as we treat frogs seperatly
 	Frog* e1IsFrog = dynamic_cast<Frog*>(e1);
 	Frog* e2IsFrog = dynamic_cast<Frog*>(e2);
@@ -125,7 +133,7 @@ void Game::resolveCollision(Entity* e1, Entity* e2, const Vec2& location) const 
 		currentCollisions->push_back(dynamic_cast<GameObject*>(e2));
 }
 
-ObjectInfo Game::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
+ObjectInfo GameLogic::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
 	ObjectInfo objInfo = EMPTY_OBJECT_INFO;
 
 	// Iterate over all colliding objects
@@ -170,7 +178,7 @@ ObjectInfo Game::evaluateCollisions(vector<GameObject*> objs, Frog* frog) {
 	return EMPTY_OBJECT_INFO;
 }
 
-ObjectInfo Game::checkForCollision(Frog* frog, GameObject* obj) {
+ObjectInfo GameLogic::checkForCollision(Frog* frog, GameObject* obj) {
 	Rectangle frogHitbox = frog->getCriticalHitBox();
 	Rectangle objHitbox = obj->getCriticalHitBox();
 
@@ -181,7 +189,7 @@ ObjectInfo Game::checkForCollision(Frog* frog, GameObject* obj) {
 	return EMPTY_OBJECT_INFO;
 }
 
-ObjectInfo Game::checkForRiverCollision() {
+ObjectInfo GameLogic::checkForRiverCollision() {
 	Rectangle frogHitbox = objectManager.getActiveFrog()->getCriticalHitBox();
 
 	if (intersects(frogHitbox, riverHitBox)) {
@@ -191,7 +199,7 @@ ObjectInfo Game::checkForRiverCollision() {
 	return EMPTY_OBJECT_INFO;
 }
 
-ObjectInfo Game::checkForPoolCollision() {
+ObjectInfo GameLogic::checkForPoolCollision() {
 	Frog* activeFrog = objectManager.getActiveFrog();
 
 	for (int i = 0; i < pools.size(); i++) {
@@ -216,7 +224,7 @@ ObjectInfo Game::checkForPoolCollision() {
 	return EMPTY_OBJECT_INFO;
 }
 
-ObjectInfo Game::checkForInsectCollision() {
+ObjectInfo GameLogic::checkForInsectCollision() {
 	Frog* activeFrog = objectManager.getActiveFrog();
 
 	if (intersects(activeFrog->getCriticalHitBox(), insectHitBox)) {
@@ -226,7 +234,7 @@ ObjectInfo Game::checkForInsectCollision() {
 	return EMPTY_OBJECT_INFO;
 }
 
-vector<Rectangle> Game::getPoolHitBoxes() {
+vector<Rectangle> GameLogic::getPoolHitBoxes() {
 	vector<Rectangle> hitBoxes = vector<Rectangle>(POOLS_COUNT);
 
 	for (int i = 0; i < POOLS_COUNT; i++) {
@@ -239,7 +247,7 @@ vector<Rectangle> Game::getPoolHitBoxes() {
 	return hitBoxes;
 }
 
-void Game::createPools() {
+void GameLogic::createPools() {
 	vector<Rectangle> poolHitBoxes = getPoolHitBoxes();
 
 	for (int i = 0; i < POOLS_COUNT; i++) {
@@ -250,10 +258,19 @@ void Game::createPools() {
 	}
 }
 
-void Game::manageFrogs(Frog* activeFrog, float dt) {
+void GameLogic::manageFrogs(Frog* activeFrog, float dt) {
 	FontManager fontManager = uiManager.getFontManager();
 
+	State before = activeFrog->getState();
 	activeFrog->doLogic(dt);
+	State after = activeFrog->getState();
+
+	if (after == State::DIEING)
+		soundPlayer.playSquash();
+
+	if (before != State::COLLECTED && after == State::COLLECTED)
+		soundPlayer.playFrogCollected();
+
 
 	if (activeFrog->getState() == State::INACTIVE) {
 		stats.increaseScoreByCollectedScore();
@@ -286,7 +303,7 @@ void Game::manageFrogs(Frog* activeFrog, float dt) {
 	}
 }
 
-void Game::updateGameRules(Frog* activeFrog, float dt) {
+void GameLogic::updateGameRules(Frog* activeFrog, float dt) {
 	if (stats.isGameOver()) return;
 
 	//stats.time -= dt;
@@ -308,7 +325,7 @@ void Game::updateGameRules(Frog* activeFrog, float dt) {
 
 }
 
-void Game::updateUIElements(float dt) {
+void GameLogic::updateUIElements(float dt) {
 	FontManager fontManager = uiManager.getFontManager();
 
 	fontManager.setText("scoreLabel", std::to_string(stats.getScore()));
@@ -318,7 +335,7 @@ void Game::updateUIElements(float dt) {
 	fontManager.update(dt);
 }
 
-void Game::increaseCollectedScoreBy(Event ev) {
+void GameLogic::increaseCollectedScoreBy(Event ev) {
 	switch (ev) {
 		case Event::COLLECTING:
 			stats.increaseCollectedScoreBy(GameStats::CollectionType::FEMALE_FROG);
@@ -331,7 +348,7 @@ void Game::increaseCollectedScoreBy(Event ev) {
 	}
 }
 
-void Game::reset(bool resetAll) {
+void GameLogic::reset(bool resetAll) {
 	if (resetAll) {
 		stats = GameStats();
 		uiManager.getFontManager().hideLabel("gameOver");
@@ -344,7 +361,7 @@ void Game::reset(bool resetAll) {
 	//stats.lastRow = 1;
 }
 
-void Game::gameOver(Frog* activeFrog) {
+void GameLogic::gameOver(Frog* activeFrog) {
 	if (stats.getRemainingTries() > 0)
 		return;
 
@@ -357,14 +374,14 @@ void Game::gameOver(Frog* activeFrog) {
 		pools.at(i).ocupied = false;
 }
 
-void Game::updateLevelDifficulty() {
+void GameLogic::updateLevelDifficulty() {
 	vector<int> rows = levelManager.setLevel(stats.getCurrentLevel());
 	for (int i = 0; i < rows.size(); i++) {
 		objectManager.increaseSpeedInRow(rows.at(i));
 	}
 }
 
-void Game::generateOpponents() {
+void GameLogic::generateOpponents() {
 	bool ocupiedPools[5];
 	for (int i = 0; i < POOLS_COUNT; i++) {
 		ocupiedPools[i] = pools.at(i).ocupied;
@@ -387,4 +404,4 @@ void Game::generateOpponents() {
 	}
 }
 
-Game::~Game() {}
+GameLogic::~GameLogic() {}

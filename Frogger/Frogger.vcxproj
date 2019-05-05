@@ -75,8 +75,8 @@
     <IncludePath>C:\OpenGL\lib;C:\OpenGL\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\OpenGL\lib;C:\OpenGL\src;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Stefan\Documents\Visual Studio 2015\Projects\CodeBase\includes;C:\Users\Stefan\Documents\Visual Studio 2015\Projects\CodeBase\CodeBase;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Stefan\Documents\Visual Studio 2015\Projects\CodeBase\$(IntDir);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\OpenGL\lib;C:\OpenGL\src;$(IncludePath)</IncludePath>
@@ -91,8 +91,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\OpenGL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>CodeBase.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -104,8 +104,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OpenGL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;SOIL.lib;d3d9.lib;dxgi.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>CodeBase.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,7 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="CrocodileBody.cpp" />
     <ClCompile Include="CrocodileHead.cpp" />
     <ClCompile Include="FemaleFrog.cpp" />
@@ -153,6 +152,7 @@
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Opponent.cpp" />
     <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -161,14 +161,13 @@
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
-    <ClCompile Include="OpenGLTexture.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="APIFactory.h" />
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="Controller.h" />
     <ClInclude Include="CrocodileBody.h" />
     <ClInclude Include="CrocodileHead.h" />
     <ClInclude Include="EntityFactory.h" />
@@ -176,13 +175,15 @@
     <ClInclude Include="FemaleFrog.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Frog.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameStats.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="Opponent.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="StateMachine.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ObjectManager.h" />
@@ -190,13 +191,7 @@
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Util.h" />
-    <ClInclude Include="OpenGLTexture.h" />
     <ClInclude Include="OpenGLWindow.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\CodeBase\CodeBase\CodeBase.vcxproj">
-      <Project>{b3cafa8b-865d-4c02-b62b-0fa85df046fa}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />

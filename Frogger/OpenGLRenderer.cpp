@@ -1,12 +1,16 @@
 #include "OpenGLRenderer.h"
 
-OpenGLRenderer::OpenGLRenderer(Game* logic) : logic(logic) {
-	tileset = new OpenGLTexture("../textures/tileset.bmp");
-	background = new OpenGLTexture("../textures/bg.bmp");
+void OpenGLRenderer::setup() {
+	tileset = new Texture("../textures/tileset.bmp", Textures::Format::BMP);
+	background = new Texture("../textures/bg.bmp", Textures::Format::BMP);
 
-	ShaderProgram standardShaderProgramm;
-	GLuint shaderProgram = standardShaderProgramm.createShaderProgram("shader.vert", "shader.frag");
-	this->shader = new Shader(shaderProgram);
+	tileset->setAlternativeAlphaColor(new Color(TRANS_R, TRANS_G, TRANS_B));
+	background->setAlternativeAlphaColor(new Color(TRANS_R, TRANS_G, TRANS_B));
+
+	tileset->loadTexture();
+	background->loadTexture();
+
+	shader = ShaderFactory::createShader("shader.vert", "shader.frag");
 
 	initProjection();
 	data = configure(init(), GL_TRIANGLES);
@@ -30,7 +34,7 @@ void OpenGLRenderer::render() const {
 	BaseOpenGLRenderer::draw(data);
 
 	tileset->bind();
-	map<DrawableType, vector<Drawable>> drawables = logic->getDrawables();
+	map<DrawableType, vector<Drawable>> drawables = game->getDrawables();
 	for (int i = 0; i < drawables.at(DrawableType::OBJECT).size(); i++) {
 		Drawable d = drawables.at(DrawableType::OBJECT).at(i);
 		prepareShaders(d.transformation, &d.textureRegion);

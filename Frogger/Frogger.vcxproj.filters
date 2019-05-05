@@ -96,16 +96,10 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\logic\objects</Filter>
     </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>Source Files\ui</Filter>
-    </ClCompile>
     <ClCompile Include="OpenGLWindow.cpp">
       <Filter>Source Files\ui\view</Filter>
     </ClCompile>
     <ClCompile Include="OpenGLRenderer.cpp">
-      <Filter>Source Files\ui\view</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLTexture.cpp">
       <Filter>Source Files\ui\view</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
@@ -128,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="GameEntity.cpp">
       <Filter>Source Files\logic\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>Source Files\logic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +158,6 @@
     <ClInclude Include="Turtle.h">
       <Filter>Header Files\logic\objects\Derived</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files\logic</Filter>
-    </ClInclude>
     <ClInclude Include="LevelManager.h">
       <Filter>Header Files\logic</Filter>
     </ClInclude>
@@ -182,16 +176,10 @@
     <ClInclude Include="Util.h">
       <Filter>Header Files\logic\api</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
     <ClInclude Include="OpenGLRenderer.h">
       <Filter>Header Files\ui\view</Filter>
     </ClInclude>
     <ClInclude Include="OpenGLWindow.h">
-      <Filter>Header Files\ui\view</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLTexture.h">
       <Filter>Header Files\ui\view</Filter>
     </ClInclude>
     <ClInclude Include="GameEntity.h">
@@ -205,6 +193,18 @@
     </ClInclude>
     <ClInclude Include="GameStats.h">
       <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="APIFactory.h">
+      <Filter>Header Files\logic\api</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic.h">
+      <Filter>Header Files\logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\logic\api</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
