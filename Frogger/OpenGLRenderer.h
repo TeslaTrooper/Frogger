@@ -44,7 +44,7 @@ class OpenGLRenderer : public BaseOpenGLRenderer {
 
 	void render() const override;
 
-	void setup() override;
+	void setup(int defaultFramebufferWidth, int defaultFramebufferHeight) override;
 
 public:
 	OpenGLRenderer(Game* game) : game(game) {};

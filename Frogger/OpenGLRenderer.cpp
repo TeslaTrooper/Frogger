@@ -1,6 +1,7 @@
 #include "OpenGLRenderer.h"
 
-void OpenGLRenderer::setup() {
+void OpenGLRenderer::setup(int defaultFramebufferWidth, int defaultFramebufferHeight) {
+	BaseOpenGLRenderer::setup(defaultFramebufferWidth, defaultFramebufferHeight);
 	tileset = new Texture("../textures/tileset.bmp", Textures::Format::BMP);
 	background = new Texture("../textures/bg.bmp", Textures::Format::BMP);
 
