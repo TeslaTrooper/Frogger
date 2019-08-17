@@ -28,6 +28,5 @@ const float SPEED_MEDIUM_TREE = 60.0f;
 const float SPEED_SMALL_TREE = 40.0f;
 const float SPEED_TURTLE = -50.f;
 const float SPEED_SNAKE = 20.0f;
-const int FRAME_RATE = 60;
 
 #endif CONSTANTS 

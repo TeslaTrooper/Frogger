@@ -1,7 +1,7 @@
-#include "OpenGLRenderer.h"
+#include "Renderer.h"
 
-void OpenGLRenderer::setup(int defaultFramebufferWidth, int defaultFramebufferHeight) {
-	BaseOpenGLRenderer::setup(defaultFramebufferWidth, defaultFramebufferHeight);
+void Renderer::setup(int defaultFramebufferWidth, int defaultFramebufferHeight) {
+	BaseRenderer::setup(defaultFramebufferWidth, defaultFramebufferHeight);
 	tileset = new Texture("../textures/tileset.bmp", Textures::Format::BMP);
 	background = new Texture("../textures/bg.bmp", Textures::Format::BMP);
 
@@ -17,50 +17,50 @@ void OpenGLRenderer::setup(int defaultFramebufferWidth, int defaultFramebufferHe
 	data = configure(init(), GL_TRIANGLES);
 }
 
-OpenGLRenderer::~OpenGLRenderer() {
+Renderer::~Renderer() {
 	glDeleteVertexArrays(1, &data.vao);
 	glDeleteBuffers(1, &data.vbo);
 	glDeleteBuffers(1, &data.ebo);
 }
 
-void OpenGLRenderer::initProjection() const {
+void Renderer::initProjection() const {
 	shader->use();
 	shader->setUniformMatrix4("projection", Projection::getOrthographicProjection(WINDOW_WIDTH, WINDOW_HEIGHT));
 }
 
-void OpenGLRenderer::render() const {
+void Renderer::render() const {
 	Mat4 backgroundTransformation = Mat4::getTransformation(Vec2(0.0f, 0.0f), Vec2(560.0f, 540.0f));
 	prepareShaders(backgroundTransformation);
 	background->bind();
-	BaseOpenGLRenderer::draw(data);
+	BaseRenderer::draw(data);
 
 	tileset->bind();
 	map<DrawableType, vector<Drawable>> drawables = game->getDrawables();
 	for (int i = 0; i < drawables.at(DrawableType::OBJECT).size(); i++) {
 		Drawable d = drawables.at(DrawableType::OBJECT).at(i);
 		prepareShaders(d.transformation, &d.textureRegion);
-		BaseOpenGLRenderer::draw(data);
+		BaseRenderer::draw(data);
 	}
 	for (int i = 0; i < drawables.at(DrawableType::FONT).size(); i++) {
 		Drawable d = drawables.at(DrawableType::FONT).at(i);
 		prepareShaders(d.transformation, &d.textureRegion);
-		BaseOpenGLRenderer::draw(data);
+		BaseRenderer::draw(data);
 	}
 }
 
-void OpenGLRenderer::prepareShaders(const Mat4& transformation) const {
+void Renderer::prepareShaders(const Mat4& transformation) const {
 	Mat3 identity;
 
 	this->shader->setUniformMatrix3("textureTranslation", identity);
 	this->shader->setUniformMatrix4("transform", transformation);
 }
 
-void OpenGLRenderer::prepareShaders(const Mat4& transformation, const Rectangle* textureRegion) const {
+void Renderer::prepareShaders(const Mat4& transformation, const Rectangle* textureRegion) const {
 	this->shader->setUniformMatrix3("textureTranslation", getTextureRegion(textureRegion));
 	this->shader->setUniformMatrix4("transform", transformation);
 }
 
-Mat3 OpenGLRenderer::getTextureRegion(const Rectangle* region) const {
+Mat3 Renderer::getTextureRegion(const Rectangle* region) const {
 	Mat3 textureTransform;
 
 	if (region == nullptr) {
@@ -76,7 +76,7 @@ Mat3 OpenGLRenderer::getTextureRegion(const Rectangle* region) const {
 	return textureTransform;
 }
 
-Bindable OpenGLRenderer::init() {
+Bindable Renderer::init() {
 	VertexData vd = { ModelData::vertices, 4, 4 };
 	IndexData id = { ModelData::indices, 6 };
 	AttributeData ad = { ModelData::sizes, 2 };

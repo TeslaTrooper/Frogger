@@ -158,9 +158,9 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="OpenGLWindow.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
-    <ClCompile Include="OpenGLRenderer.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Util.cpp" />
@@ -187,11 +187,11 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="ObjectManager.h" />
-    <ClInclude Include="OpenGLRenderer.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="Util.h" />
-    <ClInclude Include="OpenGLWindow.h" />
+    <ClInclude Include="Controller.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />

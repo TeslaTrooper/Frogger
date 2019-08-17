@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <ShaderFactory.h>
-#include <BaseOpenGLRenderer.h>
+#include <BaseRenderer.h>
 #include <Texture.h>
 
 #include "Shader.h"
@@ -19,7 +19,7 @@
 using namespace std;
 using namespace util;
 
-class OpenGLRenderer : public BaseOpenGLRenderer {
+class Renderer : public BaseRenderer {
 
 	static const float vertices[];
 	static const int indices[];
@@ -47,8 +47,8 @@ class OpenGLRenderer : public BaseOpenGLRenderer {
 	void setup(int defaultFramebufferWidth, int defaultFramebufferHeight) override;
 
 public:
-	OpenGLRenderer(Game* game) : game(game) {};
-	~OpenGLRenderer();
+	Renderer(Game* game) : game(game) {};
+	~Renderer();
 };
 
 #endif RENDERER
